@@ -10,4 +10,7 @@ public class VakapoApplication {
 		SpringApplication.run(VakapoApplication.class, args);
 	}
 
+
+	/// ///////// //////
 }
+
