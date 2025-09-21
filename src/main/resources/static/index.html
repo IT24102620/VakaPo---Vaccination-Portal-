@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Landing Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Young+Serif&display=swap"
+          rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+<!-- Notification Composer Form -->
+<section>
+    <h2>Notification Composer </h2>
+    <form>
+        <label>Title:</label>
+        <input type="text" placeholder="Enter notification title">
+
+        <label>Message:</label>
+        <textarea placeholder="Enter your message"></textarea>
+
+        <label>Audience:</label>
+        <select>
+            <option>Patients</option>
+            <option>Admin</option>
+            <option>Hospitals</option>
+        </select>
+
+        <label>Delivery Method</label>
+        <select>
+            <option>Email</option>
+            <option>SMS</option>
+            <option>In-App</option>
+        </select>
+
+        <label>Schedule</label>
+        <input type="date">
+
+        <button class="hover-button" type="submit">Send notifications</button>
+    </form>
+</section>
+
+<!--Notifications Panel -->
+<section>
+    <h2>Notification <span class="badge">3</span></h2>
+
+    <div class="notifications unread">
+        <strong>Upcoming Vaccinations</strong>
+        <p>Your vaccination is scheduled for tomorrow.</p>
+    </div>
+
+    <div class="notifications unread">
+        <strong>Reminder</strong>
+        <p>Don't forget to bring your NIC for verification.</p>
+    </div>
+
+    <div class="notifications unread">
+        <strong>Heath Update</strong>
+        <p>New vaccination center available near you.</p>
+    </div>
+</section>
+
+<!--Notification editor pannal-->
+
+<section>
+    <h2>Notification Editor </h2>
+    <form>
+        <label>Title:</label>
+        <input type="text" placeholder="Enter notification title">
+
+        <label>Message:</label>
+        <textarea placeholder="Enter your message"></textarea>
+
+        <label>Audience:</label>
+        <select>
+            <option>Patients</option>
+            <option>Admin</option>
+            <option>Hospitals</option>
+        </select>
+
+        <label>Delivery Method</label>
+        <select>
+            <option>Email</option>
+            <option>SMS</option>
+            <option>In-App</option>
+        </select>
+
+        <label>Schedule</label>
+        <input type="date">
+
+        <button type="submit">Update notifications</button>
+    </form>
+</section>
+
+<!-- Delete Notification Dialog -->
+<section>
+
+    <h3>Delete notifications</h3>
+    <p>This will remove the notifications from users</p>
+    <div class="btn-row">
+        <button class="cancel">cancel</button>
+        <button class="delete">Delete</button>
+    </div>
+
+</section>
+
+
+
+</body>
+
+</html>

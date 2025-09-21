@@ -1,13 +1,13 @@
-package lk.vakapo.vakapo;
+package lk.vakapo.vakapo.AlertsReminders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VakapoApplication {
+public class AlertsReminders {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VakapoApplication.class, args);
+		SpringApplication.run(AlertsReminders.class, args);
 	}
 
 
