@@ -1,0 +1,380 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: "Gabarito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+:root {
+    --nav-h: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+}
+
+/* announcement */
+
+.announcement {
+    background-color: #1E489E;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    font-size: 20px;
+}
+
+.announcement__cancel {
+    cursor: pointer;
+}
+
+/* navbar */
+
+.navbar {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+}
+
+.navbar__section1 img {
+    width: 250px;
+    height: 72px;
+}
+
+
+.navbar__section2 {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 30px;
+    width: 60%;
+    padding: 20px;
+}
+
+.navbar__section2 a {
+    text-decoration: none;
+    color: black;
+    color: #210084;
+
+}
+
+.navbar__section3 img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.navbar__section4 img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.navbar__section4 {
+    display: none;
+}
+
+/* profile */
+
+.profile {
+    position: fixed;
+    top: 150px;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #210084;
+    border: none;
+    border-radius: 20px;
+    width: 200px;
+    right: -20%;
+    transition: 1s;
+}
+
+.profile__section1 {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 10px;
+}
+
+.profile__section1 a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+
+.profile__section1 button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    color: #1E489E;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+}
+
+.profile__section1 button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+.profile__section1 p {
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* responsive navabr */
+
+.responsive__navbar {
+    border: black solid 1px;
+    position: fixed;
+    width: 70%;
+    right: -80%;
+    height: 100vh;
+    top: 80px;
+    z-index: 4;
+    background-color: #210084;
+    transition: 0.5s;
+}
+
+.responsive__navbar img {
+    width: 150px;
+    height: 50px;
+}
+
+.responsive__navbar__section1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 a,
+.responsive__navbar__section1 p,
+.responsive__navbar__section1 h3 {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 p {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.responsive__navbar__section1__button button {
+    color: #210084;
+    padding: 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    width: 140px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: 0.5s;
+}
+
+.responsive__navbar__section1__button button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+/* feedback */
+
+.feedback {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 20px;
+    align-items: center;
+}
+
+.feedback__section2 {
+    margin-right: 20%;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1E489E;
+}
+
+.feedback__section1 img {
+    width: 70%;
+    height: 50%;
+}
+
+.feedback__section1__sub {
+    margin-top: 10px;
+    border: #1E489E 3px solid;
+    border-radius: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+.feedback__section1__sub img {
+    margin-left: 100px;
+    margin-right: 90px;
+}
+
+.feedback__section2__sub1 form input,
+.feedback__section2__sub1 form textarea,
+.feedback__section2__sub1 form select {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: #1E489E 2px solid;
+    border-radius: 10px;
+}
+
+.feedback__section2__sub1 form input:focus,
+.feedback__section2__sub1 form textarea:focus,
+.feedback__section2__sub1 form select:focus {
+    outline: none;
+}
+
+.feedback__section2__sub1 form input[type="submit"] {
+    background-color: #1E489E;
+    color: white;
+    width: 100%;
+    cursor: pointer;
+}
+
+.feedback__section2__sub1 {
+    padding: 20px;
+}
+
+/* footer */
+
+.footer {
+    background-color: #1E489E;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+/* responsive design */
+
+@media screen and (max-width: 768px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .appointment__section3__sub1 select,
+    .appointment__section3__sub2 select,
+    .appointment__section4__sub1 input,
+    .appointment__section4__sub2 select {
+        width: 120px;
+    }
+
+    .appointment__section1 button {
+        width: 50%;
+    }
+
+    .feedback__section1 img {
+        display: none;
+    }
+
+    .feedback__section1__sub img {
+        margin-left: 0px;
+    }
+
+    .feedback {
+        margin: 20px;
+    }
+
+    .feedback__section2 h1 {
+        font-size: 39px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .appointment__summary table {
+        font-size: 12px;
+    }
+
+    .feedback__section1 img {
+        display: none;
+    }
+
+    .feedback__section1__sub img {
+        margin-left: 0px;
+    }
+
+    .feedback {
+        margin: 20px;
+    }
+
+    .feedback__section2 h1 {
+        font-size: 39px;
+    }
+}
