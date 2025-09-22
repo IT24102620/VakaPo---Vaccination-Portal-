@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VakaPo Admin Dashboard — Fixed</title>
+    <link rel="stylesheet" href="AdminLandingPage.css" />
+</head>
+<body>
+<!-- overlay for mobile open -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+    <div class="logo" aria-hidden="false">
+        <img src="../../static/logo.png" alt="VakaPo logo">
+    </div>
+
+    <nav>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1186/1186314.png" alt="Dashboard">
+            <span class="link-text">Home</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/2749/2749678.png" alt="Hospital">
+            <span class="link-text">Hospital Manager</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+            <span class="link-text">User Manager</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/754/754560.png" alt="Vaccination">
+            <span class="link-text">Vaccination Monitoring</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/833/833593.png" alt="Bookings">
+            <span class="link-text">Bookings</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/9151/9151696.png" alt="Feedback">
+            <span class="link-text">Feedback Manager</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542638.png" alt="Messages">
+            <span class="link-text">Messages & Alerts</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/879/879757.png" alt="Offers">
+            <span class="link-text">Offers Manager</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/9374/9374384.png" alt="Terms">
+            <span class="link-text">Terms & Conditions</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1865/1865642.png" alt="Laws">
+            <span class="link-text">Laws & Mandates</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" alt="Settings">
+            <span class="link-text">Settings</span></a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/9463/9463197.png" alt="Logout">
+            <span class="link-text">Log Out</span></a>
+    </nav>
+</aside>
+
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+    <img src="https://cdn-icons-png.flaticon.com/512/786/786364.png" alt="menu">
+</button>
+
+<!-- MAIN: content-area wrapper keeps content centered -->
+<div class="content-area" id="contentArea">
+    <main class="container" id="mainContent" role="main">
+        <h1>Welcome to VakaPo Admin!</h1>
+        <p>
+            This portal is your primary tool for monitoring and managing the country's vaccination program.
+            It's a centralized, secure platform that gives you access to real-time data,
+            allowing you to track progress and ensure our public health initiatives are efficient.
+            We designed this system to streamline vaccination records and provide you with the
+            essential metrics you need to make informed decisions that protect our nation's health.
+        </p>
+        <p>
+            Please be advised that this portal contains sensitive public health data,
+            so use it with the utmost care and diligence. To ensure data integrity and security,
+            all actions within this system are logged. If you require any assistance,
+            you can refer to the support documentation or contact our help desk.
+        </p>
+
+        <section class="dashboard-cards" aria-label="Quick actions">
+            <div class="card">
+                <h3>Manage Hospital/clinics</h3>
+                <p>Browse and manage all registered users in the system..</p>
+                <button class="btn-view" href="#" >View Details</button>
+            </div>
+            <div class="card">
+                <h3>Impose Announcement</h3>
+                <p>Impose emergency alerts and general Notification</p>
+                <button class="btn-view" href="#">View Alerts</button>
+            </div>
+            <div class="card">
+                <h3>Manage vaccination Range</h3>
+                <p>Browse the vaccination range in each sub-admin.</p>
+                <button class="btn-view" href="#">View Range</button>
+            </div>
+            <div class="card">
+                <h3>View Feedback</h3>
+                <p>Generate summaries and view key metrics about application performance.</p>
+                <button class="btn-view" href="#">View Feedback</button>
+            </div>
+        </section>
+
+        <!--mini display -->
+        <section class="staff-management" aria-label="Admin preview">
+            <h2>Admin Sub-Pages UI Preview</h2>
+            <div id="staffCards" class="staff-cards" aria-live="polite"></div>
+
+            <div class="preview-grid">
+                <!-- Sub-Admin -->
+                <div class="preview-card">
+                    <h3>Sub-Admin UI</h3>
+                    <iframe src="#" title="Sub Admin UI Preview"
+                            class="preview-frame" loading="lazy"></iframe>
+                </div>
+
+                <!-- Bookings -->
+                <div class="preview-card">
+                    <h3>Bookings UI</h3>
+                    <iframe src="#" title="Bookings Preview"
+                            class="preview-frame" loading="lazy"></iframe>
+                </div>
+
+                <!-- Feedback -->
+                <div class="preview-card">
+                    <h3>Feedback UI</h3>
+                    <iframe src="#" title="Feedback Preview"
+                            class="preview-frame" loading="lazy"></iframe>
+                </div>
+
+                <!-- Landing Page -->
+                <div class="preview-card">
+                    <h3>Landing Page UI</h3>
+                    <iframe src="#" title="U_landing Preview"
+                            class="preview-frame" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="inner">
+            <p>VakaPo | Making Vaccination booking simple & secure</p>
+            <p>© 2025 VakaPo. All Rights Reserved</p>
+        </div>
+    </footer>
+</div>
+
+<script src="AdminLandingPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VakaPo Admin - Hospital Manager</title>
+  <link rel="stylesheet" href="../Rootlandingpage/AdminLandingPage.css"> <!-- Shared CSS for consistency -->
+  <link rel="stylesheet" href="Allowed_Sub_Admin.css"> <!-- Specific CSS for this page -->
+</head>
+<body>
+
+<!-- Sidebar (copied from AdminLandingPage.html for consistency) -->
+<div id="overlay" class="overlay"></div>
+<aside id="sidebar" class="sidebar">
+  <button id="sidebarClose" class="sidebar-close">×</button>
+  <div class="logo">
+    <img src="logo.png" alt="VakaPo Logo"> <!-- Replace with actual logo path -->
+  </div>
+  <nav>
+    <a href="#" class="sidebar-link">
+      <img src="home-icon.png" alt="Home" class="icon">
+      <span class="link-text">Home</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="hospital-icon.png" alt="Hospital Manager" class="icon">
+      <span class="link-text">Hospital Manager</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="user-icon.png" alt="User Manager" class="icon">
+      <span class="link-text">User Manager</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="vaccination-icon.png" alt="Vaccination Monitoring" class="icon">
+      <span class="link-text">Vaccination Monitoring</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="bookings-icon.png" alt="Bookings" class="icon">
+      <span class="link-text">Bookings</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="feedback-icon.png" alt="Feedback Manager" class="icon">
+      <span class="link-text">Feedback Manager</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="messages-icon.png" alt="Messages & Alerts" class="icon">
+      <span class="link-text">Messages & Alerts</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="offers-icon.png" alt="Offers Manager" class="icon">
+      <span class="link-text">Offers Manager</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="terms-icon.png" alt="Terms & Conditions" class="icon">
+      <span class="link-text">Terms & Conditions</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="laws-icon.png" alt="Laws & Mandates" class="icon">
+      <span class="link-text">Laws & Mandates</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="settings-icon.png" alt="Settings" class="icon">
+      <span class="link-text">Settings</span>
+    </a>
+    <a href="#" class="sidebar-link">
+      <img src="logout-icon.png" alt="Log Out" class="icon">
+      <span class="link-text">Log Out</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- Mobile Menu Toggle -->
+<button id="menuToggle" class="menu-toggle">
+  <img src="menu-icon.png" alt="Menu"> <!-- Replace with actual menu icon -->
+</button>
+
+<!-- Main Content -->
+<div class="content-area">
+  <main class="container">
+    <h1>Hospital Manager</h1>
+
+    <p>
+      Manage approved hospitals and clinics with sub-admin access. View details or perform actions like assigning staff or monitoring vaccination activities.
+    </p>
+
+    <section class="staff-management">
+      <h2>Approved Institutions</h2>
+      <!-- Search Input -->
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by Institution Name, Registration Number, or Email..." onkeyup="filterCards()">
+      </div>
+      <!-- Cards Container -->
+      <div class="institutions-cards" id="institutionsCards">
+        <!-- Sample Card 1 (replace with dynamic data in backend) -->
+        <div class="institution-card">
+          <h3>General Hospital Colombo</h3>
+          <p><strong>Institution Type:</strong> Hospital</p>
+          <p><strong>Registration Number:</strong> REG12345</p>
+          <p><strong>Type (Gov/Private):</strong> Government</p>
+          <p><strong>Address:</strong> 123 Main St, Colombo</p>
+          <p><strong>Contact Number:</strong> 011-1234567</p>
+          <p><strong>Email:</strong> admin@ghc.com</p>
+          <p><strong>Username:</strong> ghc_admin</p>
+          <p><strong>Approved On:</strong> 2025-09-15 14:35:00</p>
+          <div class="actions">
+            <button class="btn-view-details" onclick="showDetails('Hospital', 'General Hospital Colombo', 'REG12345', 'Government', '123 Main St, Colombo', '011-1234567', 'admin@ghc.com', 'ghc_admin', '2025-09-15 14:35:00', 'path/to/cert1.pdf')">View Details</button>
+            <button class="btn-manage" onclick="manageInstitution('General Hospital Colombo')">Manage</button>
+          </div>
+        </div>
+        <!-- Sample Card 2 -->
+        <div class="institution-card">
+          <h3>Kandy Health Clinic</h3>
+          <p><strong>Institution Type:</strong> Clinic</p>
+          <p><strong>Registration Number:</strong> REG67890</p>
+          <p><strong>Type (Gov/Private):</strong> Private</p>
+          <p><strong>Address:</strong> 456 Hill Rd, Kandy</p>
+          <p><strong>Contact Number:</strong> 081-9876543</p>
+          <p><strong>Email:</strong> info@khc.com</p>
+          <p><strong>Username:</strong> khc_admin</p>
+          <p><strong>Approved On:</strong> 2025-09-16 09:50:00</p>
+          <div class="actions">
+            <button class="btn-view-details" onclick="showDetails('Clinic', 'Kandy Health Clinic', 'REG67890', 'Private', '456 Hill Rd, Kandy', '081-9876543', 'info@khc.com', 'khc_admin', '2025-09-16 09:50:00', 'path/to/cert2.pdf')">View Details</button>
+            <button class="btn-manage" onclick="manageInstitution('Kandy Health Clinic')">Manage</button>
+          </div>
+        </div>
+        <!-- Add more cards as needed -->
+      </div>
+    </section>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Institution Details</h2>
+        <p><strong>Institution Type:</strong> <span id="detailInstitutionType"></span></p>
+        <p><strong>Institution Name:</strong> <span id="detailInstitutionName"></span></p>
+        <p><strong>Registration Number:</strong> <span id="detailRegNumber"></span></p>
+        <p><strong>Type (Gov/Private):</strong> <span id="detailType"></span></p>
+        <p><strong>Address:</strong> <span id="detailAddress"></span></p>
+        <p><strong>Contact Number:</strong> <span id="detailContact"></span></p>
+        <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+        <p><strong>Username:</strong> <span id="detailUsername"></span></p>
+        <p><strong>Approved On:</strong> <span id="detailApprovedOn"></span></p>
+        <p><strong>Registration Certificate:</strong> <a id="detailCert" href="#" target="_blank">View Certificate</a> (Note: Link to uploaded file; integrate with backend for actual viewing)</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="inner">
+      VakaPo | Making Vaccination booking simple & secure
+      <br>
+      © 2025 VakaPo. All Rights Reserved
+    </div>
+  </footer>
+</div>
+
+<script src="../Rootlandingpage/AdminLandingPage.js"></script> <!-- Shared JS for sidebar functionality -->
+<script src="Allowed_Sub_Admin.js"></script> <!-- Specific JS for this page -->
+</body>
+</html>
