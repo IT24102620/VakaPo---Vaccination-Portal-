@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccination Monitoring - VakaPo</title>
+    <link rel="stylesheet" href="../static/AdminLandingPage.css">
+    <link rel="stylesheet" href="../static/VakaPo_Range.css">
+</head>
+<body>
+<div class="overlay"></div>
+
+<button class="menu-toggle">
+    <img src="../static/menu.png" alt="Menu">
+</button>
+
+<aside class="sidebar">
+    <button class="sidebar-close">&times;</button>
+    <div class="logo">
+        <img src="../static/logo.png" alt="VakaPo Logo">
+    </div>
+    <nav>
+        <a class="sidebar-link" href="AdminLandingPage.html">
+            <img class="icon" src="../static/home.png" alt="Dashboard">
+            <span class="link-text">Home</span>
+        </a>
+        <a class="sidebar-link" href="Allowed_Sub_Admin.html">
+            <img class="icon" src="../static/administrator.png" alt="Hospital">
+            <span class="link-text">Sub-Admin Manager</span>
+        </a>
+        <a class="sidebar-link" href="Delegate.html">
+            <img class="icon" src="../static/open-enrollment.png" alt="User">
+            <span class="link-text">Applicant Manager</span>
+        </a>
+        <a class="sidebar-link" href="VakaPo_Range.html">
+            <img class="icon" src="../static/virus.png" alt="Vaccination">
+            <span class="link-text">Vaccination Monitoring</span>
+        </a>
+        <a class="sidebar-link" href="admin feedback.html">
+            <img class="icon" src="../static/feedback (1).png" alt="Feedback">
+            <span class="link-text">Feedback Manager</span>
+        </a>
+        <a class="sidebar-link" href="Admin_Notification.html">
+            <img class="icon" src="../static/notification.png" alt="Messages">
+            <span class="link-text">Messages & Alerts</span>
+        </a>
+        <a class="sidebar-link" href="T_C.html">
+            <img class="icon" src="../static/insurance.png" alt="Terms">
+            <span class="link-text">Terms & Conditions</span>
+        </a>
+        <a class="sidebar-link" href="Sub_Admin_Rules.html">
+            <img class="icon" src="../static/regulation.png" alt="Laws">
+            <span class="link-text">Laws & Mandates</span>
+        </a>
+        <a class="sidebar-link" href="#">
+            <img class="icon" src="../static/logout.png" alt="Log Out">
+            <span class="link-text">Log Out</span>
+        </a>
+    </nav>
+</aside>
+
+<main class="content-area">
+    <div class="container">
+        <h1>Vaccination Monitoring</h1>
+        <p>Monitor vaccination rates and statistics across registered hospitals and clinics.</p>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by hospital or clinic name...">
+        </div>
+
+        <section class="vaccination-rates">
+            <h2>Vaccination Rates</h2>
+            <div class="rates-cards">
+                <div class="rate-card">
+                    <h3>General Hospital Colombo</h3>
+                    <p>Total Vaccinations: 12,345</p>
+                    <p>Vaccination Rate: 85%</p>
+                    <p>Last Updated: 2025-09-20 10:00:00</p>
+                    <div class="actions">
+                        <button class="btn-view-details">View Details</button>
+                    </div>
+                </div>
+                <div class="rate-card">
+                    <h3>Kandy Health Clinic</h3>
+                    <p>Total Vaccinations: 5,678</p>
+                    <p>Vaccination Rate: 78%</p>
+                    <p>Last Updated: 2025-09-20 11:00:00</p>
+                    <div class="actions">
+                        <button class="btn-view-details">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal" id="rateModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Vaccination Details</h2>
+                <p>Institution Name: </p>
+                <p>Total Vaccinations: </p>
+                <p>Vaccination Rate: </p>
+                <p>Last Updated: </p>
+                <p>Vaccine Types Administered: </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="inner">
+            <p>VakaPo | Making Vaccination booking simple & secure</p>
+            <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+        </div>
+    </footer>
+</main>
+</body>
+</html>

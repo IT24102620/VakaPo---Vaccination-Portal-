@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages & Alerts - VakaPo</title>
+  <link rel="stylesheet" href="../static/AdminLandingPage.css">
+  <link rel="stylesheet" href="../static/Admin_Notification.css">
+</head>
+<body>
+<div class="overlay"></div>
+
+<button class="menu-toggle">
+  <img src="../static/menu.png" alt="Menu">
+</button>
+
+<aside class="sidebar">
+  <button class="sidebar-close">&times;</button>
+  <div class="logo">
+    <img src="../static/logo.png" alt="VakaPo Logo">
+  </div>
+  <nav>
+    <a class="sidebar-link" href="AdminLandingPage.html">
+      <img class="icon" src="../static/home.png" alt="Dashboard">
+      <span class="link-text">Home</span>
+    </a>
+    <a class="sidebar-link" href="Allowed_Sub_Admin.html">
+      <img class="icon" src="../static/administrator.png" alt="Hospital">
+      <span class="link-text">Sub-Admin Manager</span>
+    </a>
+    <a class="sidebar-link" href="Delegate.html">
+      <img class="icon" src="../static/open-enrollment.png" alt="User">
+      <span class="link-text">Applicant Manager</span>
+    </a>
+    <a class="sidebar-link" href="VakaPo_Range.html">
+      <img class="icon" src="../static/virus.png" alt="Vaccination">
+      <span class="link-text">Vaccination Monitoring</span>
+    </a>
+    <a class="sidebar-link" href="admin feedback.html">
+      <img class="icon" src="../static/feedback (1).png" alt="Feedback">
+      <span class="link-text">Feedback Manager</span>
+    </a>
+    <a class="sidebar-link" href="Admin_Notification.html">
+      <img class="icon" src="../static/notification.png" alt="Messages">
+      <span class="link-text">Messages & Alerts</span>
+    </a>
+    <a class="sidebar-link" href="T_C.html">
+      <img class="icon" src="../static/insurance.png" alt="Terms">
+      <span class="link-text">Terms & Conditions</span>
+    </a>
+    <a class="sidebar-link" href="Sub_Admin_Rules.html">
+      <img class="icon" src="../static/regulation.png" alt="Laws">
+      <span class="link-text">Laws & Mandates</span>
+    </a>
+    <a class="sidebar-link" href="#">
+      <img class="icon" src="../static/logout.png" alt="Log Out">
+      <span class="link-text">Log Out</span>
+    </a>
+  </nav>
+</aside>
+
+<main class="content-area">
+  <div class="container">
+    <h1>Messages & Alerts</h1>
+    <p>Create and manage emergency alerts and notifications for the portal.</p>
+
+    <section class="notification-form">
+      <h2>Create New Notification</h2>
+      <form id="notificationForm">
+        <label for="notificationTitle">Title:</label>
+        <input type="text" id="notificationTitle" placeholder="Enter notification title" required>
+        <label for="notificationMessage">Message:</label>
+        <textarea id="notificationMessage" placeholder="Enter notification message" required></textarea>
+        <label for="notificationType">Type:</label>
+        <select id="notificationType" required>
+          <option value="emergency">Emergency Alert</option>
+          <option value="general">General Notification</option>
+        </select>
+        <button type="submit" class="btn-submit">Send Notification</button>
+      </form>
+    </section>
+
+    <section class="notifications-list">
+      <h2>Existing Notifications</h2>
+      <div class="notification-cards">
+        <div class="notification-card">
+          <h3>Emergency Alert: Vaccine Shortage</h3>
+          <p>Type: Emergency</p>
+          <p>Date: 2025-09-20 09:00:00</p>
+          <p>Message: Urgent: Limited vaccine supply at Colombo hospitals.</p>
+          <div class="actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+        <div class="notification-card">
+          <h3>General Update</h3>
+          <p>Type: General</p>
+          <p>Date: 2025-09-19 15:00:00</p>
+          <p>Message: New vaccination schedule released for clinics.</p>
+          <div class="actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="inner">
+      <p>VakaPo | Making Vaccination booking simple & secure</p>
+      <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+  </footer>
+</main>
+</body>
+</html>
