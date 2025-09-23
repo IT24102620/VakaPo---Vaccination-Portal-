@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VakaPo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/LandingPage.css}">
+</head>
+
+<body>
+    <!-- Announcement Section -->
+    <div class="announcement">
+        <p>Get 30% off on your first vaccine</p>
+        <p class="announcement__cancel">X</p>
+    </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a href="#home">Home</a>
+            <a href="#aboutus">About</a>
+            <a href="#contactus">Contact Us</a>
+            <a href="#reviews">Reviews</a>
+        </div>
+        <div class="navbar__section3">
+            <button onclick="window.location.href='../Login Page/Login.html'">Log in</button>
+        </div>
+        <div class="navbar__section4">
+            <img src="../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <a href="#home">Home</a>
+            <a href="#aboutus">About</a>
+            <a href="#contactus">Contact Us</a>
+            <a href="#reviews">Reviews</a>
+            <div class="responsive__navbar__section1__button">
+                <button onclick="window.location.href='../Login Page/Login.html'">Log in</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- Header Section -->
+    <div class="header" id="home">
+        <div class="header__section1">
+            <h1>Book Your Vaccines In Few Minutes</h1> <br>
+            <p>Streamlining healthcare with secure, accessible, and effcient vaccination management for all Sri
+                Lankans
+            </p> <br>
+            <button>Book Vaccine</button>
+        </div>
+        <div class="header__section2">
+            <img src="../Images/header.png" alt="header-image">
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="about__us" id="aboutus">
+        <div class="about__us__section1">
+            <h1>About Us - Who We Are</h1>
+            <p>Empowering Health One Click At A Time</p> <br>
+        </div>
+        <div class="about__us__section2">
+            <p>The Web-Based Vaccination Portal, crafted by SLIIT students, revolutionizes vaccination management in
+                Sri
+                Lanka. It provides secure, role-based access for patients, doctors, nurses, hospital administrators,
+                and
+                public health authorities. With features like online booking, record management, and real-time
+                alerts,
+                it ensures efficient coordination, data security, and timely healthcare delivery, supporting
+                national
+                immunization goals and enhancing accessibility for all citizens.</p>
+        </div>
+    </div>
+    <div class="about__us__badges">
+        <div class="about__us__badges__section1">
+            <img src="../Images/experience.png" alt="experience">
+            <h2>5+ Years</h2>
+            <p>Experience</p>
+        </div>
+        <div class="about__us__badges__section1">
+            <img src="../Images/member.png" alt="users">
+            <h2>1000+</h2>
+            <p>Users</p>
+        </div>
+        <div class="about__us__badges__section1">
+            <img src="../Images/hospital.png" alt="hospital">
+            <h2>50+</h2>
+            <p>Hospitals</p>
+        </div>
+        <div class="about__us__badges__section1">
+            <img src="../Images/doctor.png" alt="doctors">
+            <h2>100+</h2>
+            <p>Doctors</p>
+        </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact__us" id="contactus">
+        <div class="contact__us__section1">
+            <h1>Contact Us</h1>
+            <p>We're Here To Help</p> <br>
+            <p class="contact__us__section1__sub">If you have any questions, concerns, or encounter any issues
+                regarding
+                booking an appointment or exploring partnership opportunities, we kindly request you to fill out the
+                form and submit it. Our team will review your submission and get back to you as soon as possible.
+            </p>
+        </div>
+        <div class="contact__us__section2">
+            <img src="../Images/logo.png" alt="logo">
+            <form action="">
+                <input type="text" placeholder="Full Name" required> <br> <br>
+                <input type="email" placeholder="Email Address" required> <br> <br>
+                <input type="tel" placeholder="Phone Number" required> <br> <br>
+                <textarea name="" id="" cols="30" rows="10" placeholder="Your Message" required></textarea> <br>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews" id="reviews">
+        <div class="reviews__section1">
+            <h1>What Our Users Say</h1> <br>
+        </div>
+        <div class="reviews__section2">
+            <div class="reviews__section2__sub">
+                <h4>Kumar</h4> <br>
+                <p>Thank you for the Services</p>
+            </div>
+            <div class="reviews__section2__sub">
+                <h4>Anura</h4> <br>
+                <p>It’s more helpful for me</p>
+            </div>
+            <div class="reviews__section2__sub">
+                <h4>Kajol</h4> <br>
+                <p>Thank you</p>
+            </div>
+        </div>
+        <div class="reviews__section3">
+            <img src="../Images/previous.png" alt="previous">
+        </div>
+        <div class="reviews__section4">
+            <img src="../Images/next.png" alt="next">
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+    <script src="./LandingPage.js"></script>
+</body>
+
+</html>
