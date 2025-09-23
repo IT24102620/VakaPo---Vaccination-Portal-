@@ -4,74 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VakaPo Admin - Delegate Requests</title>
-  <link rel="stylesheet" href="../Rootlandingpage/AdminLandingPage.css"> <!-- Shared CSS from landing page for consistency -->
-  <link rel="stylesheet" href="Delegate.css"> <!-- Specific CSS for this page -->
+  <link rel="stylesheet" href="../static/AdminLandingPage.css"> <!-- Shared CSS from landing page for consistency -->
+  <link rel="stylesheet" href="../static/Delegate.css"> <!-- Specific CSS for this page -->
 </head>
 <body>
+<!-- overlay for mobile open -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
 
-<!-- Sidebar (copied from AdminLandingPage.html for consistency) -->
-<div id="overlay" class="overlay"></div>
-<aside id="sidebar" class="sidebar">
-  <button id="sidebarClose" class="sidebar-close">×</button>
-  <div class="logo">
-    <img src="../../static/logo.png" alt="VakaPo Logo"> <!-- Replace with actual logo path -->
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+  <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+  <div class="logo" aria-hidden="false">
+    <img src="../../static/logo.png" alt="VakaPo logo">
   </div>
+
   <nav>
-    <a href="#" class="sidebar-link">
-      <img src="home-icon.png" alt="Home" class="icon"> <!-- Replace with actual icons -->
-      <span class="link-text">Home</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="hospital-icon.png" alt="Hospital Manager" class="icon">
-      <span class="link-text">Hospital Manager</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="user-icon.png" alt="User Manager" class="icon">
-      <span class="link-text">User Manager</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="vaccination-icon.png" alt="Vaccination Monitoring" class="icon">
-      <span class="link-text">Vaccination Monitoring</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="bookings-icon.png" alt="Bookings" class="icon">
-      <span class="link-text">Bookings</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="feedback-icon.png" alt="Feedback Manager" class="icon">
-      <span class="link-text">Feedback Manager</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="messages-icon.png" alt="Messages & Alerts" class="icon">
-      <span class="link-text">Messages & Alerts</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="offers-icon.png" alt="Offers Manager" class="icon">
-      <span class="link-text">Offers Manager</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="terms-icon.png" alt="Terms & Conditions" class="icon">
-      <span class="link-text">Terms & Conditions</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="laws-icon.png" alt="Laws & Mandates" class="icon">
-      <span class="link-text">Laws & Mandates</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="settings-icon.png" alt="Settings" class="icon">
-      <span class="link-text">Settings</span>
-    </a>
-    <a href="#" class="sidebar-link">
-      <img src="logout-icon.png" alt="Log Out" class="icon">
-      <span class="link-text">Log Out</span>
-    </a>
+    <a class="sidebar-link" href="AdminLandingPage.html">
+      <img class="icon" src="../static/home.png" alt="Dashboard">
+      <span class="link-text">Home</span></a>
+
+    <a class="sidebar-link" href="Allowed_Sub_Admin.html">
+      <img class="icon" src="../static/administrator.png" alt="Hospital">
+      <span class="link-text">Sub-Admin Manager</span></a>
+
+    <a class="sidebar-link" href="Delegate.html">
+      <img class="icon" src="../static/open-enrollment.png" alt="User">
+      <span class="link-text">Applicant Manager</span></a>
+
+    <a class="sidebar-link" href="VakaPo_Range.html">
+      <img class="icon" src="../static/virus.png" alt="Vaccination">
+      <span class="link-text">Vaccination Monitoring</span></a>
+
+    <a class="sidebar-link" href="admin%20feedback.html">
+      <img class="icon" src="../static/feedback%20(1).png" alt="Feedback">
+      <span class="link-text">Feedback Manager</span></a>
+
+    <a class="sidebar-link" href="Admin_Notification.html">
+      <img class="icon" src="../static/notification.png" alt="Messages">
+      <span class="link-text">Messages & Alerts</span></a>
+
+    <a class="sidebar-link" href="T_C.html">
+      <img class="icon" src="../static/insurance.png" alt="Terms">
+      <span class="link-text">Terms & Conditions</span></a>
+
+    <a class="sidebar-link" href="Sub_Admin_Rules.html">
+      <img class="icon" src="../static/regulation.png" alt="Laws">
+      <span class="link-text">Laws & Mandates</span></a>
+
+    <a class="sidebar-link" href="AdminLandingPage.html">
+      <img class="icon" src="../static/logout.png" alt="Logout">
+      <span class="link-text">Log Out</span></a>
   </nav>
 </aside>
 
-<!-- Mobile Menu Toggle -->
-<button id="menuToggle" class="menu-toggle">
-  <img src="menu-icon.png" alt="Menu"> <!-- Replace with actual menu icon -->
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+  <img src="../static/menu.png" alt="menu">
 </button>
+
 
 <!-- Main Content -->
 <div class="content-area">
@@ -449,7 +440,7 @@
   </footer>
 </div>
 
-<script src="../Rootlandingpage/AdminLandingPage.js"></script> <!-- Shared JS for sidebar functionality -->
-<script src="Delegate.js"></script> <!-- Specific JS for this page -->
+<script src="../static/AdminLandingPage.js"></script> <!-- Shared JS for sidebar functionality -->
+<script src="../static/Delegate.js"></script> <!-- Specific JS for this page -->
 </body>
 </html>
