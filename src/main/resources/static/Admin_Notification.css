@@ -1,0 +1,93 @@
+/* Specific styles for Messages & Alerts page, extending shared AdminLandingPage.css */
+
+.notification-form {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.notification-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.notification-form input,
+.notification-form textarea,
+.notification-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.notification-form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.btn-submit {
+    background: var(--accent-purple);
+    color: var(--white);
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+.notifications-list {
+    margin-top: 20px;
+}
+
+.notification-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.notification-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: left;
+}
+
+.notification-card h3 {
+    margin-bottom: 10px;
+    color: var(--primary-blue);
+    font-size: 20px;
+}
+
+.notification-card p {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.notification-card .actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-delete {
+    background: var(--hover-red);
+    color: var(--white);
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    opacity: 0.9;
+}
