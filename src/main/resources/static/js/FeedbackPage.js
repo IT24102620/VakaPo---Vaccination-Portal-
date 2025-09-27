@@ -1,11 +1,4 @@
-// announcement
 
-const cancelAnnouncement = document.querySelector(".announcement__cancel")
-const announcement = document.querySelector(".announcement")
-
-cancelAnnouncement.addEventListener("click" , function(){
-    announcement.style.display = "none"
-})
 
 // menu bar
 

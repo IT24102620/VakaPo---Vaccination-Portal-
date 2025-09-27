@@ -1,12 +1,13 @@
 * {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
 
 body {
     font-family: "Gabarito", sans-serif;
     font-optical-sizing: auto;
-    font-weight: <weight>;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -19,67 +20,55 @@ html {
     scroll-padding-top: var(--nav-h);
 }
 
-/* announcement */
-
-.announcement {
-    background-color: #1E489E;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 70px;
-    font-size: 20px;
-}
-
-.announcement__cancel {
-    cursor: pointer;
-}
-
 /* navbar */
-
 .navbar {
-    padding: 15px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
     top: 0px;
-    background-color: white;
 }
 
 .navbar__section1 img {
     width: 250px;
     height: 72px;
-}
+    position: sticky;
 
+}
 
 .navbar__section2 {
     display: flex;
     justify-content: center;
-    gap: 100px;
+    gap: 80px;
+    background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 30px;
-    width: 60%;
+    width: 55%;
     padding: 20px;
+    position: fixed;
+    left: 25%;
+
 }
 
 .navbar__section2 a {
     text-decoration: none;
-    color: black;
     color: #210084;
-
 }
 
 .navbar__section3 img {
     width: 50px;
     height: 50px;
     cursor: pointer;
+    position: sticky;
+
 }
 
 .navbar__section4 img {
     width: 30px;
     height: 30px;
     cursor: pointer;
+    position: sticky;
+
 }
 
 .navbar__section4 {
@@ -87,15 +76,12 @@ html {
 }
 
 /* profile */
-
 .profile {
     position: fixed;
-    top: 150px;
-    border: 1px solid black;
+    top: auto;
     padding: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: #210084;
-    border: none;
     border-radius: 20px;
     width: 200px;
     right: -20%;
@@ -107,15 +93,16 @@ html {
     display: flex;
     flex-direction: column;
     color: white;
-    gap: 10px;
+    gap: 5px;
 }
 
 .profile__section1 a {
     text-decoration: none;
     color: white;
     font-size: 20px;
+    background-color: #5969da;
+    border-radius: 5px;
 }
-
 
 .profile__section1 button {
     padding: 10px;
@@ -130,9 +117,8 @@ html {
 }
 
 .profile__section1 button:hover {
-    background-color: #EE2400;
+    background-color: #5969da;
     color: white;
-    transition: 0.5s;
 }
 
 .profile__section1 p {
@@ -142,8 +128,7 @@ html {
     cursor: pointer;
 }
 
-/* responsive navabr */
-
+/* responsive navbar */
 .responsive__navbar {
     border: black solid 1px;
     position: fixed;
@@ -166,8 +151,6 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    justify-content: space-around;
-    align-items: center;
     padding: 10px;
 }
 
@@ -201,22 +184,29 @@ html {
 }
 
 .responsive__navbar__section1__button button:hover {
-    background-color: #EE2400;
+    background-color: #210084;
     color: white;
-    transition: 0.5s;
 }
 
 /* feedback */
-
 .feedback {
     display: flex;
-    justify-content: space-around;
-    padding-left: 20px;
-    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    align-items: flex-start;
+    gap: 40px;
+}
+.feedback-card {
+    display: flex;
+    justify-content: center;
+    padding: 30px 60px;
+    box-shadow: rgba(0, 0, 0, 0.42) 0px 3px 8px;
+    border-radius: 20px;
 }
 
 .feedback__section2 {
-    margin-right: 20%;
+    max-width: 500px;
+    width: 100%;
     font-size: 20px;
     display: flex;
     flex-direction: column;
@@ -225,53 +215,68 @@ html {
 }
 
 .feedback__section1 img {
-    width: 70%;
-    height: 50%;
+    width: 75%;
+    height: auto;
 }
 
 .feedback__section1__sub {
-    margin-top: 10px;
+    margin-top: 20px;
     border: #1E489E 3px solid;
     border-radius: 20px;
     width: 100%;
-    padding: 20px;
+    padding: 30px;
+    text-align: center;
 }
 
 .feedback__section1__sub img {
-    margin-left: 100px;
-    margin-right: 90px;
+    margin-bottom: 20px;
+    width: 400px;
+    height: auto;
+}
+
+.feedback__section2__sub1 form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
 }
 
 .feedback__section2__sub1 form input,
 .feedback__section2__sub1 form textarea,
 .feedback__section2__sub1 form select {
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
     width: 100%;
     border: #1E489E 2px solid;
     border-radius: 10px;
+    font-size: 16px;
 }
 
 .feedback__section2__sub1 form input:focus,
 .feedback__section2__sub1 form textarea:focus,
 .feedback__section2__sub1 form select:focus {
     outline: none;
+    border-color: #210084;
+}
+
+.feedback__section2__sub1 form textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .feedback__section2__sub1 form input[type="submit"] {
     background-color: #1E489E;
     color: white;
-    width: 100%;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
-.feedback__section2__sub1 {
-    padding: 20px;
+.feedback__section2__sub1 form input[type="submit"]:hover {
+    background-color: #210084;
 }
 
 /* footer */
-
 .footer {
     background-color: #1E489E;
     text-align: center;
@@ -284,7 +289,6 @@ html {
 }
 
 /* responsive design */
-
 @media screen and (max-width: 768px) {
     .navbar__section1 img {
         width: 150px;
@@ -307,31 +311,22 @@ html {
         display: none;
     }
 
-    .appointment__section3__sub1 select,
-    .appointment__section3__sub2 select,
-    .appointment__section4__sub1 input,
-    .appointment__section4__sub2 select {
-        width: 120px;
-    }
-
-    .appointment__section1 button {
-        width: 50%;
+    .feedback {
+        flex-direction: column;
+        margin: 20px;
+        align-items: center;
     }
 
     .feedback__section1 img {
         display: none;
     }
 
-    .feedback__section1__sub img {
-        margin-left: 0px;
-    }
-
-    .feedback {
-        margin: 20px;
+    .feedback__section1__sub {
+        padding: 20px;
     }
 
     .feedback__section2 h1 {
-        font-size: 39px;
+        font-size: 32px;
     }
 }
 
@@ -349,32 +344,11 @@ html {
         display: none;
     }
 
-
     .navbar__section4 {
         display: block;
     }
 
     .profile {
         display: none;
-    }
-
-    .appointment__summary table {
-        font-size: 12px;
-    }
-
-    .feedback__section1 img {
-        display: none;
-    }
-
-    .feedback__section1__sub img {
-        margin-left: 0px;
-    }
-
-    .feedback {
-        margin: 20px;
-    }
-
-    .feedback__section2 h1 {
-        font-size: 39px;
     }
 }
