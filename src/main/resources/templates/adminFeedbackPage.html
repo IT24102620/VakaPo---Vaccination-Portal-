@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Review Management Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" th:href="@{/css/adminFeedbackPage.css}">
+  <script src="/static/js/adminFeedbackPage.js"></script>
 </head>
 <body>
 
@@ -40,6 +40,6 @@
 <!-- Tables -->
 <div id="tables-container"></div>
 
-<script src="script.js"></script>
+<script th:href="@{/js/adminFeedbackPage.js}"></script>
 </body>
 </html>
