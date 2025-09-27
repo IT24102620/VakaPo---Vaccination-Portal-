@@ -24,7 +24,15 @@ public class Feedback {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public enum Status {
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public enum  Status {
         PENDING, APPROVED, UNAPPROVED
     }
 
