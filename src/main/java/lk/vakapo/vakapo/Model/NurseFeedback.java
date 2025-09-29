@@ -8,3 +8,5 @@ import jakarta.persistence.Table;
 @Table(name = "nurse_feedback")
 public class NurseFeedback extends Feedback {}
 
+
+

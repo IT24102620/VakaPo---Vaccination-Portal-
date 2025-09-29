@@ -7,3 +7,4 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "hospital_feedback")
 public class HospitalFeedback extends Feedback {}
+
