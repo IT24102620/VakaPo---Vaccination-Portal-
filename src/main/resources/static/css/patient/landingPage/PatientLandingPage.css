@@ -1,0 +1,529 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: "Gabarito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+:root {
+  --nav-h: 80px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+}
+
+/* announcement */
+
+.announcement {
+  background-color: #1E489E;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 70px;
+  font-size: 20px;
+}
+
+.announcement__cancel {
+  cursor: pointer;
+}
+
+/* navbar */
+
+.navbar {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  background-color: white;
+}
+
+.navbar__section1 img {
+  width: 250px;
+  height: 72px;
+}
+
+
+.navbar__section2 {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 30px;
+  width: 60%;
+  padding: 20px;
+}
+
+.navbar__section2 a {
+  text-decoration: none;
+  color: black;
+  color: #210084;
+
+}
+
+.navbar__section3 img {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.navbar__section4 img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.navbar__section4 {
+  display: none;
+}
+
+/* profile */
+
+.profile {
+  position: fixed;
+  top: 150px;
+  border: 1px solid black;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #210084;
+  border: none;
+  border-radius: 20px;
+  width: 200px;
+  right: -20%;
+  transition: 1s;
+}
+
+.profile__section1 {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  gap: 10px;
+}
+
+.profile__section1 a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+}
+
+
+.profile__section1 button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: white;
+  color: #1E489E;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.5s;
+}
+
+.profile__section1 button:hover {
+  background-color: #EE2400;
+  color: white;
+  transition: 0.5s;
+}
+
+.profile__section1 p {
+  text-align: right;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* responsive navabr */
+
+.responsive__navbar {
+  border: black solid 1px;
+  position: fixed;
+  width: 70%;
+  right: -80%;
+  height: 100vh;
+  top: 80px;
+  z-index: 4;
+  background-color: #210084;
+  transition: 0.5s;
+}
+
+.responsive__navbar img {
+  width: 150px;
+  height: 50px;
+}
+
+.responsive__navbar__section1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.responsive__navbar__section1 a,
+.responsive__navbar__section1 p, 
+.responsive__navbar__section1 h3{
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.responsive__navbar__section1 p {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+}
+
+.responsive__navbar__section1__button button {
+  color: #210084;
+  padding: 20px;
+  border-radius: 25px;
+  border: none;
+  background-color: white;
+  width: 140px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+  font-weight: bolder;
+  transition: 0.5s;
+}
+
+.responsive__navbar__section1__button button:hover {
+  background-color: #EE2400;
+  color: white;
+  transition: 0.5s;
+}
+
+/* header */
+
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.header__section1 {
+  width: 60%;
+}
+
+.header__section1 h1 {
+  font-size: 64px;
+  color: #210084;
+}
+
+.header__section1 p {
+  font-size: 17px;
+}
+
+.header__section1 button {
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #210084;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.header__section2 img {
+  width: 400px;
+  height: 400px;
+}
+
+/* about us */
+.about__us {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 90%;
+  margin-left: 4%;
+  margin-bottom: 20px;
+}
+
+.about__us__section1 {
+  text-align: center;
+}
+
+.about__us__section1 h1 {
+  color: #1E489E;
+  font-size: 36px;
+}
+
+.about__us__section2 {
+  padding: 10px;
+  width: 80%;
+
+}
+
+.about__us__section2 p {
+  font-size: 18px;
+  text-align: center;
+  margin: auto;
+  padding: 20px;
+}
+
+/* about us badges */
+.about__us__badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 100px;
+  padding: 20px;
+}
+
+.about__us__badges__section1 {
+  text-align: center;
+  padding: 20px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+  flex-basis: 15%;
+  flex-grow: 1;
+}
+
+.about__us__badges__section1 img {
+  width: 100px;
+  height: 100px;
+}
+
+/* contact us */
+
+.contact__us {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+  gap: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 90%;
+  margin-left: 4%;
+  margin-bottom: 10px;
+}
+
+.contact__us__section1 {
+  flex-basis: 50%;
+  text-align: center;
+}
+
+.contact__us__section1 h1 {
+  color: #1E489E;
+  font-size: 36px;
+}
+
+.contact__us__section1__sub {
+  text-align: left;
+}
+
+.contact__us__section2 {
+  padding: 20px;
+  border: 4px solid #1E489E;
+  border-radius: 15px;
+  width: 40%;
+}
+
+.contact__us__section2 form input,
+.contact__us__section2 form textarea {
+  width: 90%;
+  padding: 10px;
+  border: 2px solid #1E489E;
+  border-radius: 10px;
+}
+
+.contact__us__section2 form input:focus {
+  outline: none;
+}
+
+.contact__us__section2 form button {
+  background-color: #1E489E;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.contact__us__section2 img {
+  width: 150px;
+  height: 50px;
+  margin-left: 40%;
+}
+
+/* reviews */
+
+.reviews {
+  padding: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 20px;
+  margin-left: 8%;
+  width: 80%;
+  position: relative;
+}
+
+.reviews__section1 {
+  text-align: center;
+}
+
+.reviews__section1 h1 {
+  color: #1E489E;
+}
+
+.reviews__section2 {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.reviews__section2__sub {
+  border: 1px black solid;
+  width: 25%;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.reviews__section2__sub h4 {
+  border-bottom: 1px solid black;
+  padding: 15px;
+}
+
+.reviews__section2__sub p {
+  padding: 15px;
+}
+
+.reviews__section3 {
+  position: absolute;
+  left: 0px;
+  top: 45%;
+  cursor: pointer;
+}
+
+.reviews__section4 {
+  position: absolute;
+  right: 0px;
+  top: 45%;
+  cursor: pointer;
+}
+
+/* footer */
+
+.footer {
+  background-color: #1E489E;
+  text-align: center;
+  color: white;
+  padding: 10px;
+}
+
+.footer p {
+  margin-bottom: 10px;
+}
+
+/* responsive design */
+
+@media screen and (max-width: 768px) {
+  .navbar__section1 img {
+    width: 150px;
+    height: 50px;
+  }
+
+  .navbar__section2 {
+    display: none;
+  }
+
+  .navbar__section3 {
+    display: none;
+  }
+
+  .navbar__section4 {
+    display: block;
+  }
+
+  .profile {
+    display: none;
+  }
+
+  .header__section1 h1 {
+    font-size: 30px;
+  }
+
+  .header__section2 img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .about__us {
+    width: 85%;
+  }
+
+  .about__us__section2 p {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .contact__us {
+    width: 80%;
+  }
+
+  .contact__us__section1 h1 {
+    font-size: 30px;
+  }
+
+  .contact__us__section1__sub {
+    font-size: 14px;
+  }
+
+  .contact__us__section2 img {
+    margin-left: 9px;
+  }
+
+  .reviews {
+    width: 80%;
+    margin-left: 2%;
+  }
+
+  .reviews__section3,
+  .reviews__section4 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .navbar__section1 img {
+    width: 150px;
+    height: 50px;
+  }
+
+  .navbar__section2 {
+    display: none;
+  }
+
+  .navbar__section3 {
+    display: none;
+  }
+
+
+  .navbar__section4 {
+    display: block;
+  }
+
+  .profile {
+    display: none;
+  }
+
+}

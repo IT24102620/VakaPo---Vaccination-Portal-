@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/Signup.css}" rel="stylesheet">
+</head>
+<body>
+<div class="signup">
+    <div class="signup__section1">
+        <h1>VakaPo Signup</h1>
+        <p>Create Your Account.</p>
+    </div>
+
+    <div class="signup__section2">
+        <form th:action="@{/signup}" method="post" enctype="multipart/form-data" id="signupForm">
+            <!-- Common -->
+            <div class="signup__input">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="signup__input">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="signup__input">
+                <label for="role">Role</label>
+                <select class="dropdown" id="role" name="role" required>
+                    <option value="">-- Select --</option>
+                    <option value="Patient">Patient</option>
+                    <option value="Hospital">Hospital</option>
+                    <option value="Clinic">Clinic</option>
+                </select>
+            </div>
+
+            <!-- Patient -->
+            <div class="signup__patient" id="patientSection" style="display:none;">
+                <div class="signup__input">
+                    <label for="pname">Patient Name</label>
+                    <input type="text" id="pname" name="pname">
+                </div>
+
+                <div class="signup__input">
+                    <label for="dob">Date Of Birth</label>
+                    <input type="date" id="dob" name="dob">
+                </div>
+
+                <div class="signup__input">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" readonly>
+                </div>
+
+                <div class="signup__input">
+                    <label for="gname">Guardian Name</label>
+                    <input type="text" id="gname" name="gname">
+                </div>
+
+                <div class="signup__input">
+                    <label for="gender">Gender</label>
+                    <select class="dropdown" id="gender" name="gender">
+                        <option value="">-- Select --</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+
+                <div class="signup__input">
+                    <label for="nic">NIC Number</label>
+                    <input type="text" id="nic" name="nic">
+                </div>
+            </div>
+
+            <!-- Hospital/Clinic -->
+            <div class="signup__hospital" id="hospitalSection" style="display:none;">
+                <div class="signup__input">
+                    <label for="hname">Hospital Name</label>
+                    <input type="text" id="hname" name="hname">
+                </div>
+
+                <div class="signup__input">
+                    <label for="rnumber">Registration Number</label>
+                    <input type="text" id="rnumber" name="rnumber">
+                </div>
+
+                <div class="signup__input">
+                    <label for="rcertificate">Registration Certificate</label>
+                    <input type="file" id="rcertificate" name="rcertificate" accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+
+                <div class="signup__input">
+                    <label for="institution">Type Of Institution</label>
+                    <select class="dropdown" id="institution" name="institution">
+                        <option value="">-- Select --</option>
+                        <option>Government</option>
+                        <option>Private</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="signup__clinic" id="clinicSection" style="display:none;">
+                <div class="signup__input">
+                    <label for="cname">Clinic Name</label>
+                    <input type="text" id="cname" name="hname">
+                </div>
+                <div class="signup__input">
+                    <label for="cnumber">Registration Number</label>
+                    <input type="text" id="cnumber" name="rnumber">
+                </div>
+                <div class="signup__input">
+                    <label for="ccertificate">Registration Certificate</label>
+                    <input type="file" id="ccertificate" name="rcertificate" accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+                <div class="signup__input">
+                    <label for="cinstitution">Type Of Institution</label>
+                    <select class="dropdown" id="cinstitution" name="institution">
+                        <option value="">-- Select --</option>
+                        <option>Government</option>
+                        <option>Private</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Common contact/address/password -->
+            <div class="signup__input">
+                <label for="contact">Contact Number</label>
+                <input type="text" id="contact" name="contact" required>
+            </div>
+
+            <div class="signup__input">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <div class="signup__input">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="signup__input">
+                <label for="retypepassword">Re-Type Password</label>
+                <input type="password" id="retypepassword" name="retypepassword" required>
+            </div>
+
+            <button type="submit">Signup</button>
+        </form>
+
+        <div class="signup__section3">
+            <p>Already have an account? <a th:href="@{/login}">Login</a></p>
+        </div>
+
+        <div class="signup__section4">
+            <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/Signup.js}"></script>
+</body>
+</html>
