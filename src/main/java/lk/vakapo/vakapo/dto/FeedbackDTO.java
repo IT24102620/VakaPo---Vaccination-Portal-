@@ -1,29 +1,18 @@
-package lk.vakapo.vakapo.Model;
+package lk.vakapo.vakapo.dto;
 
 
+import java.time.LocalDate;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
-
-@MappedSuperclass
-public abstract class Feedback {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FeedbackDTO {
     private Long id;
-
     private String name;
     private String email;
     private String contact;
     private int rating;
     private String message;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Enumerated(EnumType.STRING)
-    private FeedbackStatus status = FeedbackStatus.PENDING;
+    private LocalDate date;
+    private String status;
+    private String category;
 
     // Getters & Setters
     public Long getId() { return id; }
@@ -38,9 +27,10 @@ public abstract class Feedback {
     public void setRating(int rating) { this.rating = rating; }
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public FeedbackStatus getStatus() { return status; }
-    public void setStatus(FeedbackStatus status) { this.status = status; }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }
-
-

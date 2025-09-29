@@ -1,13 +1,14 @@
 package lk.vakapo.vakapo.Controller;
 
-import lk.vakapo.vakapo.Model.Feedback;
+
 import lk.vakapo.vakapo.Service.FeedbackService;
+import lk.vakapo.vakapo.dto.FeedbackDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/feedback")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/feedback")
 public class FeedbackController {
 
     private final FeedbackService service;
@@ -16,18 +17,14 @@ public class FeedbackController {
         this.service = service;
     }
 
-    @PostMapping("/submit")
-    public Feedback submitFeedback(@RequestBody Feedback feedback) {
-        return service.saveFeedback(feedback);
+    @PostMapping
+    public ResponseEntity<String> submitFeedback(@RequestBody FeedbackDTO dto) {
+        service.saveFeedback(dto);
+        return ResponseEntity.ok("Feedback submitted successfully (Pending review)");
     }
 
-    @GetMapping("/all")
-    public List<Feedback> getAllFeedbacks() {
-        return service.getAllFeedbacks();
-    }
-
-    @PostMapping("/status")
-    public Feedback updateStatus(@RequestParam Long id, @RequestParam Feedback.Status status) {
-        return service.updateStatus(id, status);
+    @GetMapping("/approved")
+    public List<FeedbackDTO> getApprovedFeedbacks() {
+        return service.getApprovedFeedbacks();
     }
 }

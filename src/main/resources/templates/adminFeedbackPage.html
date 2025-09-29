@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Review Management Dashboard</title>
   <link rel="stylesheet" th:href="@{/css/adminFeedbackPage.css}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 
@@ -39,6 +41,6 @@
 <!-- Tables -->
 <div id="tables-container"></div>
 
-<script src="/js/adminFeedbackPage.js"></script>
+<script th:src="@{/js/adminFeedbackPage.js}"></script>
 </body>
 </html>
