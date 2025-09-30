@@ -1,0 +1,529 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: "Gabarito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+:root {
+    --nav-h: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+}
+
+/* announcement */
+
+.announcement {
+    background-color: #1E489E;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    font-size: 20px;
+}
+
+.announcement__cancel {
+    cursor: pointer;
+}
+
+/* navbar */
+
+.navbar {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 2;
+}
+
+.navbar__section1 img {
+    width: 250px;
+    height: 72px;
+}
+
+
+.navbar__section2 {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 30px;
+    width: 60%;
+    padding: 20px;
+}
+
+.navbar__section2 a {
+    text-decoration: none;
+    color: black;
+    color: #210084;
+
+}
+
+.navbar__section3 img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.navbar__section4 img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.navbar__section4 {
+    display: none;
+}
+
+/* profile */
+
+.profile {
+    position: fixed;
+    top: 150px;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #210084;
+    border: none;
+    border-radius: 20px;
+    width: 200px;
+    right: -20%;
+    transition: 1s;
+}
+
+.profile__section1 {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 10px;
+}
+
+.profile__section1 a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+
+.profile__section1 button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    color: #1E489E;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+}
+
+.profile__section1 button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+.profile__section1 p {
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* responsive navabr */
+
+.responsive__navbar {
+    border: black solid 1px;
+    position: fixed;
+    width: 70%;
+    right: -80%;
+    height: 100vh;
+    top: 80px;
+    z-index: 4;
+    background-color: #210084;
+    transition: 0.5s;
+}
+
+.responsive__navbar img {
+    width: 150px;
+    height: 50px;
+}
+
+.responsive__navbar__section1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 a,
+.responsive__navbar__section1 p,
+.responsive__navbar__section1 h3 {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 p {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.responsive__navbar__section1__button button {
+    color: #210084;
+    padding: 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    width: 140px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: 0.5s;
+}
+
+.responsive__navbar__section1__button button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+/* personal information */
+
+.personal__information {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.personal__information__section1 img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+.personal__information__section2 {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 20px;
+    height: 300px;
+    position: relative;
+}
+
+.personal__information__section2 button {
+    padding: 10px;
+    width: 100px;
+    border-radius: 20px;
+    border: none;
+    background-color: #1E489E;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+
+.personal__information__section2 h1 {
+    color: #1E489E;
+}
+
+.personal__information__section2 table {
+    border-collapse: separate;
+    border-spacing: 20px;
+}
+
+/* appointment booking*/
+
+.appointment {
+    text-align: center;
+    color: white;
+}
+
+.appointment__section1 h1 {
+    color: #1E489E;
+}
+
+.appointment__section2 {
+    padding: 40px;
+    background-color: #1157ee;
+    width: 50%;
+    margin-left: 23%;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.appointment__section2 h2 {
+    color: white;
+}
+
+.appointment__section3 {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 20px;
+}
+
+.appointment__section3__sub1 select,
+.appointment__section3__sub2 select,
+.appointment__section4__sub1 input,
+.appointment__section4__sub2 select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 10px;
+}
+
+.appointment__section4 {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 20px;
+}
+
+.appointment__section1 button {
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: #210084;
+    color: white;
+    cursor: pointer;
+    width: 30%;
+}
+
+/* latest appointment history & vaccination history page */
+.history {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 20px;
+}
+
+.appointment__summary h2 {
+    color: #1E489E;
+    padding: 20px;
+    margin-left: 8%;
+}
+
+.appointment__summary table {
+    width: 80%;
+    margin-left: 10%;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.appointment__summary table tr th,
+.appointment__summary table tr td {
+    border: none;
+}
+
+.appointment__summary th,
+.appointment__summary td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+#appointment__summary__table__header {
+    background-color: #210084;
+    color: white;
+}
+
+.appointment__summary table tr {
+    background-color: #5a89ee;
+    color: white;
+}
+
+.appointment__summary__section1 button {
+    color: white;
+    background-color: #1E489E;
+    padding: 15px;
+    border: none;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.appointment__summary__section1 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 10%;
+}
+
+
+
+
+/* footer */
+
+.footer {
+    background-color: #1E489E;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+/* Modal background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+/* Modal box */
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+form button {
+    background-color: #1E489E;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #163673;
+}
+
+
+/* responsive design */
+
+@media screen and (max-width: 768px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .personal__information {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .personal__information__section1 img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .personal__information__section2 {
+        padding-bottom: 60px;
+    }
+
+    .history{
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .personal__information {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .personal__information__section1 img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .personal__information__section2 {
+        padding-bottom: 60px;
+    }
+
+}
+
+@media screen and (max-width: 1300px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+}

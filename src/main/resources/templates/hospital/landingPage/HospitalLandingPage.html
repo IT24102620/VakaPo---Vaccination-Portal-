@@ -43,8 +43,13 @@
         <div class="profile">
             <div class="profile__section1">
                 <p class="profile__close">X</p>
-                <h3>Welcome, Risikesan</h3> <br>
-                <a href="../Profile Page/HospitalProfilePage.html">Your Profile</a> <br>
+                <h3 th:text="'Welcome, ' + ${username}"></h3>
+                <a th:href="@{/hospital/profile}">Your Profile</a> <br>
+                <form th:action="@{/account/delete}" method="post"
+                      onsubmit="return confirm('This will permanently delete your account and files. Continue?');">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit">Delete My Account</button>
+                </form>
                 <form th:action="@{/logout}" method="post" style="display:inline;">
                     <!-- CSRF token (Thymeleaf exposes it as _csrf) -->
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -57,13 +62,18 @@
         <div class="responsive__navbar">
             <div class="responsive__navbar__section1">
                 <p>X</p> <br>
-                <h3>Welcome, Risikesan</h3>
-                <a href="../Profile Page/HospitalProfilePage.html">Your Profile</a>
+                <h3 th:text="'Welcome, ' + ${username}"></h3>
+                <a th:href="@{/hospital/profile}">Your Profile</a> <br>
                 <a href="../Landing Page/HospitalLandingPage.html">Home</a>
                 <a href="../Appointment Page/HospitalAppointmentPage.html">Appointments</a>
                 <a href="../Staff Page/HospitalStaffPage.html">Staff</a>
                 <a href="../Feedback Page/HospitalFeedbackPage.html">Feedback</a>
                 <div class="responsive__navbar__section1__button">
+                    <form th:action="@{/account/delete}" method="post"
+                          onsubmit="return confirm('This will permanently delete your account and files. Continue?');">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit">Delete My Account</button>
+                    </form>
                     <form th:action="@{/logout}" method="post" style="display:inline;">
                         <!-- CSRF token (Thymeleaf exposes it as _csrf) -->
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

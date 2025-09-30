@@ -1,78 +1,111 @@
 package lk.vakapo.vakapo.UserManagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Users") // SQL Server is case-insensitive for table names by default
+@Table(
+        name = "Users",
+        indexes = {
+                @Index(name = "idx_users_email", columnList = "email"),
+                @Index(name = "idx_users_username", columnList = "username")
+        }
+)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // ---------- Auth / Identity ----------
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email")
+    @Size(max = 255)
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    @NotBlank(message = "Username is required")
+    @Size(max = 100)
     @Column(nullable = false, unique = true, length = 100)
     private String username;
 
+    @NotBlank(message = "Role is required") // Patient / Hospital / Clinic
+    @Size(max = 50)
     @Column(nullable = false, length = 50)
-    private String role; // Patient / Hospital / Clinic
+    private String role;
 
     // ---------------- Patient ----------------
+    @Size(max = 255)
     @Column(length = 255)
     private String pname;
 
+    @Size(max = 50)
     @Column(length = 50)
-    private String dob;          // keep as string if the form posts string date
+    private String dob; // stored as string as per current form
 
     private Integer age;
 
+    @Size(max = 255)
     @Column(length = 255)
     private String gname;
 
+    @Size(max = 30)
     @Column(length = 30)
     private String gender;
 
+    @Size(max = 20)
     @Column(length = 20)
     private String nic;
 
     // ----------- Hospital / Clinic ----------
+    @Size(max = 255)
     @Column(length = 255)
     private String hname;
 
+    @Size(max = 100)
     @Column(length = 100)
     private String rnumber;
 
     /**
      * Stores the RELATIVE file path (under your uploads root), e.g.:
-     *   Hospital/sunshine_hosp/7b3b8c2f0f2c4dfbb6c0f2f8dd2b04f8.pdf
+     *   Hospital/sunshine_hosp/7b3b8c2f0f2c4dfb....pdf
      */
+    @Size(max = 1024)
     @Column(name = "rcertificate", length = 1024)
     private String rcertificate;
 
+    @Size(max = 255)
     @Column(length = 255)
     private String institution;
 
     // ---------------- Common -----------------
+    @Size(max = 30)
     @Column(length = 30)
     private String contact;
 
+    @Size(max = 512)
     @Column(length = 512)
     private String address;
 
+    @NotBlank(message = "Password is required")
+    @Size(max = 255)
     @Column(nullable = false, length = 255)
-    private String password; // plain text per your current design
+    private String password; // (plain in your current setup)
 
-    @Column(nullable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp created_at;
 
-    @PrePersist
-    protected void onCreate() {
-        if (created_at == null) {
-            created_at = new Timestamp(System.currentTimeMillis());
-        }
+    // ---------------- Convenience ----------------
+    /** For views: prefer username; fall back to email if blank. */
+    @Transient
+    public String getDisplayName() {
+        return (username != null && !username.isBlank()) ? username : email;
     }
 
     // ---------------- Getters & Setters ----------------

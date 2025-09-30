@@ -1,15 +1,19 @@
 //package lk.vakapo.vakapo.UserManagement.Controller;
-//
 //import lk.vakapo.vakapo.UserManagement.model.User;
 //import lk.vakapo.vakapo.UserManagement.Service.UserService;
-//import lk.vakapo.vakapo.Common.FileStorageService; // <-- your service package
+//import lk.vakapo.vakapo.Common.FileStorageService;
 //import org.springframework.http.MediaType;
+//import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.multipart.MultipartFile;
+//
+//import java.util.Collection;
+//import java.util.List;
 //
 //@Controller
 //public class UserController {
@@ -33,6 +37,9 @@
 //        return "Signup";
 //    }
 //
+//
+//
+//
 //    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    public String handleSignup(
 //            @RequestParam String email,
@@ -52,9 +59,8 @@
 //            @RequestParam(required = false) String rnumber,
 //            @RequestParam(required = false) String institution,
 //
-//            // EXACTLY ONE file for Hospital, EXACTLY ONE for Clinic
-//            @RequestParam(name = "rcertificate", required = false) MultipartFile rcertificate,
-//            @RequestParam(name = "ccertificate", required = false) MultipartFile ccertificate,
+//            // Your UI posts name="rcertificate" (can be multiple if input allows)
+//            @RequestParam(name = "rcertificate", required = false) List<MultipartFile> rcertificate,
 //
 //            // Common
 //            @RequestParam String contact,
@@ -66,9 +72,8 @@
 //            return "redirect:/signup?error=password_mismatch";
 //        }
 //
-//        final String normRole = role == null ? "" : role.trim();
+//        final String normRole = (role == null) ? "" : role.trim();
 //
-//        // Build user
 //        User u = new User();
 //        u.setEmail(email);
 //        u.setUsername(username);
@@ -90,27 +95,16 @@
 //        // Common
 //        u.setContact(contact);
 //        u.setAddress(address);
-//        u.setPassword(password); // plain text per your current setup
+//        u.setPassword(password); // (plain in your current setup)
 //
-//        // ---- File upload rules ----
 //        try {
-//            if (isHospital(normRole)) {
-//                // Hospital expects name="rcertificate"
-//                if (rcertificate != null && !rcertificate.isEmpty()) {
-//                    String relative = storage.saveUnderRoleAndUser(rcertificate, "Hospital", username);
-//                    u.setRcertificate(relative);
-//                }
-//            } else if (isClinic(normRole)) {
-//                // Clinic prefers name="ccertificate", but fall back to rcertificate if your form uses that
-//                MultipartFile chosen = (ccertificate != null && !ccertificate.isEmpty())
-//                        ? ccertificate
-//                        : (rcertificate != null && !rcertificate.isEmpty() ? rcertificate : null);
-//                if (chosen != null) {
-//                    String relative = storage.saveUnderRoleAndUser(chosen, "Clinic", username);
+//            if (isHospital(normRole) || isClinic(normRole)) {
+//                MultipartFile chosen = firstNonEmpty(rcertificate);
+//                if (chosen != null && !chosen.isEmpty()) {
+//                    String relative = storage.saveUnderRoleAndUser(chosen, normRole, username);
 //                    u.setRcertificate(relative);
 //                }
 //            }
-//            // Patient: no file upload → leave rcertificate as null
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            return "redirect:/signup?error=file_upload";
@@ -124,7 +118,11 @@
 //    @GetMapping("/redirect")
 //    public String redirectAfterLogin(@AuthenticationPrincipal UserDetails principal) {
 //        if (principal == null) return "redirect:/login";
-//        String authority = principal.getAuthorities().iterator().next().getAuthority(); // ROLE_*
+//
+//        Collection<? extends GrantedAuthority> auths = principal.getAuthorities();
+//        if (auths == null || auths.isEmpty()) return "redirect:/";
+//
+//        String authority = auths.iterator().next().getAuthority();
 //        switch (authority) {
 //            case "ROLE_PATIENT":  return "redirect:/patient/home";
 //            case "ROLE_HOSPITAL": return "redirect:/hospital/home";
@@ -133,30 +131,176 @@
 //        }
 //    }
 //
-//    // ---------- Role home pages ----------
+//    // ---------- Role home pages (now add username/user to model) ----------
 //    @GetMapping("/patient/home")
-//    public String patientHome() { return "patient/landingPage/PatientLandingPage"; }
+//    public String patientHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        addUserToModel(principal, model);
+//        return "patient/landingPage/PatientLandingPage";
+//    }
 //
 //    @GetMapping("/hospital/home")
-//    public String hospitalHome() { return "hospital/landingPage/HospitalLandingPage"; }
+//    public String hospitalHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        addUserToModel(principal, model);
+//        return "hospital/landingPage/HospitalLandingPage";
+//    }
 //
 //    @GetMapping("/clinic/home")
-//    public String clinicHome() { return "clinic/landingPage/ClinicLandingPage"; }
+//    public String clinicHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        addUserToModel(principal, model);
+//        return "clinic/landingPage/ClinicLandingPage";
+//    }
+//
+//    @GetMapping("/patient/profile")
+//    public String profile(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        if (principal == null) return "redirect:/login";
+//
+//        var dbUser = userService.findByEmail(principal.getUsername());
+//        if (dbUser == null) return "redirect:/login?not_found";
+//
+//        model.addAttribute("user", dbUser);               // the full User entity
+//        model.addAttribute("username", dbUser.getUsername()); // optional
+//
+//        return "patient/profilePage/ProfilePage";
+//    }
+//
+//    @GetMapping("/hospital/profile")
+//    public String hospitalProfile(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        addUserToModel(principal, model);
+//        return "hospital/profilePage/HospitalProfilePage";
+//    }
+//
+//    // ---------- Account (self-view + self-delete) ----------
+//    @GetMapping("/account")
+//    public String account(@AuthenticationPrincipal UserDetails principal, Model model) {
+//        if (principal == null) return "redirect:/login";
+//        addUserToModel(principal, model);
+//        return "Account";
+//    }
+//
+//    @PostMapping("/account/delete")
+//    public String deleteOwnAccount(@AuthenticationPrincipal UserDetails principal) {
+//        if (principal == null) return "redirect:/login";
+//
+//        User dbUser = userService.findByEmail(principal.getUsername());
+//        if (dbUser != null) {
+//            try {
+//                String role = dbUser.getRole();
+//                String uname = dbUser.getUsername();
+//                if (role != null && uname != null) {
+//                    storage.deleteUserFolder(role, uname);
+//                }
+//            } catch (Exception ignored) {}
+//        }
+//
+//        userService.deleteByEmail(principal.getUsername());
+//        SecurityContextHolder.clearContext();
+//        return "redirect:/login?deleted";
+//    }
+//
+//    @PostMapping("/patient/updateProfile")
+//    public String updateProfile(@AuthenticationPrincipal UserDetails principal,
+//                                @RequestParam String nic,
+//                                @RequestParam String username,
+//                                @RequestParam String email,
+//                                @RequestParam String contact,
+//                                @RequestParam String currentPassword,
+//                                @RequestParam String newPassword,
+//                                @RequestParam String confirmPassword,
+//                                Model model) {
+//        if (principal == null) return "redirect:/login";
+//
+//        var user = userService.findByEmail(principal.getUsername());
+//        if (user == null) return "redirect:/login";
+//
+//        // Update fields
+//        user.setNic(nic);
+//        user.setUsername(username);
+//        user.setEmail(email);
+//        user.setContact(contact);
+//
+//        // Change password if valid
+//        if (!newPassword.isEmpty() && newPassword.equals(confirmPassword)) {
+//            if (userService.checkPassword(user, currentPassword)) {
+//                userService.updatePassword(user, newPassword);
+//            } else {
+//                model.addAttribute("error", "Current password incorrect!");
+//                return "patient/profilePage/ProfilePage";
+//            }
+//        }
+//
+//        userService.save(user);
+//
+//        return "redirect:/patient/profile";
+//    }
+//
+//    @PostMapping("/hospital/updateProfile")
+//    public String updateHospitalProfile(@AuthenticationPrincipal UserDetails principal,
+//                                        @RequestParam String hname,
+//                                        @RequestParam String email,
+//                                        @RequestParam String contact,
+//                                        @RequestParam String address,
+//                                        @RequestParam(required = false) String currentPassword,
+//                                        @RequestParam(required = false) String newPassword,
+//                                        @RequestParam(required = false) String confirmPassword,
+//                                        Model model) {
+//        if (principal == null) return "redirect:/login";
+//
+//        var user = userService.findByEmail(principal.getUsername());
+//        if (user == null) return "redirect:/login";
+//
+//        // ✅ Update hospital details
+//        user.setHname(hname);
+//        user.setEmail(email);
+//        user.setContact(contact);
+//        user.setAddress(address);
+//
+//        // ✅ Handle password change if provided
+//        if (newPassword != null && !newPassword.isEmpty()) {
+//            if (newPassword.equals(confirmPassword)) {
+//                if (userService.checkPassword(user, currentPassword)) {
+//                    userService.updatePassword(user, newPassword);
+//                } else {
+//                    model.addAttribute("error", "Current password is incorrect!");
+//                    return "hospital/profilePage/HospitalProfilePage";
+//                }
+//            } else {
+//                model.addAttribute("error", "Passwords do not match!");
+//                return "hospital/profilePage/HospitalProfilePage";
+//            }
+//        }
+//
+//        userService.save(user);
+//
+//        return "redirect:/hospital/profile";
+//    }
+//
 //
 //    // ===== Helpers =====
-//    private boolean isHospital(String role) {
-//        return role != null && role.equalsIgnoreCase("Hospital");
+//    private void addUserToModel(UserDetails principal, Model model) {
+//        if (principal == null) return;
+//        String email = principal.getUsername();        // login identifier
+//        User dbUser = userService.findByEmail(email);  // load full user
+//        String displayName = (dbUser != null && dbUser.getUsername() != null && !dbUser.getUsername().isBlank())
+//                ? dbUser.getUsername()
+//                : email;
+//
+//        model.addAttribute("username", displayName);
+//        model.addAttribute("user", dbUser);
 //    }
-//    private boolean isClinic(String role) {
-//        return role != null && role.equalsIgnoreCase("Clinic");
-//    }
+//
+//    private boolean isHospital(String role) { return role != null && role.equalsIgnoreCase("Hospital"); }
+//    private boolean isClinic(String role)   { return role != null && role.equalsIgnoreCase("Clinic"); }
+//
 //    private Integer safeParseInt(String s) {
 //        try { if (s == null || s.isBlank()) return null; return Integer.valueOf(s.trim()); }
 //        catch (Exception e) { return null; }
 //    }
+//
+//    private MultipartFile firstNonEmpty(List<MultipartFile> files) {
+//        if (files == null) return null;
+//        return files.stream().filter(f -> f != null && !f.isEmpty()).findFirst().orElse(null);
+//    }
 //}
-
-
 
 
 
@@ -168,13 +312,16 @@ import lk.vakapo.vakapo.UserManagement.model.User;
 import lk.vakapo.vakapo.UserManagement.Service.UserService;
 import lk.vakapo.vakapo.Common.FileStorageService;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -218,7 +365,7 @@ public class UserController {
             @RequestParam(required = false) String rnumber,
             @RequestParam(required = false) String institution,
 
-            // IMPORTANT: both Hospital and Clinic use name="rcertificate" in your UI
+            // Your UI posts name="rcertificate" (can be multiple if input allows)
             @RequestParam(name = "rcertificate", required = false) List<MultipartFile> rcertificate,
 
             // Common
@@ -231,7 +378,7 @@ public class UserController {
             return "redirect:/signup?error=password_mismatch";
         }
 
-        final String normRole = role == null ? "" : role.trim();
+        final String normRole = (role == null) ? "" : role.trim();
 
         User u = new User();
         u.setEmail(email);
@@ -254,15 +401,14 @@ public class UserController {
         // Common
         u.setContact(contact);
         u.setAddress(address);
-        u.setPassword(password); // (plain text per your current setup)
+        u.setPassword(password); // (plain for now; service may encode)
 
         try {
-            // Only Hospital/Clinic upload a file
             if (isHospital(normRole) || isClinic(normRole)) {
                 MultipartFile chosen = firstNonEmpty(rcertificate);
                 if (chosen != null && !chosen.isEmpty()) {
                     String relative = storage.saveUnderRoleAndUser(chosen, normRole, username);
-                    u.setRcertificate(relative); // e.g., "Clinic/MyClinic/abcd1234.pdf"
+                    u.setRcertificate(relative);
                 }
             }
         } catch (Exception e) {
@@ -278,7 +424,11 @@ public class UserController {
     @GetMapping("/redirect")
     public String redirectAfterLogin(@AuthenticationPrincipal UserDetails principal) {
         if (principal == null) return "redirect:/login";
-        String authority = principal.getAuthorities().iterator().next().getAuthority(); // ROLE_*
+
+        Collection<? extends GrantedAuthority> auths = principal.getAuthorities();
+        if (auths == null || auths.isEmpty()) return "redirect:/";
+
+        String authority = auths.iterator().next().getAuthority();
         switch (authority) {
             case "ROLE_PATIENT":  return "redirect:/patient/home";
             case "ROLE_HOSPITAL": return "redirect:/hospital/home";
@@ -287,19 +437,194 @@ public class UserController {
         }
     }
 
-    // ---------- Role home pages ----------
+    // ---------- Role home pages (username/user into model) ----------
     @GetMapping("/patient/home")
-    public String patientHome() { return "patient/landingPage/PatientLandingPage"; }
+    public String patientHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+        addUserToModel(principal, model);
+        return "patient/landingPage/PatientLandingPage";
+    }
 
     @GetMapping("/hospital/home")
-    public String hospitalHome() { return "hospital/landingPage/HospitalLandingPage"; }
+    public String hospitalHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+        addUserToModel(principal, model);
+        return "hospital/landingPage/HospitalLandingPage";
+    }
 
     @GetMapping("/clinic/home")
-    public String clinicHome() { return "clinic/landingPage/ClinicLandingPage"; }
+    public String clinicHome(@AuthenticationPrincipal UserDetails principal, Model model) {
+        addUserToModel(principal, model);
+        return "clinic/landingPage/ClinicLandingPage";
+    }
+
+    // ---------- Profiles ----------
+    @GetMapping("/patient/profile")
+    public String patientProfile(@AuthenticationPrincipal UserDetails principal, Model model) {
+        if (principal == null) return "redirect:/login";
+        var dbUser = userService.findByEmail(principal.getUsername());
+        if (dbUser == null) return "redirect:/login?not_found";
+        model.addAttribute("user", dbUser);
+        model.addAttribute("username", dbUser.getUsername());
+        return "patient/profilePage/ProfilePage";
+    }
+
+    @GetMapping("/hospital/profile")
+    public String hospitalProfile(@AuthenticationPrincipal UserDetails principal, Model model) {
+        addUserToModel(principal, model);
+        return "hospital/profilePage/HospitalProfilePage";
+    }
+
+    // ---------- Account (self-view + self-delete) ----------
+    @GetMapping("/account")
+    public String account(@AuthenticationPrincipal UserDetails principal, Model model) {
+        if (principal == null) return "redirect:/login";
+        addUserToModel(principal, model);
+        return "Account";
+    }
+
+    @PostMapping("/account/delete")
+    public String deleteOwnAccount(@AuthenticationPrincipal UserDetails principal) {
+        if (principal == null) return "redirect:/login";
+
+        User dbUser = userService.findByEmail(principal.getUsername());
+        if (dbUser != null) {
+            try {
+                String role = dbUser.getRole();
+                String uname = dbUser.getUsername();
+                if (role != null && uname != null) {
+                    storage.deleteUserFolder(role, uname);
+                }
+            } catch (Exception ignored) {}
+        }
+
+        userService.deleteByEmail(principal.getUsername());
+        SecurityContextHolder.clearContext();
+        return "redirect:/login?deleted";
+    }
+
+    // ---------- Patient: Update Profile ----------
+    @PostMapping("/patient/updateProfile")
+    public String updatePatientProfile(@AuthenticationPrincipal UserDetails principal,
+                                       @RequestParam String nic,
+                                       @RequestParam String username,
+                                       @RequestParam String email,
+                                       @RequestParam String contact,
+                                       @RequestParam(required = false) String currentPassword,
+                                       @RequestParam(required = false) String newPassword,
+                                       @RequestParam(required = false) String confirmPassword,
+                                       Model model) {
+        if (principal == null) return "redirect:/login";
+
+        var user = userService.findByEmail(principal.getUsername());
+        if (user == null) return "redirect:/login";
+
+        // Update fields
+        user.setNic(nic);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setContact(contact);
+
+        // Change password if provided and valid
+        if (newPassword != null && !newPassword.isBlank()) {
+            if (!newPassword.equals(confirmPassword)) {
+                model.addAttribute("error", "Passwords do not match!");
+                model.addAttribute("user", user);
+                return "patient/profilePage/ProfilePage";
+            }
+            if (currentPassword == null || !userService.checkPassword(user, currentPassword)) {
+                model.addAttribute("error", "Current password incorrect!");
+                model.addAttribute("user", user);
+                return "patient/profilePage/ProfilePage";
+            }
+            userService.updatePassword(user, newPassword);
+        }
+
+        userService.save(user);
+        return "redirect:/patient/profile";
+    }
+
+    // ---------- Hospital/Clinic: Update Profile ----------
+    @PostMapping("/hospital/updateProfile")
+    public String updateHospitalProfile(@AuthenticationPrincipal UserDetails principal,
+                                        @RequestParam(required = false) String hname,
+                                        @RequestParam(required = false) String email,
+                                        @RequestParam(required = false) String contact,
+                                        @RequestParam(required = false) String address,
+                                        @RequestParam(required = false) String currentPassword,
+                                        @RequestParam(required = false) String newPassword,
+                                        @RequestParam(required = false) String confirmPassword,
+                                        Model model) {
+        if (principal == null) return "redirect:/login";
+
+        var user = userService.findByEmail(principal.getUsername());
+        if (user == null) return "redirect:/login";
+
+        String oldEmail = user.getEmail();
+
+        // ✅ keep username in sync with hname for Hospital/Clinic
+        if (hname != null && !hname.isBlank()) {
+            user.setHname(hname);
+            if ("Hospital".equalsIgnoreCase(user.getRole()) || "Clinic".equalsIgnoreCase(user.getRole())) {
+                user.setUsername(hname);   // ← this line makes the header update if it uses ${username}
+            }
+        }
+        if (email != null)   user.setEmail(email);
+        if (contact != null) user.setContact(contact);
+        if (address != null) user.setAddress(address);
+
+        if (newPassword != null && !newPassword.isBlank()) {
+            if (!newPassword.equals(confirmPassword)) {
+                model.addAttribute("error", "Passwords do not match!");
+                model.addAttribute("user", user);
+                return "hospital/profilePage/HospitalProfilePage";
+            }
+            if (currentPassword == null || !userService.checkPassword(user, currentPassword)) {
+                model.addAttribute("error", "Current password is incorrect!");
+                model.addAttribute("user", user);
+                return "hospital/profilePage/HospitalProfilePage";
+            }
+            userService.updatePassword(user, newPassword);
+        }
+
+        userService.save(user);
+
+        if (email != null && !email.equalsIgnoreCase(oldEmail)) {
+            SecurityContextHolder.clearContext();
+            return "redirect:/login?relogin";
+        }
+
+        return "redirect:/hospital/profile?updated";
+    }
 
     // ===== Helpers =====
+    private void addUserToModel(UserDetails principal, Model model) {
+        if (principal == null) return;
+
+        String email = principal.getUsername();
+        User dbUser = userService.findByEmail(email);
+
+        String displayName;
+        if (dbUser == null) {
+            displayName = email;
+        } else if ("Hospital".equalsIgnoreCase(dbUser.getRole()) || "Clinic".equalsIgnoreCase(dbUser.getRole())) {
+            displayName = (dbUser.getHname() != null && !dbUser.getHname().isBlank())
+                    ? dbUser.getHname()
+                    : (dbUser.getUsername() != null && !dbUser.getUsername().isBlank())
+                    ? dbUser.getUsername()
+                    : dbUser.getEmail();
+        } else { // Patient or others
+            displayName = (dbUser.getPname() != null && !dbUser.getPname().isBlank())
+                    ? dbUser.getPname()
+                    : (dbUser.getUsername() != null && !dbUser.getUsername().isBlank())
+                    ? dbUser.getUsername()
+                    : dbUser.getEmail();
+        }
+
+        model.addAttribute("username", displayName);
+        model.addAttribute("user", dbUser);
+    }
+
     private boolean isHospital(String role) { return role != null && role.equalsIgnoreCase("Hospital"); }
-    private boolean isClinic(String role) { return role != null && role.equalsIgnoreCase("Clinic"); }
+    private boolean isClinic(String role)   { return role != null && role.equalsIgnoreCase("Clinic"); }
 
     private Integer safeParseInt(String s) {
         try { if (s == null || s.isBlank()) return null; return Integer.valueOf(s.trim()); }
