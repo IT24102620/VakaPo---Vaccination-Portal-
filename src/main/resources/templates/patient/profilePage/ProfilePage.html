@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/patient/profilePage/ProfilePage.css}">
+</head>
+
+<body>
+    <!-- Announcement Section -->
+    <div class="announcement">
+        <p>Get 30% off on your first vaccine</p>
+        <p class="announcement__cancel">X</p>
+    </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/patient/home}">Home</a>
+            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
+            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
+            <a href="../Feedback Page/FeedbackPage.html">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <img src="../../Images/profile.png" alt="profile">
+        </div>
+        <div class="navbar__section4">
+            <img src="../../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3 th:text="'Welcome, ' + ${username}"></h3>
+            <a th:href="@{/patient/profile}">Your Profile</a> <br>
+            <form th:action="@{/account/delete}" method="post"
+                  onsubmit="return confirm('This will permanently delete your account and files. Continue?');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Delete My Account</button>
+            </form>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <!-- CSRF token (Thymeleaf exposes it as _csrf) -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, Risikesan</h3>
+            <a href="../ProfilePage/ProfilePage.html">Your Profile</a>
+            <a href="../Landing Page/PatientLandingPage.html">Home</a>
+            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
+            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
+            <a href="../Feedback Page/FeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <button>Logout</button>
+            </div>
+        </div>
+    </div> <br>
+
+    <!-- Personal Information Section -->
+    <div class="personal__information">
+        <div class="personal__information__section1">
+            <img src="../../Images/profile new.png" alt="profile">
+        </div>
+        <div class="personal__information__section2">
+            <button>Edit</button> <br> <br> <br>
+            <h1>Personal Information</h1>
+            <table>
+                <tr>
+                    <td>ID</td>
+                    <td>:</td>
+                    <td th:text="${user.id}"></td>
+                </tr>
+                <tr>
+                    <td>NIC</td>
+                    <td>:</td>
+                    <td th:text="${user.nic}"></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>:</td>
+                    <td th:text="${user.username}"></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>:</td>
+                    <td th:text="${user.email}"></td>
+                </tr>
+                <tr>
+                    <td>Phone Number</td>
+                    <td>:</td>
+                    <td th:text="${user.contact}"></td>
+                </tr>
+            </table>
+        </div>
+    </div> <br>
+
+    <!-- Latest Appointment History & Vaccination History Page -->
+    <div class="history">
+        <div class="appointment__summary">
+            <h2>Appointments</h2> <br>
+            <table>
+                <tr id="appointment__summary__table__header">
+                    <th>Vaccine</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Influenza</td>
+                    <td>2025-02-2024</td>
+                    <td>11.30 a.m.</td>
+                    <td>Delmon Hospital</td>
+                    <td>Confirmed</td>
+                </tr>
+            </table>
+            <div class="appointment__summary__section1">
+                <button class="appointment__button">View All Appointments</button>
+                <button class="vaccination__book__button">Book Appointment</button>
+            </div>
+
+        </div>
+
+        <div class="appointment__summary">
+            <h2>Vaccination History</h2> <br>
+            <table>
+                <tr id="appointment__summary__table__header">
+                    <th>Vaccine</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Influenza</td>
+                    <td>2025-02-2024</td>
+                    <td>Delmon Hospital</td>
+                    <td>Confirmed</td>
+                </tr>
+            </table>
+            <br><br><br>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+
+    <!-- Edit Details -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Personal Details</h2>
+            <form th:action="@{/patient/updateProfile}" method="post">
+                <div class="form-group">
+                    <label for="nic">NIC</label>
+                    <input type="text" id="nic" name="nic" th:value="${user.nic}" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Name</label>
+                    <input type="text" id="username" name="username" th:value="${user.username}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" th:value="${user.email}" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Phone Number</label>
+                    <input type="text" id="contact" name="contact" th:value="${user.contact}" required>
+                </div>
+                <hr>
+                <h3>Change Password</h3>
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script th:src="@{/js/patient/profilePage/ProfilePage.js}"></script>
+</body>
+
+</html>
