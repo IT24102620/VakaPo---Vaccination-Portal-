@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Appointment Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./AppointmentPage.css">
+</head>
+
+<body>
+    <!-- Announcement Section -->
+    <div class="announcement">
+        <p>Get 30% off on your first vaccine</p>
+        <p class="announcement__cancel">X</p>
+    </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a href="../Landing Page/PatientLandingPage.html">Home</a>
+            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
+            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
+            <a href="../Feedback Page/FeedbackPage.html">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <img src="../../Images/profile.png" alt="profile">
+        </div>
+        <div class="navbar__section4">
+            <img src="../../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, Risikesan</h3> <br>
+            <a href="../ProfilePage/ProfilePage.html">Your Profile</a> <br>
+            <button>Logout</button>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, Risikesan</h3>
+            <a href="../ProfilePage/ProfilePage.html">Your Profile</a>
+            <a href="../Landing Page/PatientLandingPage.html">Home</a>
+            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
+            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
+            <a href="../Feedback Page/FeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <button>Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Booking Section -->
+    <div class="appointment">
+        <div class="appointment__section1">
+            <h1>Mannage Your Appointments</h1> <br> <br>
+            <div class="appointment__section2">
+                <h2>Book A New Appointment</h2>
+                <div class="appointment__section3">
+                    <div class="appointment__section3__sub1">
+                        <label for="vaccine">Select Vaccine</label> <br>
+                        <select id="vaccine" name="vaccine">
+                            <option value="Vaccine 1">Vaccine 1</option>
+                            <option value="Vaccine 2">Vaccine 2</option>
+                            <option value="Vaccine 3">Vaccine 3</option>
+                            <option value="Vaccine 4">Vaccine 4</option>
+                        </select>
+                    </div>
+
+                    <div class="appointment__section3__sub2">
+                        <label for="hospital">Select Hospital</label> <br>
+                        <select id="hospital" name="hospital">
+                            <option value="Hospital 1">Hospital 1</option>
+                            <option value="Hospital 2">Hospital 2</option>
+                            <option value="Hospital 3">Hospital 3</option>
+                            <option value="Hospital 4">Hospital 4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="appointment__section4">
+                    <div class="appointment__section4__sub1">
+                        <label for="date">Date</label> <br>
+                        <input type="date" id="date" name="date">
+                    </div>
+
+                    <div class="appointment__section4__sub2">
+                        <label for="time">Time</label> <br>
+                        <select id="time" name="time">
+                            <option value="Time 1">Time 1</option>
+                            <option value="Time 2">Time 2</option>
+                            <option value="Time 3">Time 3</option>
+                            <option value="Time 4">Time 4</option>
+                        </select>
+                    </div>
+                </div>
+                <button>Book Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Summary Section -->
+    <div class="appointment__summary">
+        <h2>Appointments</h2> <br>
+        <table>
+            <tr id="appointment__summary__table__header">
+                <th>Vaccine</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>Influenza</td>
+                <td>2025-02-2024</td>
+                <td>11.30 a.m.</td>
+                <td>Delmon Hospital</td>
+                <td><button>Cancel</button></td>
+            </tr>
+            <tr>
+                <td>Influenza</td>
+                <td>2025-02-2024</td>
+                <td>11.30 a.m.</td>
+                <td>Delmon Hospital</td>
+                <td><button>Cancel</button></td>
+            </tr>
+            <tr>
+                <td>Influenza</td>
+                <td>2025-02-2024</td>
+                <td>11.30 a.m.</td>
+                <td>Delmon Hospital</td>
+                <td><button>Cancel</button></td>
+            </tr>
+            <tr>
+                <td>Influenza</td>
+                <td>2025-02-2024</td>
+                <td>11.30 a.m.</td>
+                <td>Delmon Hospital</td>
+                <td><button>Cancel</button></td>
+            </tr>
+        </table>
+    </div> <br>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+    <script src="./AppointmentPage.js"></script>
+</body>
+
+</html>
