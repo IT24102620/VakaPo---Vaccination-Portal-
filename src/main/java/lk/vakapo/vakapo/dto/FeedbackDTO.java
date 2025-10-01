@@ -2,7 +2,7 @@ package lk.vakapo.vakapo.dto;
 
 import java.time.LocalDate;
 
-public class FeedbackDTO {
+public class  FeedbackDTO {
     private Long id;
     private String name;
     private String email;
