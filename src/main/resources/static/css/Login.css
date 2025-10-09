@@ -1,0 +1,90 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: "Gabarito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+/* login */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #E6E6E6;
+    color: #1E489E;
+    font-size: 20px;
+}
+
+.login {
+    border: none;
+    border-radius: 15px;
+    padding: 25px;
+    background-color: white;
+    width: 60%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    z-index: 2;
+}
+
+.login__section1 {
+    text-align: center;
+}
+
+.login__section1 h1 {
+    font-size: 50px;
+}
+
+.login__input {
+    text-align: center;
+}
+
+.login__input label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login__input input {
+    width: 90%;
+    height: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.login__input input:focus {
+    outline: none;
+}
+
+.login__section2 button {
+    background-color: #E6E6E6;
+    color: #1E489E;
+    padding: 15px;
+    border-radius: 20px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.login__section3 {
+    text-align: center;
+}
+
+.login__section4 p {
+    margin-top: 25px;
+    text-align: right;
+}
+
+@media screen and (max-width: 1000px) {
+    .login {
+        width: 85%;
+    }
+
+}

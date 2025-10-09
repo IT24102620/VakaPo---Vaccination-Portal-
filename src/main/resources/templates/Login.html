@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/Login.css}">
+</head>
+
+<body>
+<!-- Login Section -->
+<div class="login">
+    <div class="login__section1">
+        <h1>VakaPo Login</h1> <br>
+        <p>Welcome! Please Enter Your Credentials To Continue.</p> <br>
+    </div>
+    <div class="login__section2">
+        <form th:action="@{/login}" method="post">
+            <div class="login__input">
+                <label for="email">Email </label>
+                <input type="email" id="email" name="email" required> <br> <br>
+            </div>
+            <div class="login__input">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required> <br> <br>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="login__section3">
+            <p>Don't have an account? <a th:href="@{/signup}"> Sign Up</a></p> <br>
+            <p><a href="../Forgot Password Page/ForgotPasswordPage.html">Forgot Password</a></p>
+        </div>
+        <div class="login__section4">
+            <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

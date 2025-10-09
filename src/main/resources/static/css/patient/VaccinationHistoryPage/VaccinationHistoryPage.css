@@ -1,0 +1,330 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: "Gabarito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+:root {
+    --nav-h: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+}
+
+/* announcement */
+
+.announcement {
+    background-color: #1E489E;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    font-size: 20px;
+}
+
+.announcement__cancel {
+    cursor: pointer;
+}
+
+/* navbar */
+
+.navbar {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+}
+
+.navbar__section1 img {
+    width: 250px;
+    height: 72px;
+}
+
+
+.navbar__section2 {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 30px;
+    width: 60%;
+    padding: 20px;
+}
+
+.navbar__section2 a {
+    text-decoration: none;
+    color: black;
+    color: #210084;
+
+}
+
+.navbar__section3 img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.navbar__section4 img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.navbar__section4 {
+    display: none;
+}
+
+/* profile */
+
+.profile {
+    position: fixed;
+    top: 150px;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #210084;
+    border: none;
+    border-radius: 20px;
+    width: 200px;
+    right: -20%;
+    transition: 1s;
+}
+
+.profile__section1 {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 10px;
+}
+
+.profile__section1 a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+
+.profile__section1 button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    color: #1E489E;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+}
+
+.profile__section1 button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+.profile__section1 p {
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* responsive navabr */
+
+.responsive__navbar {
+    border: black solid 1px;
+    position: fixed;
+    width: 70%;
+    right: -80%;
+    height: 100vh;
+    top: 80px;
+    z-index: 4;
+    background-color: #210084;
+    transition: 0.5s;
+}
+
+.responsive__navbar img {
+    width: 150px;
+    height: 50px;
+}
+
+.responsive__navbar__section1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 a,
+.responsive__navbar__section1 p,
+.responsive__navbar__section1 h3 {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 p {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.responsive__navbar__section1__button button {
+    color: #210084;
+    padding: 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    width: 140px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: 0.5s;
+}
+
+.responsive__navbar__section1__button button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+/* vaccination history table */
+
+.vaccination__history{
+    padding: 20px;
+}
+
+.vaccination__history h1 {
+    color: #1E489E;
+    padding: 20px;;
+}
+
+.vaccination__history table {
+    width: 80%;
+    margin-left: 10%;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.vaccination__history table tr th,
+.vaccination__history table tr td {
+    border: none;
+}
+
+
+.vaccination__history th,
+.vaccination__history td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+#vaccination__history__table__header {
+    background-color: #1E489E;
+    color: white;
+}
+
+.vaccination__history__table__header__download, .vaccination__history__table__row__download{
+    cursor: pointer;
+}
+
+.vaccination__history table tr {
+    background-color: #5a89ee;
+    color: white;
+}
+
+.vaccination__history table tr button {
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    background-color: #EE2400;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+/* footer */
+
+.footer {
+    background-color: #1E489E;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+/* responsive design */
+
+@media screen and (max-width: 768px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 1300px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .vaccination__history table{
+        font-size: 14px;
+    }
+}

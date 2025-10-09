@@ -67,6 +67,20 @@ public class UserService {
         return repo.findByUsername(username.trim()).orElse(null);
     }
 
+    /**
+     * Retrieve all users with a given role.  This helper delegates to
+     * {@link UserRepository#findByRoleIgnoreCase(String)}
+     * and handles null values defensively.  It is primarily used by the
+     * appointment booking module to list available hospitals or clinics.
+     *
+     * @param role the role to search for (e.g. "Hospital", "Clinic")
+     * @return a list of {@link User} objects, or an empty list if none match
+     */
+    public java.util.List<User> findByRole(String role) {
+        if (role == null) return java.util.List.of();
+        return repo.findByRoleIgnoreCase(role.trim());
+    }
+
     /** Try email first, then username — useful when principal could be either. */
     public User findByEmailOrUsername(String loginId) {
         if (loginId == null) return null;
