@@ -241,6 +241,17 @@ html {
     width: 100%;
 }
 
+/* Improve input readability and spacing without affecting colors or layout */
+.add__staff__section1__sub input,
+.add__staff__section1 form input {
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.4;
+    height: 44px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 /* Tweak select spacing only; do not affect colors or layout */
 .add__staff__section1__sub select {
     padding: 12px;
@@ -260,12 +271,17 @@ html {
 
 .add__staff__section1 form button {
     width: 100%;
-    padding: 8px;
+    padding: 12px 16px;
     border-radius: 10px;
     border: none;
     background-color: #210084;
     color: white;
     cursor: pointer;
+    height: 44px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
 }
 
 
