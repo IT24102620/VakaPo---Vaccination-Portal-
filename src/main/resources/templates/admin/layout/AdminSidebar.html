@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Sidebar</title>
+</head>
+<body>
+<!-- Sidebar Fragment -->
+<div th:fragment="sidebar">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+        <div class="logo" aria-hidden="false">
+            <img th:src="@{/Images/logo.png}" alt="VakaPo logo">
+        </div>
+        <nav>
+            <a class="sidebar-link active" th:href="@{/admin/landing}">
+                <img class="icon" th:src="@{/Images/home.png}" alt="Dashboard">
+                <span class="link-text">Home</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/user-management}">
+                <img class="icon" th:src="@{/Images/member.png}" alt="User Management">
+                <span class="link-text">User Management</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/contacts}">
+                <img class="icon" th:src="@{/Images/contact.png}" alt="Contact Management">
+                <span class="link-text">Contact Management</span></a>
+
+
+            <a class="sidebar-link" th:href="@{/admin/sub-admin-request}">
+                <img class="icon" th:src="@{/Images/Sub_Admin_manager.png}" alt="Sub-Admin Manager">
+                <span class="link-text">Sub-Admin Manager</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/vaccination-monitoring}">
+                <img class="icon" th:src="@{/Images/Vaccination_Mon.png}" alt="Vaccination Monitoring">
+                <span class="link-text">Vaccination Monitoring</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/vaccines/manage}">
+                <img class="icon" th:src="@{/Images/plus.png}" alt="Vaccine Manager">
+                <span class="link-text">Vaccine Manager</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/feedback-manager}">
+                <img class="icon" th:src="@{/Images/feedback.png}" alt="Feedback Manager">
+                <span class="link-text">Feedback Manager</span></a>
+
+            <a class="sidebar-link" th:href="@{/admin/notifications}">
+                <img class="icon" th:src="@{/Images/notification.png}" alt="Messages & Alerts">
+                <span class="link-text">Messages & Alerts</span></a>
+
+            <form th:action="@{/logout}" method="post" style="width: 100%;">
+                <button type="submit" class="sidebar-link" style="width:100%; border:none; background:none; cursor:pointer;">
+                    <img class="icon" th:src="@{/Images/logout.png}" alt="Logout">
+                    <span class="link-text">Log Out</span>
+                </button>
+            </form>
+        </nav>
+    </aside>
+</div>
+</body>
+</html>

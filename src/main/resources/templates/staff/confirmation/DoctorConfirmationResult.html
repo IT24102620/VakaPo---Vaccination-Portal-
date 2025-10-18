@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Doctor Confirmation - VakaPo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/doctorPage/PasswordChange/DoctorPasswordChange.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+    <!-- Announcement Section -->
+    <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+        <p id="emergencyMessage">Loading emergency notification...</p>
+        <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+    </div>
+    <!-- Header Section -->
+    <div class="header" id="home">
+        <div class="header__section1">
+            <h1 th:if="${success}" style="color: #28a745;">✅ Confirmation Successful!</h1>
+            <h1 th:if="${!success}" style="color: #dc3545;">❌ Confirmation Failed</h1>
+            <br>
+            <p th:if="${success}" style="font-size: 18px;">You have successfully confirmed your invitation to join the hospital.</p>
+            <p th:if="${!success}" style="font-size: 18px;">There was an issue processing your confirmation.</p>
+            <br>
+            <div th:if="${success}" class="security__notice" style="background-color: rgba(40, 167, 69, 0.2); border-color: #28a745;">
+                <p style="color: #28a745; font-weight: bold; margin: 0;">
+                    🎉 Welcome to the team! You can now work at this hospital.
+                </p>
+            </div>
+            <div th:if="${!success}" class="security__notice" style="background-color: rgba(220, 53, 69, 0.2); border-color: #dc3545;">
+                <p style="color: #dc3545; font-weight: bold; margin: 0;">
+                    ⚠️ <span th:text="${error}">Error message</span>
+                </p>
+            </div>
+        </div>
+        <div class="header__section2">
+            <img src="../../Images/logo.png" alt="vakapo-logo" style="width: 300px;">
+        </div>
+    </div>
+
+    <!-- Confirmation Details Section -->
+    <div class="password__change" id="confirmationdetails" th:if="${success}">
+        <div class="password__change__section1">
+            <h1>Confirmation Details</h1>
+            <p>Your invitation has been processed successfully</p>
+        </div>
+        <div class="password__change__section2">
+            <div class="form__group">
+                <label>Doctor Name</label>
+                <div style="padding: 15px; background-color: #f8f9fa; border-radius: 8px; font-weight: 600;">
+                    <span th:text="${doctorName}">Dr. Name</span>
+                </div>
+            </div>
+
+            <div class="form__group">
+                <label>Hospital</label>
+                <div style="padding: 15px; background-color: #f8f9fa; border-radius: 8px; font-weight: 600;">
+                    <span th:text="${hospitalName}">Hospital Name</span>
+                </div>
+            </div>
+
+            <div class="form__group">
+                <label>Status</label>
+                <div style="padding: 15px; background-color: #d4edda; border-radius: 8px; font-weight: 600; color: #155724;">
+                    ✅ Confirmed
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Next Steps Section -->
+    <div class="requirements" id="nextsteps" th:if="${success}">
+        <div class="requirements__section1">
+            <h1>What's Next?</h1>
+            <p>You can now access your hospital dashboard and start working</p>
+        </div>
+        <div class="requirements__section2">
+            <div class="requirement__item">
+                <div class="requirement__icon">🏥</div>
+                <div class="requirement__text">
+                    <h3>Access Hospital Dashboard</h3>
+                    <p>Log in to your VakaPo account to access the hospital dashboard</p>
+                </div>
+            </div>
+            <div class="requirement__item">
+                <div class="requirement__icon">👥</div>
+                <div class="requirement__text">
+                    <h3>Manage Patients</h3>
+                    <p>View and manage patients at this hospital location</p>
+                </div>
+            </div>
+            <div class="requirement__item">
+                <div class="requirement__icon">📅</div>
+                <div class="requirement__text">
+                    <h3>Schedule Appointments</h3>
+                    <p>Book and manage vaccination appointments</p>
+                </div>
+            </div>
+            <div class="requirement__item">
+                <div class="requirement__icon">📊</div>
+                <div class="requirement__text">
+                    <h3>View Reports</h3>
+                    <p>Access vaccination reports and statistics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="password__change" th:if="${success}">
+        <div class="password__change__section2">
+            <div class="form__group">
+                <a href="/login" class="submit__button" style="text-decoration: none; display: inline-block; text-align: center;">
+                    🚀 Go to Login
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Actions -->
+    <div class="password__change" th:if="${!success}">
+        <div class="password__change__section2">
+            <div class="form__group">
+                <a href="/login" class="submit__button" style="text-decoration: none; display: inline-block; text-align: center; background-color: #6c757d;">
+                    🔄 Try Again
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 40px; background-color: #f8f9fa; margin-top: 50px;">
+        <p style="color: #666; margin: 0;">© 2024 VakaPo - Sri Lanka's Vaccination Portal</p>
+        <p style="color: #666; margin: 10px 0 0 0;">For support, contact: support@vakapo.com</p>
+    </div>
+
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

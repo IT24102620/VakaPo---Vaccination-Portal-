@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/hospital/feedbackPage/hospitalFeedbackPage.css}">
+    <link rel="stylesheet" th:href="@{/css/doctorPage/feedbackPage/MyReviews.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/feedback-reviews.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/hospital/landing}">Home</a>
+            <a th:href="@{/hospital/appointments}">Appointments</a>
+            <a th:href="@{/hospital/staff-page}">Staff</a>
+            <a th:href="@{/hospital/feedback}">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <!-- Notification Icon -->
+            <div class="notification-icon" style="position: relative; margin-right: 15px;">
+                <img src="../../Images/notification.png" alt="notifications" style="width: 24px; height: 24px;">
+                <!-- Notification Dropdown -->
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <a href="#" class="mark-all-read" onclick="notificationManager.markAllAsRead()">Mark all read</a>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-loading">Loading notifications...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="notificationManager.viewAllNotifications()">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <img src="../../Images/profile.png" alt="profile" class="profile-icon">
+        </div>
+        <div class="navbar__section4">
+            <img src="../../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${hospitalName}">Hospital</span></h3> <br>
+            <a th:href="@{/hospital/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/hospital/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, Risikesan</h3>
+            <a href="../Profile Page/HospitalProfilePage.html">Your Profile</a>
+            <a href="../Landing Page/HospitalLandingPage.html">Home</a>
+            <a href="../Appointment Page/HospitalAppointmentPage.html">Appointments</a>
+            <a href="../Staff Page/HospitalStaffPage.html">Staff</a>
+            <a href="../Feedback Page/HospitalFeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Feedback Section -->
+    <div class="feedback">
+        <div class="feedback__section1">
+            <img src="../../Images/feedback.png" alt="feedback">
+        </div>
+
+        <div class="feedback__section2">
+            <h1>Share Your Feedback</h1>
+            
+            <!-- Success/Error Messages -->
+            <div th:if="${successMessage}" class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            
+            <div class="feedback__section1__sub">
+                <img src="../../Images/logo.png" alt="logo">
+                <div class="feedback__section2__sub1">
+                    <form th:action="@{/hospital/feedback}" method="post">
+                        <input type="text" id="name" name="name" th:value="${hospitalName}" readonly placeholder="Name"> <br>
+
+                        <input type="email" id="email" name="email" th:value="${hospitalEmail}" readonly placeholder="Email"> <br>
+
+                        <input type="text" id="contactno" name="contactno" th:value="${hospital.contact}" readonly placeholder="Contact No"> <br>
+
+                        <select id="rating" name="rating">
+                            <option value="">Select Rating</option>
+                            <option value="1">⭐ 1 - Poor</option>
+                            <option value="2">⭐⭐ 2 - Fair</option>
+                            <option value="3">⭐⭐⭐ 3 - Good</option>
+                            <option value="4">⭐⭐⭐⭐ 4 - Very Good</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 - Excellent</option>
+                        </select> <br>
+
+                        <textarea id="message" name="message" placeholder="Message Here"></textarea> <br>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Reviews Section -->
+    <div class="my-reviews">
+        <div class="my-reviews__header">
+            <h2>My Reviews</h2>
+            <p>Manage your submitted feedback</p>
+        </div>
+        
+        <div class="my-reviews__content">
+            <div id="myReviewsList" class="reviews-list">
+                <!-- Reviews will be loaded here via JavaScript -->
+                <div class="loading">Loading your reviews...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Review Modal -->
+    <div id="editReviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Review</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editReviewForm">
+                    <input type="hidden" id="editFeedbackId" name="feedbackId">
+                    
+                    <div class="form-group">
+                        <label for="editName">Name:</label>
+                        <input type="text" id="editName" name="name" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" name="email" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editContactno">Contact Number:</label>
+                        <input type="text" id="editContactno" name="contactno" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editRating">Rating:</label>
+                        <select id="editRating" name="rating" required>
+                            <option value="1">⭐ 1 - Poor</option>
+                            <option value="2">⭐⭐ 2 - Fair</option>
+                            <option value="3">⭐⭐⭐ 3 - Good</option>
+                            <option value="4">⭐⭐⭐⭐ 4 - Very Good</option>
+                            <option value="5">⭐⭐⭐⭐⭐ 5 - Excellent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editMessage">Message:</label>
+                        <textarea id="editMessage" name="message" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+
+    <script th:src="@{/js/hospital/feedbackPage/HospitalFeedbackPage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

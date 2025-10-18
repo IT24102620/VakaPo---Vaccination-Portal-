@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/clinic/appointmentPage/HospitalAppointmentPage.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/clinic/landing}">Home</a>
+            <a th:href="@{/clinic/appointments}">Appointments</a>
+            <a th:href="@{/clinic/staff-page}">Staff</a>
+            <a href="../Feedback Page/HospitalFeedbackPage.html">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <img src="../../Images/profile.png" alt="profile">
+        </div>
+        <div class="navbar__section4">
+            <img src="../../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${clinicName}">Clinic</span></h3> <br>
+            <a th:href="@{/clinic/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/clinic/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, Risikesan</h3>
+            <a href="../Profile Page/HospitalProfilePage.html">Your Profile</a>
+            <a href="../Landing Page/HospitalLandingPage.html">Home</a>
+            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
+            <a href="../Staff Page/HospitalStaffPage.html">Staff</a>
+            <a href="../Feedback Page/HospitalFeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="appointments">
+        <h2>Manage Your Appointments</h2> <br>
+        <div class="appointments__section1">
+            <h3> Create A New Schedule </h3> <br>
+            <div class="appointment__section1__sub">
+                <div class="appointment__section1__sub__sub">
+                    <label for="doctor">Doctor Name</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">Select a Doctor</option>
+                        <!-- Doctors will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="appointment__section1__sub__sub">
+                    <label for="vaccine-type">Vaccine Type</label>
+                    <select id="vaccine-type" name="vaccine-type" required>
+                        <option value="">Select a Vaccine</option>
+                        <!-- Vaccines will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="appointment__section1__sub__sub">
+                    <label for="time">From</label>
+                    <input type="time" id="timeFrom" name="time" required>
+                </div>
+
+                <div class="appointment__section1__sub__sub">
+                    <label for="time">To</label>
+                    <input type="time" id="timeTo" name="time" required>
+                </div>
+
+                <div class="appointment__section1__sub__sub">
+                    <label>Vaccination Days</label>
+                    <div class="vaccination-days">
+                        <label><input type="checkbox" name="days" value="Monday"> Monday</label>
+                        <label><input type="checkbox" name="days" value="Tuesday"> Tuesday</label>
+                        <label><input type="checkbox" name="days" value="Wednesday"> Wednesday</label>
+                        <label><input type="checkbox" name="days" value="Thursday"> Thursday</label>
+                        <label><input type="checkbox" name="days" value="Friday"> Friday</label>
+                        <label><input type="checkbox" name="days" value="Saturday"> Saturday</label>
+                        <label><input type="checkbox" name="days" value="Sunday"> Sunday</label>
+                    </div>
+                </div>
+            </div>
+            <button id="add-schedule-btn" onclick="addSchedule()">Add Schedule</button>
+        </div>
+    </div>
+
+    <!-- Schedules Section -->
+    <div class="schedule__summary">
+        <h2>Vaccination Schedules <span id="schedule-count">(<span th:text="${scheduleCount}">0</span>)</span></h2> <br>
+        <div th:if="${#lists.isEmpty(schedules)}" class="no-schedules">
+            <p>No vaccination schedules found. Create your first schedule above.</p>
+        </div>
+        <table th:if="${!#lists.isEmpty(schedules)}">
+            <tr id="schedule__summary__table__header">
+                <th>Doctor</th>
+                <th>Vaccine</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Days</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="schedule : ${schedules}" th:data-schedule-id="${schedule.id}">
+                <td th:text="${schedule.doctorName}">Dr. Smith</td>
+                <td th:text="${schedule.vaccineName}">Influenza</td>
+                <td th:text="${schedule.timeFrom}">09:00</td>
+                <td th:text="${schedule.timeTo}">10:00</td>
+                <td th:text="${schedule.days}">Monday, Tuesday, Friday</td>
+                <td>
+                    <button th:if="${schedule.status == 'scheduled'}" 
+                            th:onclick="'cancelSchedule(' + ${schedule.id} + ')'" 
+                            class="cancel-btn">Cancel</button>
+                    <span th:if="${schedule.status != 'scheduled'}" class="no-action">-</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Appointments Section -->
+    <div class="appointments__summary">
+        <h2>Appointments <span id="appointment-count">(<span th:text="${appointmentCount}">0</span>)</span></h2> <br>
+        <div th:if="${#lists.isEmpty(appointments)}" class="no-appointments">
+            <p>No appointments found. Patients can book appointments based on your vaccination schedules.</p>
+        </div>
+        <table th:if="${!#lists.isEmpty(appointments)}">
+            <tr id="appointments__summary__table__header">
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Vaccine</th>
+                <th>Doctor</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="appointment : ${appointments}" th:data-appointment-id="${appointment.id}">
+                <td th:text="${appointment.patientName}">Patient Name</td>
+                <td th:text="${appointment.appointmentDate}">2025-02-24</td>
+                <td th:text="${appointment.timeSlot}">11:30-11:50</td>
+                <td th:text="${appointment.vaccineName}">Influenza</td>
+                <td th:text="${appointment.doctorName}">Dr. Smith</td>
+                <td>
+                    <span th:if="${appointment.status == 'scheduled'}" class="status-scheduled">Scheduled</span>
+                    <span th:if="${appointment.status == 'completed'}" class="status-completed">Completed</span>
+                    <span th:if="${appointment.status == 'cancelled'}" class="status-cancelled">Cancelled</span>
+                    <span th:if="${appointment.status == 'no_show'}" class="status-no-show">No Show</span>
+                </td>
+                <td>
+                    <button th:if="${appointment.status == 'scheduled'}" 
+                            th:onclick="'cancelAppointment(' + ${appointment.id} + ')'" 
+                            class="cancel-appointment-btn">Cancel</button>
+                    <button th:if="${appointment.status == 'cancelled' && appointment.cancelledBy == 'hospital'}" 
+                            th:onclick="'reverseAppointment(' + ${appointment.id} + ')'" 
+                            class="reverse-appointment-btn">Reverse</button>
+                    <span th:if="${appointment.status != 'scheduled' && (appointment.status != 'cancelled' || appointment.cancelledBy != 'hospital')}" class="no-action">-</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+
+    <script th:src="@{/js/clinic/appointmentPage/HospitalAppointmentPage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Clinic Staff</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF disabled in security config -->
+    <link rel="stylesheet" th:href="@{/css/clinic/staffPage/HospitalStaffPage.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img th:src="@{/Images/logo.png}" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/clinic/landing}">Home</a>
+            <a th:href="@{/clinic/appointments}">Appointments</a>
+            <a th:href="@{/clinic/staff-page}">Staff</a>
+            <a th:href="@{/clinic/feedback}">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <img th:src="@{/Images/profile.png}" alt="profile">
+        </div>
+        <div class="navbar__section4">
+            <img th:src="@{/Images/menu-bar.png}" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${clinicName}">Clinic Name</span></h3> <br>
+            <a th:href="@{/clinic/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/clinic/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, <span th:text="${clinicName}">Clinic Name</span></h3>
+            <a th:href="@{/clinic/profile}">Your Profile</a>
+            <a th:href="@{/clinic/landing}">Home</a>
+            <a href="../Appointment Page/HospitalAppointmentPage.html">Appointments</a>
+            <a th:href="@{/clinic/staff-page}">Staff</a>
+            <a th:href="@{/clinic/feedback}">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Section Page -->
+    <div class="staff">
+        <div class="staff__section1">
+            <input type="text" id="staffSearchInput" placeholder="Search Staff..." onkeyup="searchStaff()">
+            <img th:src="@{/Images/search.png}" alt="search">
+            <button class="add-staff-btn" onclick="window.location.href='/clinic/add-new-staff'">
+                <img th:src="@{/Images/plus.png}" alt="add"> Add Staff
+            </button>
+        </div>
+        
+        <!-- Staff Count and Filter -->
+        <div class="staff__info">
+            <p>Total Staff: <span id="totalStaffCount" th:text="${staffCount}">0</span></p>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterStaff('all')">All</button>
+                <button class="filter-btn" onclick="filterStaff('Doctor')">Doctors</button>
+                <button class="filter-btn" onclick="filterStaff('Nurse')">Nurses</button>
+            </div>
+        </div>
+        
+        <div class="staff__section2" id="staffContainer">
+            <!-- Dynamic staff cards will be populated here -->
+            <div th:if="${#lists.isEmpty(staffList)}" class="no-staff-message">
+                <img th:src="@{/Images/profile-staff.png}" alt="no-staff">
+                <h3>No Staff Members Found</h3>
+                <p>You haven't added any staff members yet.</p>
+                <button onclick="window.location.href='/clinic/add-new-staff'" class="add-first-staff-btn">
+                    Add Your First Staff Member
+                </button>
+            </div>
+            
+            <div th:each="staff : ${staffList}" class="staff__section2__card" th:data-role="${staff.role}" th:data-name="${staff.name}" th:data-staff-id="${staff.id}">
+                <div class="staff__section2__card__image">
+                    <img th:src="@{/Images/profile-staff.png}" alt="profile-staff">
+                </div>
+                <div class="staff__info">
+                    <p class="staff-name" th:text="${staff.name}">Staff Name</p>
+                    <p class="staff-role" th:text="${staff.role}">Role</p>
+                    <p class="staff-specialization" th:if="${staff.specialization != null and !staff.specialization.isEmpty()}" 
+                       th:text="${staff.specialization}">Specialization</p>
+                    <p class="staff-email" th:text="${staff.email}">Email</p>
+                    <p class="staff-status" th:classappend="${staff.invitationAccepted == 'approved'} ? 'status-approved' : 'status-pending'"
+                       th:text="${staff.invitationAccepted == 'approved'} ? 'Active' : 'Pending'">Status</p>
+                </div>
+                <div class="staff__actions">
+                    <button class="action-btn remove-btn" th:data-staff-id="${staff.id}" th:data-staff-name="${staff.name}" onclick="removeStaff(this.dataset.staffId, this.dataset.staffName)" title="Cancel Staff Connection">
+                        <img th:src="@{/Images/cancel.png}" alt="cancel">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <br>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+
+    <script th:src="@{/js/clinic/staffPage/HospitalStaffPage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

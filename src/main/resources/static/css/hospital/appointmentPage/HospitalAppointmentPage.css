@@ -1,0 +1,702 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: "Gabarito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+:root {
+    --nav-h: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+}
+
+/* announcement */
+
+.announcement {
+    background-color: #1E489E;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    font-size: 20px;
+}
+
+.announcement__cancel {
+    cursor: pointer;
+}
+
+/* navbar */
+
+.navbar {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 2;
+}
+
+.navbar__section1 img {
+    width: 250px;
+    height: 72px;
+}
+
+
+.navbar__section2 {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 30px;
+    width: 60%;
+    padding: 20px;
+}
+
+.navbar__section2 a {
+    text-decoration: none;
+    color: black;
+    color: #210084;
+
+}
+
+.navbar__section3 {
+    display: flex;
+    align-items: center;       
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.navbar__section3 img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.navbar__section4 img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.navbar__section4 {
+    display: none;
+}
+
+/* profile */
+
+.profile {
+    position: fixed;
+    top: 150px;
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #210084;
+    border: none;
+    border-radius: 20px;
+    width: 200px;
+    right: -20%;
+    transition: 1s;
+}
+
+.profile__section1 {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    gap: 10px;
+}
+
+.profile__section1 a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+
+.profile__section1 button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    color: #1E489E;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.5s;
+}
+
+.profile__section1 button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+.profile__section1 p {
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* responsive navabr */
+
+.responsive__navbar {
+    border: black solid 1px;
+    position: fixed;
+    width: 70%;
+    right: -80%;
+    height: 100vh;
+    top: 80px;
+    z-index: 4;
+    background-color: #210084;
+    transition: 0.5s;
+}
+
+.responsive__navbar img {
+    width: 150px;
+    height: 50px;
+}
+
+.responsive__navbar__section1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 a,
+.responsive__navbar__section1 p,
+.responsive__navbar__section1 h3 {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.responsive__navbar__section1 p {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.responsive__navbar__section1__button button {
+    color: #210084;
+    padding: 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    width: 140px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: 0.5s;
+}
+
+.responsive__navbar__section1__button button:hover {
+    background-color: #EE2400;
+    color: white;
+    transition: 0.5s;
+}
+
+/* appointments scheduling*/
+
+.appointments {
+    text-align: center;
+}
+
+.appointments h2 {
+    color: #1E489E;
+}
+
+.appointments__section1 h3 {
+    color: white;
+}
+
+.appointments__section1 {
+    background-color: #688fe3;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: 9%;
+    border-radius: 20px;
+}
+
+.appointments__section1 button {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    background-color: #1E489E;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.appointments__section1 button:hover {
+    background-color: #1a3d7a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.appointment__section1__sub {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.appointment__section1__sub__sub {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-width: 200px;
+    max-width: 200px;
+    flex-shrink: 0;
+}
+
+.appointment__section1__sub__sub input,
+.appointment__section1__sub__sub select {
+    border-radius: 10px;
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.appointment__section1__sub__sub select {
+    cursor: pointer;
+}
+
+.appointment__section1__sub__sub label {
+    text-align: left;
+    margin-bottom: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.appointment__section1__sub__sub input:focus,
+.appointment__section1__sub__sub select:focus {
+    outline: none;
+    border-color: #1E489E;
+    box-shadow: 0 0 5px rgba(30, 72, 158, 0.3);
+}
+
+/* schedules table */
+
+.schedule__summary {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.schedule__summary h2 {
+    color: #1E489E;
+    padding: 15px;
+}
+
+.schedule__summary table {
+    width: 80%;
+    margin-left: 10%;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.schedule__summary table tr th,
+.schedule__summary table tr td {
+    border: none;
+}
+
+
+.schedule__summary th,
+.schedule__summary td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+#schedule__summary__table__header {
+    background-color: #210084;
+    color: white;
+}
+
+.schedule__summary table tr {
+    background-color: #5a89ee;
+    color: white;
+}
+
+.schedule__summary table tr button {
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    background-color: #EE2400;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* appointments table */
+
+.appointments__summary {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.appointments__summary h2 {
+    color: #1E489E;
+    padding: 15px;
+}
+
+.appointments__summary table {
+    width: 80%;
+    margin-left: 10%;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.appointments__summary table tr th,
+.appointments__summary table tr td {
+    border: none;
+}
+
+
+.appointments__summary th,
+.appointments__summary td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+#appointments__summary__table__header {
+    background-color: #210084;
+    color: white;
+}
+
+.appointments__summary table tr {
+    background-color: #5a89ee;
+    color: white;
+}
+
+.appointment__summary__table__action {
+    display: flex;
+    flex-direction: row;
+    gap: 40%;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+/* Appointment status styles */
+.status-scheduled {
+    background-color: #4CAF50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-completed {
+    background-color: #2196F3;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    background-color: #f44336;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-no-show {
+    background-color: #FF9800;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Cancel appointment button */
+.cancel-appointment-btn {
+    padding: 8px 12px;
+    border-radius: 15px;
+    border: none;
+    background-color: #EE2400;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.cancel-appointment-btn:hover {
+    background-color: #c41e00;
+}
+
+/* Reverse appointment button */
+.reverse-appointment-btn {
+    padding: 8px 12px;
+    border-radius: 15px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.reverse-appointment-btn:hover {
+    background-color: #218838;
+}
+
+.no-action {
+    color: #999;
+    font-style: italic;
+}
+
+/* No appointments message */
+.no-appointments {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+
+/* Vaccination Days Row */
+.vaccination-days-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.vaccination-days-label {
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.vaccination-days {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.vaccination-days label {
+    background: #f3f6ff;
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #210084;
+    box-shadow: 0 2px 8px rgba(30, 72, 158, 0.07);
+    transition: background 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: fit-content;
+    flex-shrink: 0;
+}
+
+.vaccination-days label:hover {
+    background: #dde6ff;
+}
+
+.vaccination-days input[type="checkbox"] {
+    accent-color: #1E489E;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    margin: 0;
+}
+
+
+/* footer */
+
+.footer {
+    background-color: #1E489E;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+}
+
+
+/* responsive design */
+
+@media screen and (max-width: 768px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .schedule__summary,
+    .appointments__summary {
+        font-size: 10px;
+    }
+
+    .appointment__summary__table__action img {
+        height: 20px;
+        width: 20px;
+    }
+
+    .appointment__section1 {
+        margin-right: 40px;
+    }
+
+    .appointment__section1__sub {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .appointment__section1__sub__sub {
+        margin-bottom: 20px;
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    .vaccination-days-row {
+        align-items: center;
+        margin-top: 15px;
+    }
+    
+    .vaccination-days {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .vaccination-days label {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .vaccination-days-label {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .appointment__section1 {
+        margin-right: 40px;
+    }
+
+    .appointment__section1__sub {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .appointment__section1__sub__sub {
+        margin-bottom: 20px;
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    .vaccination-days-row {
+        align-items: center;
+        margin-top: 15px;
+    }
+    
+    .vaccination-days {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .vaccination-days label {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .vaccination-days-label {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .navbar__section1 img {
+        width: 150px;
+        height: 50px;
+    }
+
+    .navbar__section2 {
+        display: none;
+    }
+
+    .navbar__section3 {
+        display: none;
+    }
+
+    .navbar__section4 {
+        display: block;
+    }
+
+    .profile {
+        display: none;
+    }
+}

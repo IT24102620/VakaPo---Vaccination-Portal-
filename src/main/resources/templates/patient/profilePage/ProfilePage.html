@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
 
 <head>
@@ -9,14 +9,15 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/patient/profilePage/ProfilePage.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
 </head>
 
 <body>
-    <!-- Announcement Section -->
-    <div class="announcement">
-        <p>Get 30% off on your first vaccine</p>
-        <p class="announcement__cancel">X</p>
-    </div>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
 
     <!-- Navbar Section -->
     <div class="navbar">
@@ -24,13 +25,30 @@
             <img src="../../Images/logo.png" alt="logo">
         </div>
         <div class="navbar__section2">
-            <a th:href="@{/patient/home}">Home</a>
-            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
-            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
-            <a th:href="@{/feedback}" href="../Feedback Page/FeedbackPage.html">Feedback</a>
+            <a th:href="@{/patient/landing}">Home</a>
+            <a th:href="@{/patient/appointments}">Appointments</a>
+            <a th:href="@{/patient/vaccination-history}">Vaccination History</a>
+            <a th:href="@{/patient/feedback}">Feedback</a>
         </div>
         <div class="navbar__section3">
-            <img src="../../Images/profile.png" alt="profile">
+            <!-- Notification Icon -->
+            <div class="notification-icon" style="position: relative; margin-right: 15px;">
+                <img src="../../Images/notification.png" alt="notifications" style="width: 24px; height: 24px;">
+                <!-- Notification Dropdown -->
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <a href="#" class="mark-all-read" onclick="notificationManager.markAllAsRead()">Mark all read</a>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-loading">Loading notifications...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="notificationManager.viewAllNotifications()">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <img src="../../Images/profile.png" alt="profile" class="profile-icon">
         </div>
         <div class="navbar__section4">
             <img src="../../Images/menu-bar.png" alt="menu-bar">
@@ -41,18 +59,15 @@
     <div class="profile">
         <div class="profile__section1">
             <p class="profile__close">X</p>
-            <h3 th:text="'Welcome, ' + ${username}"></h3>
+            <h3>Welcome, <span th:text="${patientName}">Patient Name</span></h3> <br>
             <a th:href="@{/patient/profile}">Your Profile</a> <br>
-            <form th:action="@{/account/delete}" method="post"
-                  onsubmit="return confirm('This will permanently delete your account and files. Continue?');">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button type="submit">Delete My Account</button>
-            </form>
-            <form th:action="@{/logout}" method="post" style="display:inline;">
-                <!-- CSRF token (Thymeleaf exposes it as _csrf) -->
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit">Logout</button>
             </form>
+            <br><br>
+            <button id="deleteAccountBtn" class="btn-delete-account" onclick="confirmDeleteAccount()">
+                🗑️ Delete My Account
+            </button>
         </div>
     </div>
 
@@ -60,51 +75,66 @@
     <div class="responsive__navbar">
         <div class="responsive__navbar__section1">
             <p>X</p> <br>
-            <h3>Welcome, Risikesan</h3>
-            <a href="../ProfilePage/ProfilePage.html">Your Profile</a>
-            <a href="../Landing Page/PatientLandingPage.html">Home</a>
-            <a href="../Appointment Page/AppointmentPage.html">Appointments</a>
-            <a href="../VaccinationHistoryPage/VaccinationHistoryPage.html">Vaccination History</a>
-            <a th:href="@{/feedback}" href="../Feedback Page/FeedbackPage.html">Feedback</a>
+            <h3>Welcome, <span th:text="${patientName}">Patient Name</span></h3>
+            <a th:href="@{/patient/profile}">Your Profile</a>
+            <a th:href="@{/patient/landing}">Home</a>
+            <a th:href="@{/patient/appointments}">Appointments</a>
+            <a th:href="@{/patient/vaccination-history}">Vaccination History</a>
+            <a th:href="@{/patient/feedback}">Feedback</a>
             <div class="responsive__navbar__section1__button">
-                <button>Logout</button>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit">Logout</button>
+                </form>
             </div>
         </div>
     </div> <br>
 
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #c3e6cb;">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #f5c6cb;">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
     <!-- Personal Information Section -->
     <div class="personal__information">
         <div class="personal__information__section1">
-            <img src="../../Images/profile new.png" alt="profile">
+            <img th:src="@{/Images/profile new.png}" alt="profile">
         </div>
         <div class="personal__information__section2">
-            <button>Edit</button> <br> <br> <br>
+            <button id="editProfileBtn">Edit</button> <br> <br> <br>
             <h1>Personal Information</h1>
             <table>
                 <tr>
                     <td>ID</td>
                     <td>:</td>
-                    <td th:text="${user.id}"></td>
+                    <td th:text="${patientId}">Patient ID</td>
                 </tr>
                 <tr>
                     <td>NIC</td>
                     <td>:</td>
-                    <td th:text="${user.nic}"></td>
+                    <td th:text="${patientNic}">NIC Number</td>
                 </tr>
                 <tr>
                     <td>Name</td>
                     <td>:</td>
-                    <td th:text="${user.username}"></td>
+                    <td th:text="${patientName}">Patient Name</td>
                 </tr>
                 <tr>
                     <td>Email</td>
                     <td>:</td>
-                    <td th:text="${user.email}"></td>
+                    <td th:text="${patientEmail}">Patient Email</td>
                 </tr>
                 <tr>
                     <td>Phone Number</td>
                     <td>:</td>
-                    <td th:text="${user.contact}"></td>
+                    <td th:text="${patientContact}">Contact Number</td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td>:</td>
+                    <td th:text="${patientAge}">Age</td>
                 </tr>
             </table>
         </div>
@@ -113,7 +143,7 @@
     <!-- Latest Appointment History & Vaccination History Page -->
     <div class="history">
         <div class="appointment__summary">
-            <h2>Appointments</h2> <br>
+            <h2>Appointments <span th:if="${appointmentCount > 0}" class="count-badge" th:text="'(' + ${appointmentCount} + ')'"></span></h2> <br>
             <table>
                 <tr id="appointment__summary__table__header">
                     <th>Vaccine</th>
@@ -122,23 +152,33 @@
                     <th>Location</th>
                     <th>Status</th>
                 </tr>
-                <tr>
-                    <td>Influenza</td>
-                    <td>2025-02-2024</td>
-                    <td>11.30 a.m.</td>
-                    <td>Delmon Hospital</td>
-                    <td>Confirmed</td>
+                <!-- Dynamic appointment data -->
+                <tr th:each="appointment : ${recentAppointments}">
+                    <td th:text="${appointment.vaccineName}">Vaccine Name</td>
+                    <td th:text="${#temporals.format(appointment.appointmentDate, 'yyyy-MM-dd')}">Date</td>
+                    <td th:text="${appointment.timeSlot}">Time</td>
+                    <td th:text="${appointment.institutionName}">Location</td>
+                    <td>
+                        <span th:if="${appointment.status == 'confirmed'}" class="status-confirmed" th:text="${appointment.status}">Confirmed</span>
+                        <span th:if="${appointment.status == 'pending'}" class="status-pending" th:text="${appointment.status}">Pending</span>
+                        <span th:if="${appointment.status == 'cancelled'}" class="status-cancelled" th:text="${appointment.status}">Cancelled</span>
+                        <span th:if="${appointment.status != 'confirmed' && appointment.status != 'pending' && appointment.status != 'cancelled'}" class="status-default" th:text="${appointment.status}">Status</span>
+                    </td>
+                </tr>
+                <!-- Show message if no appointments -->
+                <tr th:if="${#lists.isEmpty(recentAppointments)}">
+                    <td colspan="5" class="no-data-message">No appointments found</td>
                 </tr>
             </table>
             <div class="appointment__summary__section1">
-                <button class="appointment__button">View All Appointments</button>
-                <button class="vaccination__book__button">Book Appointment</button>
+                <a th:href="@{/patient/appointments}" class="appointment__button">View All Appointments</a>
+                <a th:href="@{/patient/appointments}" class="vaccination__book__button">Book Appointment</a>
             </div>
 
         </div>
 
         <div class="appointment__summary">
-            <h2>Vaccination History</h2> <br>
+            <h2>Vaccination History <span th:if="${vaccinationCount > 0}" class="count-badge" th:text="'(' + ${vaccinationCount} + ')'"></span></h2> <br>
             <table>
                 <tr id="appointment__summary__table__header">
                     <th>Vaccine</th>
@@ -146,13 +186,25 @@
                     <th>Location</th>
                     <th>Status</th>
                 </tr>
-                <tr>
-                    <td>Influenza</td>
-                    <td>2025-02-2024</td>
-                    <td>Delmon Hospital</td>
-                    <td>Confirmed</td>
+                <!-- Dynamic vaccination history data -->
+                <tr th:each="vaccination : ${recentVaccinationHistory}">
+                    <td th:text="${vaccination.vaccineName}">Vaccine Name</td>
+                    <td th:text="${#temporals.format(vaccination.vaccinationDate, 'yyyy-MM-dd')}">Date</td>
+                    <td th:text="${vaccination.location}">Location</td>
+                    <td>
+                        <span th:if="${vaccination.nurseApproval == 'approved'}" class="status-confirmed" th:text="${vaccination.nurseApproval}">Approved</span>
+                        <span th:if="${vaccination.nurseApproval == 'pending'}" class="status-pending" th:text="${vaccination.nurseApproval}">Pending</span>
+                        <span th:if="${vaccination.nurseApproval != 'approved' && vaccination.nurseApproval != 'pending'}" class="status-default" th:text="${vaccination.nurseApproval}">Status</span>
+                    </td>
+                </tr>
+                <!-- Show message if no vaccination history -->
+                <tr th:if="${#lists.isEmpty(recentVaccinationHistory)}">
+                    <td colspan="4" class="no-data-message">No vaccination history found</td>
                 </tr>
             </table>
+            <div class="appointment__summary__section1">
+                <a th:href="@{/patient/vaccination-history}" class="appointment__button">View All Vaccination History</a>
+            </div>
             <br><br><br>
         </div>
     </div>
@@ -163,49 +215,99 @@
         <p>&copy; 2025 VakaPo. All Rights Reserved</p>
     </div>
 
-    <!-- Edit Details -->
-    <div id="editModal" class="modal">
+    <!-- Edit Profile Popup -->
+    <div id="editProfileModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Edit Personal Details</h2>
-            <form th:action="@{/patient/updateProfile}" method="post">
-                <div class="form-group">
-                    <label for="nic">NIC</label>
-                    <input type="text" id="nic" name="nic" th:value="${user.nic}" required>
-                </div>
-                <div class="form-group">
-                    <label for="username">Name</label>
-                    <input type="text" id="username" name="username" th:value="${user.username}" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" th:value="${user.email}" required>
-                </div>
-                <div class="form-group">
-                    <label for="contact">Phone Number</label>
-                    <input type="text" id="contact" name="contact" th:value="${user.contact}" required>
-                </div>
-                <hr>
-                <h3>Change Password</h3>
-                <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <input type="password" id="currentPassword" name="currentPassword">
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" id="newPassword" name="newPassword">
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword">
-                </div>
-                <button type="submit">Save Changes</button>
-            </form>
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" th:action="@{/patient/profile/update}" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editId">ID</label>
+                            <input type="text" id="editId" name="id" th:value="${patientId}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editNic">NIC</label>
+                            <input type="text" id="editNic" name="nic" th:value="${patientNic}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editName">Name *</label>
+                            <input type="text" id="editName" name="patientName" th:value="${patientName}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail">Email *</label>
+                            <input type="email" id="editEmail" name="email" th:value="${patientEmail}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPhone">Phone Number *</label>
+                            <input type="tel" id="editPhone" name="contact" th:value="${patientContact}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAge">Age</label>
+                            <input type="text" id="editAge" th:value="${patientAge}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="editAddress">Address</label>
+                            <textarea id="editAddress" name="address" rows="3" placeholder="Enter your address" th:text="${patientAddress}"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="editPassword">New Password (Optional)</label>
+                            <input type="password" id="editPassword" name="newPassword" placeholder="Enter new password (leave blank to keep current)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelEdit" class="btn-cancel">Cancel</button>
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-
     <script th:src="@{/js/patient/profilePage/ProfilePage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

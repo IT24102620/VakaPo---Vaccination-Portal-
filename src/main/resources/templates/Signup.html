@@ -4,27 +4,113 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Signup</title>
+    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link th:href="@{/css/Signup.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/Signup.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+    <style>
+        #submitBtn:disabled {
+            background: #ccc !important;
+            color: #666 !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+        
+        #submitBtn:disabled:hover {
+            background: #ccc !important;
+            color: #666 !important;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+        
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Center the submit button */
+        .tooltip {
+            text-align: center !important;
+            margin: 20px 0 !important;
+            display: block !important;
+        }
+        
+        #submitBtn {
+            margin: 0 auto !important;
+            display: block !important;
+        }
+    </style>
 </head>
+
 <body>
+    <!-- Announcement Section -->
+    <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+        <p id="emergencyMessage">Loading emergency notification...</p>
+        <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+    </div>
 <div class="signup">
     <div class="signup__section1">
         <h1>VakaPo Signup</h1>
-        <p>Create Your Account.</p>
+        <p>Create Your Account</p>
     </div>
 
     <div class="signup__section2">
-        <form th:action="@{/signup}" method="post" enctype="multipart/form-data" id="signupForm">
+        <!-- IMPORTANT: give this form an id -->
+        <form id="signupForm" th:action="@{/auth/signup}" method="post" enctype="multipart/form-data" novalidate>
+            <!-- If CSRF is enabled, include the token -->
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
             <!-- Common -->
             <div class="signup__input">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email">Email <span style="color: red;">*</span></label>
+                <input type="email" id="email" name="email" required 
+                       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                       title="Please enter a valid email address">
+                <div class="error-message" id="email-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
 
             <div class="signup__input">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" 
+                       pattern="^[a-zA-Z0-9_]{3,20}$"
+                       title="Username must be 3-20 characters, letters, numbers, and underscores only">
+                <div class="error-message" id="username-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
 
             <div class="signup__input">
@@ -37,127 +123,588 @@
                 </select>
             </div>
 
-            <!-- Patient -->
-            <div class="signup__patient" id="patientSection" style="display:none;">
+            <!-- Patient Information -->
+            <div class="signup__patient" style="display:none">
                 <div class="signup__input">
-                    <label for="pname">Patient Name</label>
-                    <input type="text" id="pname" name="pname">
+                    <label for="pname">Patient Name <span style="color: red;">*</span></label>
+                    <input type="text" id="pname" name="pname" 
+                           pattern="^[a-zA-Z\s]{3,50}$"
+                           title="Name must be 3-50 characters, letters and spaces only">
+                    <div class="error-message" id="pname-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
-                    <label for="dob">Date Of Birth</label>
-                    <input type="date" id="dob" name="dob">
+                    <label for="dob">Date Of Birth <span style="color: red;">*</span></label>
+                    <input type="date" id="dob" name="dob" required>
+                    <div class="error-message" id="dob-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
                     <label for="age">Age</label>
                     <input type="number" id="age" name="age" readonly>
+                    <br><br>
                 </div>
-
-                <div class="signup__input">
+                <div class="signup__input__gname" style="display:none">
                     <label for="gname">Guardian Name</label>
-                    <input type="text" id="gname" name="gname">
+                    <input type="text" id="gname" name="gname" 
+                           pattern="^[a-zA-Z\s]{3,50}$"
+                           title="Guardian name must be 3-50 characters, letters and spaces only">
+                    <div class="error-message" id="gname-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
-                    <label for="gender">Gender</label>
-                    <select class="dropdown" id="gender" name="gender">
+                    <label for="gender">Gender <span style="color: red;">*</span></label>
+                    <select class="dropdown" id="gender" name="gender" required>
                         <option value="">-- Select --</option>
-                        <option>Male</option>
-                        <option>Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
                     </select>
+                    <div class="error-message" id="gender-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
                 </div>
-
                 <div class="signup__input">
                     <label for="nic">NIC Number</label>
-                    <input type="text" id="nic" name="nic">
+                    <input type="text" id="nic" name="nic" inputmode="latin" autocomplete="off"
+                           pattern="^[0-9]{9}[vVxX]|[0-9]{12}$"
+                           title="NIC must be 9 digits followed by V/X or 12 digits">
+                    <div class="error-message" id="nic-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
             </div>
 
-            <!-- Hospital/Clinic -->
-            <div class="signup__hospital" id="hospitalSection" style="display:none;">
+            <!-- Hospital Information -->
+            <div class="signup__hospital" style="display:none">
                 <div class="signup__input">
-                    <label for="hname">Hospital Name</label>
-                    <input type="text" id="hname" name="hname">
+                    <label for="hnameHospital">Hospital Name <span style="color: red;">*</span></label>
+                    <input type="text" id="hnameHospital" name="hname" 
+                           pattern="^[a-zA-Z0-9\s]{3,100}$"
+                           title="Hospital name must be 3-100 characters, letters, numbers, and spaces only">
+                    <div class="error-message" id="hnameHospital-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
-                    <label for="rnumber">Registration Number</label>
-                    <input type="text" id="rnumber" name="rnumber">
+                    <label for="rnumberHospital">License Number <span style="color: red;">*</span></label>
+                    <input type="text" id="rnumberHospital" name="rnumber" 
+                           pattern="^[a-zA-Z0-9]{3,20}$"
+                           title="License number must be 3-20 alphanumeric characters">
+                    <div class="error-message" id="rnumberHospital-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
-                    <label for="rcertificate">Registration Certificate</label>
-                    <input type="file" id="rcertificate" name="rcertificate" accept=".pdf,.png,.jpg,.jpeg">
+                    <label for="rcertificateHospital">Registration Certificate <span style="color: red;">*</span></label>
+                    <input type="file" id="rcertificateHospital" name="rcertificate" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <div class="error-message" id="rcertificateHospital-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
-
                 <div class="signup__input">
-                    <label for="institution">Type Of Institution</label>
-                    <select class="dropdown" id="institution" name="institution">
+                    <label for="institutionHospital">Type Of Institution <span style="color: red;">*</span></label>
+                    <select class="dropdown" id="institutionHospital" name="institution" required>
                         <option value="">-- Select --</option>
-                        <option>Government</option>
-                        <option>Private</option>
+                        <option value="Government">Government</option>
+                        <option value="Private">Private</option>
                     </select>
+                    <div class="error-message" id="institutionHospital-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
                 </div>
             </div>
 
-            <div class="signup__clinic" id="clinicSection" style="display:none;">
+            <!-- Clinic Information -->
+            <div class="signup__clinic" style="display:none">
                 <div class="signup__input">
-                    <label for="cname">Clinic Name</label>
-                    <input type="text" id="cname" name="hname">
+                    <label for="hnameClinic">Clinic Name <span style="color: red;">*</span></label>
+                    <input type="text" id="hnameClinic" name="hname" 
+                           pattern="^[a-zA-Z0-9\s]{3,100}$"
+                           title="Clinic name must be 3-100 characters, letters, numbers, and spaces only">
+                    <div class="error-message" id="hnameClinic-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
                 <div class="signup__input">
-                    <label for="cnumber">Registration Number</label>
-                    <input type="text" id="cnumber" name="rnumber">
+                    <label for="rnumberClinic">License Number <span style="color: red;">*</span></label>
+                    <input type="text" id="rnumberClinic" name="rnumber" 
+                           pattern="^[a-zA-Z0-9]{3,20}$"
+                           title="License number must be 3-20 alphanumeric characters">
+                    <div class="error-message" id="rnumberClinic-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
                 <div class="signup__input">
-                    <label for="ccertificate">Registration Certificate</label>
-                    <input type="file" id="ccertificate" name="rcertificate" accept=".pdf,.png,.jpg,.jpeg">
+                    <label for="rcertificateClinic">Registration Certificate <span style="color: red;">*</span></label>
+                    <input type="file" id="rcertificateClinic" name="rcertificate" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <div class="error-message" id="rcertificateClinic-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    <br><br>
                 </div>
                 <div class="signup__input">
-                    <label for="cinstitution">Type Of Institution</label>
-                    <select class="dropdown" id="cinstitution" name="institution">
+                    <label for="institutionClinic">Type Of Institution <span style="color: red;">*</span></label>
+                    <select class="dropdown" id="institutionClinic" name="institution" required>
                         <option value="">-- Select --</option>
-                        <option>Government</option>
-                        <option>Private</option>
+                        <option value="Government">Government</option>
+                        <option value="Private">Private</option>
                     </select>
+                    <div class="error-message" id="institutionClinic-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
                 </div>
             </div>
 
-            <!-- Common contact/address/password -->
+            <!-- Common contact/address/password (single copy) -->
             <div class="signup__input">
-                <label for="contact">Contact Number</label>
-                <input type="text" id="contact" name="contact" required>
+                <label for="contact">Contact Number <span style="color: red;">*</span></label>
+                <input type="tel" id="contact" name="contact" 
+                       pattern="^0[0-9]{9}$" 
+                       placeholder="07XXXXXXXX" 
+                       title="Contact number must be 10 digits starting with 0"
+                       required>
+                <div class="error-message" id="contact-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
-
             <div class="signup__input">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
+                <label for="address">Address <span style="color: red;">*</span></label>
+                <input type="text" id="address" name="address" 
+                       pattern="^.{5,200}$"
+                       title="Address must be 5-200 characters"
+                       required>
+                <div class="error-message" id="address-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
-
             <div class="signup__input">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password <span style="color: red;">*</span></label>
+                <input type="password" id="password" name="password" 
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                       title="Password must be at least 8 characters with uppercase, lowercase, number, and special character"
+                       required>
+                <div class="error-message" id="password-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
-
             <div class="signup__input">
-                <label for="retypepassword">Re-Type Password</label>
+                <label for="retypepassword">Confirm Password <span style="color: red;">*</span></label>
                 <input type="password" id="retypepassword" name="retypepassword" required>
+                <div class="error-message" id="retypepassword-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br><br>
             </div>
 
-            <button type="submit">Signup</button>
+            <div class="tooltip">
+                <button type="submit" id="submitBtn" disabled>Create Account</button>
+                <span class="tooltiptext" id="tooltipText">Please fill all required fields correctly</span>
+            </div>
         </form>
 
         <div class="signup__section3">
             <p>Already have an account? <a th:href="@{/login}">Login</a></p>
         </div>
-
         <div class="signup__section4">
             <p>&copy; 2025 VakaPo. All Rights Reserved</p>
         </div>
     </div>
 </div>
 
+<!-- FIX: leading slash -->
 <script th:src="@{/js/Signup.js}"></script>
+
+<!-- Comprehensive Validation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Regex patterns for validation
+    const patterns = {
+        email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        username: /^[a-zA-Z0-9_]{3,20}$/,
+        patientName: /^[a-zA-Z\s]{3,50}$/,
+        guardianName: /^[a-zA-Z\s]{3,50}$/,
+        nic: /^[0-9]{9}[vVxX]|[0-9]{12}$/,
+        hospitalName: /^[a-zA-Z0-9\s]{3,100}$/,
+        clinicName: /^[a-zA-Z0-9\s]{3,100}$/,
+        licenseNumber: /^[a-zA-Z0-9]{3,20}$/,
+        contact: /^0[0-9]{9}$/,
+        address: /^.{5,200}$/,
+        password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    };
+
+    // Error messages
+    const errorMessages = {
+        email: 'Please enter a valid email address (e.g., user@example.com)',
+        username: 'Username must be 3-20 characters, letters, numbers, and underscores only',
+        patientName: 'Patient name must consist only of letters and spaces (3-50 characters)',
+        guardianName: 'Guardian name must consist only of letters and spaces (3-50 characters)',
+        nic: 'NIC must be 9 digits followed by V/X or 12 digits (e.g., 123456789V or 123456789012)',
+        hospitalName: 'Hospital name must be 3-100 characters, letters, numbers, and spaces only',
+        clinicName: 'Clinic name must be 3-100 characters, letters, numbers, and spaces only',
+        licenseNumber: 'License number must be 3-20 alphanumeric characters',
+        contact: 'Contact number must be 10 digits starting with 0 (e.g., 0712345678)',
+        address: 'Address must be 5-200 characters',
+        password: 'Password must be at least 8 characters with uppercase, lowercase, number, and special character',
+        confirmPassword: 'Passwords do not match',
+        required: 'This field is required',
+        futureDate: 'Date of birth cannot be in the future',
+        fileSize: 'File size must be less than 2MB',
+        fileType: 'Only PDF, JPG, and PNG files are allowed',
+        role: 'Please select a role (Patient, Hospital, or Clinic)',
+        gender: 'Please select a gender',
+        institution: 'Please select institution type (Government or Private)',
+        dob: 'Please select your date of birth'
+    };
+
+    // Show error message
+    function showError(fieldId, message) {
+        const errorDiv = document.getElementById(fieldId + '-error');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    }
+
+    // Clear error message
+    function clearError(fieldId) {
+        const errorDiv = document.getElementById(fieldId + '-error');
+        if (errorDiv) {
+            errorDiv.textContent = '';
+            errorDiv.style.display = 'none';
+        }
+    }
+
+    // Validate field
+    function validateField(fieldId, value, pattern, required = true) {
+        if (required && (!value || value.trim() === '')) {
+            showError(fieldId, errorMessages.required);
+            return false;
+        }
+        
+        if (value && !pattern.test(value)) {
+            showError(fieldId, errorMessages[fieldId] || 'Invalid format');
+            return false;
+        }
+        
+        clearError(fieldId);
+        return true;
+    }
+
+    // Validate date of birth
+    function validateDOB() {
+        const dob = document.getElementById('dob');
+        if (dob && dob.value) {
+            const selectedDate = new Date(dob.value);
+            const today = new Date();
+            if (selectedDate > today) {
+                showError('dob', errorMessages.futureDate);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Validate file upload
+    function validateFile(fieldId) {
+        const fileInput = document.getElementById(fieldId);
+        if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            
+            if (!allowedTypes.includes(file.type)) {
+                showError(fieldId, errorMessages.fileType);
+                return false;
+            }
+            
+            if (file.size > maxSize) {
+                showError(fieldId, errorMessages.fileSize);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Validate password confirmation
+    function validatePasswordConfirmation() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('retypepassword').value;
+        
+        if (confirmPassword && password !== confirmPassword) {
+            showError('retypepassword', errorMessages.confirmPassword);
+            return false;
+        }
+        return true;
+    }
+
+    // Email check debouncing
+    let emailCheckTimeout;
+    let lastCheckedEmail = '';
+
+    // Check if email already exists
+    async function checkEmailExists(email) {
+        try {
+            console.log('Making API call for email:', email); // Debug log
+            const response = await fetch('/auth/check-email?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            console.log('API response status:', response.status); // Debug log
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('API response data:', data); // Debug log
+                return data.exists;
+            } else {
+                console.error('API call failed with status:', response.status);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error checking email:', error);
+            return false;
+        }
+    }
+
+    // Debounced email check
+    function debouncedEmailCheck(email) {
+        if (emailCheckTimeout) {
+            clearTimeout(emailCheckTimeout);
+        }
+        
+        if (email === lastCheckedEmail) {
+            return;
+        }
+        
+        emailCheckTimeout = setTimeout(async () => {
+            if (email && patterns.email.test(email)) {
+                lastCheckedEmail = email;
+                console.log('Checking email:', email); // Debug log
+                const exists = await checkEmailExists(email);
+                console.log('Email exists:', exists); // Debug log
+                
+                if (exists) {
+                    const submitBtn = document.getElementById('submitBtn');
+                    const tooltipText = document.getElementById('tooltipText');
+                    submitBtn.disabled = true;
+                    tooltipText.textContent = 'Email: This email address is already registered. Please use a different email or try logging in.';
+                    console.log('Button disabled due to existing email'); // Debug log
+                } else {
+                    // Re-check form validity after email check
+                    console.log('Email available, re-checking form validity'); // Debug log
+                    checkFormValidity();
+                }
+            }
+        }, 500); // 500ms delay
+    }
+
+    // Add event listeners for real-time validation
+    const fields = [
+        { id: 'email', pattern: patterns.email },
+        { id: 'username', pattern: patterns.username },
+        { id: 'pname', pattern: patterns.patientName },
+        { id: 'gname', pattern: patterns.guardianName },
+        { id: 'nic', pattern: patterns.nic },
+        { id: 'hnameHospital', pattern: patterns.hospitalName },
+        { id: 'hnameClinic', pattern: patterns.clinicName },
+        { id: 'rnumberHospital', pattern: patterns.licenseNumber },
+        { id: 'rnumberClinic', pattern: patterns.licenseNumber },
+        { id: 'contact', pattern: patterns.contact },
+        { id: 'address', pattern: patterns.address },
+        { id: 'password', pattern: patterns.password }
+    ];
+
+    fields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (element) {
+            element.addEventListener('blur', function() {
+                validateField(field.id, this.value, field.pattern);
+            });
+        }
+    });
+
+    // Special validations
+    document.getElementById('dob')?.addEventListener('change', validateDOB);
+    document.getElementById('retypepassword')?.addEventListener('blur', validatePasswordConfirmation);
+    document.getElementById('rcertificateHospital')?.addEventListener('change', () => validateFile('rcertificateHospital'));
+    document.getElementById('rcertificateClinic')?.addEventListener('change', () => validateFile('rcertificateClinic'));
+
+    // Function to check overall form validity - SIMPLIFIED
+    function checkFormValidity() {
+        let isValid = true;
+        let validationErrors = [];
+        
+        // Validate all visible required fields
+        const role = document.getElementById('role').value;
+        
+        // Check role selection first
+        if (!role) {
+            validationErrors.push('Please select a role (Patient, Hospital, or Clinic)');
+            isValid = false;
+        }
+        
+        // Common validations - simplified
+        const email = document.getElementById('email').value;
+        const contact = document.getElementById('contact').value;
+        const address = document.getElementById('address').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('retypepassword').value;
+        
+        if (!email || !patterns.email.test(email)) {
+            validationErrors.push('Email: ' + errorMessages.email);
+            isValid = false;
+        }
+        
+        if (!contact || !patterns.contact.test(contact)) {
+            validationErrors.push('Contact Number: ' + errorMessages.contact);
+            isValid = false;
+        }
+        
+        if (!address || address.length < 5) {
+            validationErrors.push('Address: ' + errorMessages.address);
+            isValid = false;
+        }
+        
+        if (!password || !patterns.password.test(password)) {
+            validationErrors.push('Password: ' + errorMessages.password);
+            isValid = false;
+        }
+        
+        if (!confirmPassword || password !== confirmPassword) {
+            validationErrors.push('Confirm Password: ' + errorMessages.confirmPassword);
+            isValid = false;
+        }
+        
+        // Role-specific validations - simplified
+        if (role === 'Patient') {
+            const pname = document.getElementById('pname').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            
+            if (!pname || !patterns.patientName.test(pname)) {
+                validationErrors.push('Patient Name: ' + errorMessages.patientName);
+                isValid = false;
+            }
+            
+            if (!dob) {
+                validationErrors.push('Date of Birth: ' + errorMessages.dob);
+                isValid = false;
+            }
+            
+            if (!gender) {
+                validationErrors.push('Gender: ' + errorMessages.gender);
+                isValid = false;
+            }
+            
+        } else if (role === 'Hospital') {
+            const hname = document.getElementById('hnameHospital').value;
+            const rnumber = document.getElementById('rnumberHospital').value;
+            const institution = document.getElementById('institutionHospital').value;
+            const file = document.getElementById('rcertificateHospital').files[0];
+            
+            if (!hname || !patterns.hospitalName.test(hname)) {
+                validationErrors.push('Hospital Name: ' + errorMessages.hospitalName);
+                isValid = false;
+            }
+            
+            if (!rnumber || !patterns.licenseNumber.test(rnumber)) {
+                validationErrors.push('License Number: ' + errorMessages.licenseNumber);
+                isValid = false;
+            }
+            
+            if (!file) {
+                validationErrors.push('Registration Certificate: Please upload a valid file');
+                isValid = false;
+            }
+            
+            if (!institution) {
+                validationErrors.push('Institution Type: ' + errorMessages.institution);
+                isValid = false;
+            }
+            
+        } else if (role === 'Clinic') {
+            const hname = document.getElementById('hnameClinic').value;
+            const rnumber = document.getElementById('rnumberClinic').value;
+            const institution = document.getElementById('institutionClinic').value;
+            const file = document.getElementById('rcertificateClinic').files[0];
+            
+            if (!hname || !patterns.clinicName.test(hname)) {
+                validationErrors.push('Clinic Name: ' + errorMessages.clinicName);
+                isValid = false;
+            }
+            
+            if (!rnumber || !patterns.licenseNumber.test(rnumber)) {
+                validationErrors.push('License Number: ' + errorMessages.licenseNumber);
+                isValid = false;
+            }
+            
+            if (!file) {
+                validationErrors.push('Registration Certificate: Please upload a valid file');
+                isValid = false;
+            }
+            
+            if (!institution) {
+                validationErrors.push('Institution Type: ' + errorMessages.institution);
+                isValid = false;
+            }
+        }
+        
+        // Update button state and tooltip
+        const submitBtn = document.getElementById('submitBtn');
+        const tooltipText = document.getElementById('tooltipText');
+        
+        if (isValid) {
+            submitBtn.disabled = false;
+            tooltipText.textContent = 'Click to create your account';
+        } else {
+            submitBtn.disabled = true;
+            tooltipText.textContent = validationErrors.join('\n');
+        }
+        
+        return isValid;
+    }
+    
+    // Form submission validation - REMOVED to avoid conflict with Signup.js
+    // The Signup.js file handles form submission
+    
+    // Add real-time validation listeners
+    const allInputs = [
+        'username', 'pname', 'gname', 'nic', 'hnameHospital', 'hnameClinic', 
+        'rnumberHospital', 'rnumberClinic', 'contact', 'address', 'password', 'retypepassword',
+        'role', 'gender', 'dob', 'institutionHospital', 'institutionClinic'
+    ];
+    
+    allInputs.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', checkFormValidity);
+            element.addEventListener('change', checkFormValidity);
+        }
+    });
+    
+    // Special handling for email field with debounced check
+    const emailField = document.getElementById('email');
+    if (emailField) {
+        emailField.addEventListener('input', function() {
+            checkFormValidity();
+            const email = this.value;
+            if (email && patterns.email.test(email)) {
+                debouncedEmailCheck(email);
+            }
+        });
+        emailField.addEventListener('change', checkFormValidity);
+    }
+    
+    // Check form validity on page load
+    checkFormValidity();
+});
+
+// Emergency Announcement Script
+document.addEventListener('DOMContentLoaded', function() {
+    loadEmergencyNotification();
+});
+
+function loadEmergencyNotification() {
+    fetch('/api/public/emergency/latest')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.message) {
+                document.getElementById('emergencyMessage').textContent = data.message;
+                document.getElementById('emergencyAnnouncement').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.log('No emergency notification or error loading:', error);
+        });
+}
+
+function hideEmergencyAnnouncement() {
+    document.getElementById('emergencyAnnouncement').style.display = 'none';
+}
+</script>
 </body>
 </html>

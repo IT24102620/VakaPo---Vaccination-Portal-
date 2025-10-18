@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vaccination History - VakaPo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/patient/vaccinationHistoryPage/VaccinationHistoryPage.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img th:src="@{/images/logo.png}" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/patient/landing}">Home</a>
+            <a th:href="@{/patient/appointments}">Appointments</a>
+            <a th:href="@{/patient/vaccination-history}">Vaccination History</a>
+            <a th:href="@{/patient/feedback}">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <!-- Notification Icon -->
+            <div class="notification-icon" style="position: relative; margin-right: 15px;">
+                <img th:src="@{/images/notification.png}" alt="notifications" style="width: 24px; height: 24px;">
+                <!-- Notification Dropdown -->
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <a href="#" class="mark-all-read" onclick="notificationManager.markAllAsRead()">Mark all read</a>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-loading">Loading notifications...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="notificationManager.viewAllNotifications()">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <img th:src="@{/images/profile.png}" alt="profile" class="profile-icon">
+        </div>
+        <div class="navbar__section4">
+            <img th:src="@{/images/menu-bar.png}" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${patientName}">Patient</span></h3> <br>
+            <a th:href="@{/patient/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/patient/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, <span th:text="${patientName}">Patient</span></h3>
+            <a th:href="@{/patient/profile}">Your Profile</a>
+            <a th:href="@{/patient/landing}">Home</a>
+            <a th:href="@{/patient/appointments}">Appointments</a>
+            <a th:href="@{/patient/vaccination-history}">Vaccination History</a>
+            <a th:href="@{/patient/feedback}">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div> <br>
+
+    <!-- Vaccination History Section -->
+    <div class="vaccination__history">
+        <h1>Vaccination History</h1>
+        
+        <!-- Loading indicator -->
+        <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+            <p>Loading your vaccination history...</p>
+        </div>
+        
+        <!-- Error message -->
+        <div id="errorMessage" class="error-message" style="display: none;">
+            <p>Unable to load vaccination history. Please try again later.</p>
+        </div>
+        
+        <!-- No records message -->
+        <div id="noRecordsMessage" class="no-records-message" style="display: none;">
+            <p>No vaccination records found. Your completed vaccinations will appear here.</p>
+        </div>
+        
+        <!-- Vaccination History Table -->
+        <table id="vaccinationHistoryTable" style="display: none;">
+            <tr id="vaccination__history__table__header">
+                <th>Vaccine</th>
+                <th>Date</th>
+                <th>Hospital</th>
+                <th>Status</th>
+                <th class="vaccination__history__table__header__download">
+                    <img th:src="@{/images/downloadall.png}" alt="download-all" title="Download All Certificates">
+                </th>
+                <th>Action</th>
+            </tr>
+            <!-- Dynamic rows will be inserted here by JavaScript -->
+        </table>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2025</span> VakaPo. All Rights Reserved</p>
+    </div>
+    
+    <!-- JavaScript for dynamic functionality -->
+    <script th:src="@{/js/patient/vaccinationHistoryPage/VaccinationHistoryPage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

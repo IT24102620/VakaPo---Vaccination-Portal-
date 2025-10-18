@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VakaPo Admin Dashboard</title>
+        <link rel="stylesheet" th:href="@{/css/Admin/landingPage/AdminLandingPage.css}" />
+        <!-- Unify text style and margin with Allowed_Sub_Admin -->
+        <style>
+            .content-area {
+                margin-left: calc(var(--sidebar-width) + 24px);
+                transition: margin-left 0.3s ease;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .sidebar-link {
+                font-size: 1rem;
+                font-weight: 500;
+                border-radius: 8px;
+            }
+            .sidebar-link .icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 1rem;
+                opacity: 0.8;
+            }
+            .sidebar-link:hover,
+            .sidebar-link.active {
+                background-color: #e9ecef;
+                color: var(--primary-color);
+            }
+            h1, h2 {
+                color: var(--primary-color);
+                font-weight: 600;
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            p {
+                line-height: 1.6;
+                color: #666;
+                margin-bottom: 1.5rem;
+            }
+        </style>
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<!-- overlay for mobile open -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+    <div class="logo" aria-hidden="false">
+        <img th:src="@{/Images/logo.png}" alt="VakaPo logo">
+    </div>
+    <nav>
+    <a class="sidebar-link active" th:href="@{/admin/landing}">
+            <img class="icon" th:src="@{/Images/home.png}" alt="Dashboard">
+            <span class="link-text">Home</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/user-management}">
+            <img class="icon" th:src="@{/Images/member.png}" alt="User Management">
+            <span class="link-text">User Management</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/contacts}">
+            <img class="icon" th:src="@{/Images/contact.png}" alt="Contact Management">
+            <span class="link-text">Contact Management</span></a>
+
+
+        <a class="sidebar-link" th:href="@{/admin/sub-admin-request}">
+            <img class="icon" th:src="@{/Images/Sub_Admin_manager.png}" alt="Sub-Admin Manager">
+            <span class="link-text">Sub-Admin Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccination-monitoring}">
+            <img class="icon" th:src="@{/Images/Vaccination_Mon.png}" alt="Vaccination Monitoring">
+            <span class="link-text">Vaccination Monitoring</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccines/manage}">
+            <img class="icon" th:src="@{/Images/plus.png}" alt="Vaccine Manager">
+            <span class="link-text">Vaccine Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/feedback-manager}">
+            <img class="icon" th:src="@{/Images/feedback.png}" alt="Feedback Manager">
+            <span class="link-text">Feedback Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/notifications}">
+            <img class="icon" th:src="@{/Images/notification.png}" alt="Messages & Alerts">
+            <span class="link-text">Messages & Alerts</span></a>
+
+        <form th:action="@{/logout}" method="post" style="width: 100%;">
+            <button type="submit" class="sidebar-link" style="width:100%; border:none; background:none; cursor:pointer;">
+                <img class="icon" th:src="@{/Images/logout.png}" alt="Logout">
+                <span class="link-text">Log Out</span>
+            </button>
+        </form>
+    </nav>
+</aside>
+
+
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+    <img th:src="@{/Images/Admin/menu.png}" alt="menu">
+</button>
+
+<!-- MAIN: content-area wrapper keeps content centered -->
+<div class="content-area" id="contentArea">
+    <main class="container" id="mainContent" role="main">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Welcome to VakaPo Admin Dashboard</h1>
+            <p>Your comprehensive portal for managing the nation's vaccination program</p>
+        </div>
+
+        <!-- Welcome Information -->
+        <div class="welcome-info">
+            <p>
+                This portal is your primary tool for monitoring and managing the country's vaccination program.
+                It's a centralized, secure platform that gives you access to real-time data,
+                allowing you to track progress and ensure our public health initiatives are efficient.
+                We designed this system to streamline vaccination records and provide you with the
+                essential metrics you need to make informed decisions that protect our nation's health.
+            </p>
+            <p>
+                Please be advised that this portal contains sensitive public health data,
+                so use it with the utmost care and diligence. To ensure data integrity and security,
+                all actions within this system are logged. If you require any assistance,
+                you can refer to the support documentation or contact our help desk.
+            </p>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <div class="tables-container">
+            <div class="table-section">
+                <div class="table-header">
+                    <h3>🚀 Quick Actions</h3>
+                </div>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-icon">🏥</div>
+                        <h3>Manage Hospitals & Clinics</h3>
+                        <p>Browse and manage all registered hospitals and clinics in the system. View details, update information, and monitor their activities.</p>
+                        <button class="btn-view" data-action="manage-hospitals">View Details</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⏳</div>
+                        <h3>Pending Requests</h3>
+                        <p>Review and approve new hospital/clinic registration requests. Ensure only qualified institutions join the vaccination network.</p>
+                        <button class="btn-view" data-action="pending-requests">Review Requests</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💉</div>
+                        <h3>Vaccine Manager</h3>
+                        <p>Manage vaccines, add new ones, and control vaccine availability. Keep the vaccination program updated with the latest medical advances.</p>
+                        <button class="btn-view" data-action="vaccine-manager">Manage Vaccines</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <h3>Vaccination Monitoring</h3>
+                        <p>Monitor vaccination progress and statistics across all institutions. Track trends and identify areas needing attention.</p>
+                        <button class="btn-view" data-action="vaccination-monitoring">View Statistics</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💬</div>
+                        <h3>View Feedback</h3>
+                        <p>Review and manage user feedback from patients and healthcare providers. Improve services based on user experiences.</p>
+                        <button class="btn-view" data-action="view-feedback">View Feedback</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📢</div>
+                        <h3>Messages & Alerts</h3>
+                        <p>Send announcements and manage system-wide notifications. Keep all stakeholders informed about important updates.</p>
+                        <button class="btn-view" data-action="messages-alerts">Manage Alerts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Information -->
+        <div class="tables-container">
+            <div class="table-section">
+                <div class="table-header">
+                    <h3>ℹ️ System Information</h3>
+                </div>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h4>🔒 Security & Data Protection</h4>
+                        <p>This portal contains sensitive public health data. All actions are logged for security and compliance. Use with utmost care and diligence.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>📞 Support & Assistance</h4>
+                        <p>Need help? Refer to the support documentation or contact our help desk. We're here to ensure you can effectively manage the vaccination program.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="inner">
+            <p>VakaPo | Making Vaccination booking simple & secure</p>
+            <p>© 2025 VakaPo. All Rights Reserved</p>
+        </div>
+    </footer>
+</div>
+
+<script th:src="@{/js/Admin/landingPage/AdminLandingPage.js}"></script>
+</body>
+</html>

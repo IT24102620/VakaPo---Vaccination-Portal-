@@ -6,7 +6,6 @@
 body {
     font-family: "Gabarito", sans-serif;
     font-optical-sizing: auto;
-    font-weight: <weight>;
     font-style: normal;
 }
 
@@ -319,6 +318,7 @@ html {
     margin-left: 8%;
     width: 80%;
     position: relative;
+    overflow: hidden;
 }
 
 .reviews__section1 {
@@ -329,101 +329,69 @@ html {
     color: #1E489E;
 }
 
+.reviews__container {
+    overflow: hidden;
+    width: 100%;
+}
+
 .reviews__section2 {
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    gap: 20px;
+    animation: slideReviews 20s linear infinite;
+    width: calc(350% + 120px); /* 7 reviews * 20% + gaps */
 }
 
 .reviews__section2__sub {
     border: 1px black solid;
-    width: 25%;
+    width: 20%;
+    min-width: 300px;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background: white;
+    flex-shrink: 0;
 }
 
 .reviews__section2__sub h4 {
     border-bottom: 1px solid black;
     padding: 15px;
+    background: #1E489E;
+    color: white;
+    margin: 0;
+    border-radius: 15px 15px 0 0;
 }
 
 .reviews__section2__sub p {
     padding: 15px;
+    margin: 0;
+    line-height: 1.5;
 }
 
-.reviews__section3 {
-    position: absolute;
-    left: 0px;
-    top: 45%;
-    cursor: pointer;
-}
-
-.reviews__section4 {
-    position: absolute;
-    right: 0px;
-    top: 45%;
-    cursor: pointer;
-}
-
-/* Marquee container */
-.reviews__section2 {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-    padding-block: 10px;            /* optional breathing room */
-}
-
-/* Scrolling track */
-.reviews__track {
-    --gap: 2rem;                     /* gap between review cards */
+.star-rating {
     display: flex;
-    gap: var(--gap);
-    width: max-content;              /* shrink to content width */
-    will-change: transform;
-    animation: reviewsMarquee 20s linear infinite;
+    justify-content: center;
+    margin: 10px 0;
+    gap: 2px;
 }
 
-/* Pause on hover (optional; remove if you want nonstop) */
-.reviews__section2:hover .reviews__track {
+.star {
+    color: #FFD700;
+    font-size: 18px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+@keyframes slideReviews {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-100% / 3.5)); /* Move by 1/3.5 of the total width for 7 reviews */
+    }
+}
+
+/* Pause animation on hover */
+.reviews__container:hover .reviews__section2 {
     animation-play-state: paused;
 }
-
-/* Individual review cards – style as you like */
-.reviews__section2__sub {
-    flex: 0 0 auto;                  /* prevent shrinking */
-    min-width: 280px;                /* card width; adjust for your design */
-    padding: 1rem 1.25rem;
-    background: #f7f7f9;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    text-align: center;
-}
-
-/* Optional: soft edge fade so items enter/leave nicely */
-.reviews__section2::after,
-.reviews__section2::before {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 60px;                     /* fade size */
-    pointer-events: none;
-}
-.reviews__section2::before { left: 0; background: linear-gradient(to right, #fff, transparent); }
-.reviews__section2::after  { right: 0; background: linear-gradient(to left,  #fff, transparent); }
-
-/* The keyframe moves EXACTLY half the track width.
-   We subtract half the gap so spacing stays perfect at the loop join. */
-@keyframes reviewsMarquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(-50% - var(--gap) / 2)); }
-}
-
-/* Accessibility: respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    .reviews__track { animation: none; }
-}
-
-
 
 /* footer */
 
@@ -497,9 +465,8 @@ html {
         margin-left: 2%;
     }
 
-    .reviews__section3,
-    .reviews__section4 {
-        display: none;
+    .reviews__section2__sub {
+        min-width: 250px;
     }
 }
 

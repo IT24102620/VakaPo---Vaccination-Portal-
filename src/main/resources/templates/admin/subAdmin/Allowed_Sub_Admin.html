@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sub-Admin Manager | VakaPo Admin</title>
+    <link rel="stylesheet" th:href="@{/css/Admin/landingPage/AdminLandingPage.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/subAdmin/Allowed_Sub_Admin.css}">
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+    <style>
+        .content-area {
+            margin-left: calc(var(--sidebar-width) + 24px);
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-link {
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .sidebar-link .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            opacity: 0.8;
+        }
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<!-- overlay for mobile open -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+         <span class="link-text">Messages & Alerts</span></a>
+
+        <form th:action="@{/logout}" method="post" style="width: 100%;">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+                <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+                <div class="logo" aria-hidden="false">
+                    <img th:src="@{/Images/logo.png}" alt="VakaPo logo">
+                </div>
+                <nav>
+                    <a class="sidebar-link active" th:href="@{/admin/landing}">
+                        <img class="icon" th:src="@{/Images/home.png}" alt="Dashboard">
+                        <span class="link-text">Home</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/user-management}">
+                        <img class="icon" th:src="@{/Images/member.png}" alt="User Management">
+                        <span class="link-text">User Management</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/contacts}">
+                        <img class="icon" th:src="@{/Images/contact.png}" alt="Contact Management">
+                        <span class="link-text">Contact Management</span></a>
+
+
+                    <a class="sidebar-link" th:href="@{/admin/sub-admin-request}">
+                        <img class="icon" th:src="@{/Images/Sub_Admin_manager.png}" alt="Sub-Admin Manager">
+                        <span class="link-text">Sub-Admin Manager</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/vaccination-monitoring}">
+                        <img class="icon" th:src="@{/Images/Vaccination_Mon.png}" alt="Vaccination Monitoring">
+                        <span class="link-text">Vaccination Monitoring</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/vaccines/manage}">
+                        <img class="icon" th:src="@{/Images/plus.png}" alt="Vaccine Manager">
+                        <span class="link-text">Vaccine Manager</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/feedback-manager}">
+                        <img class="icon" th:src="@{/Images/feedback.png}" alt="Feedback Manager">
+                        <span class="link-text">Feedback Manager</span></a>
+
+                    <a class="sidebar-link" th:href="@{/admin/notifications}">
+                        <img class="icon" th:src="@{/Images/notification.png}" alt="Messages & Alerts">
+                        <span class="link-text">Messages & Alerts</span></a>
+
+                    <form th:action="@{/logout}" method="post" style="width: 100%;">
+                        <button type="submit" class="sidebar-link" style="width:100%; border:none; background:none; cursor:pointer;">
+                            <img class="icon" th:src="@{/Images/logout.png}" alt="Logout">
+                            <span class="link-text">Log Out</span>
+                        </button>
+                    </form>
+                </nav>
+            </aside>
+
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+    <img th:src="@{/Images/Admin/menu.png}" alt="menu">
+</button>
+
+<!-- MAIN: content-area wrapper keeps content centered -->
+<div class="content-area" id="contentArea">
+    <main class="container" id="mainContent" role="main">
+        <h1>Sub-Admin Manager</h1>
+        <p>Review pending requests from hospitals and clinics. You can view the submitted certificate, approve, or delete the request.</p>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-info">
+                    <h3 th:text="${#lists.size(hospitals)}">0</h3>
+                    <p>Pending Hospitals</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-info">
+                    <h3 th:text="${#lists.size(clinics)}">0</h3>
+                    <p>Pending Clinics</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 th:text="${#lists.size(approvedHospitals) + #lists.size(approvedClinics)}">0</h3>
+                    <p>Approved Institutions</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 th:text="${#lists.size(hospitals) + #lists.size(clinics)}">0</h3>
+                    <p>Total Pending</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search bar applies to all lists -->
+        <input type="text" id="searchInput" placeholder="Search by institution, username, or email..." oninput="filterInstitutions()">
+
+        <!-- ===== PENDING REQUESTS ===== -->
+        <section class="section">
+            <h2>Pending Hospital Requests</h2>
+            <div class="institutions-cards" id="pendingHospitals">
+                <div th:if="${#lists.isEmpty(hospitals)}" class="empty-hint">No pending hospital requests.</div>
+
+                <div th:each="h : ${hospitals}" class="institution-card pending" data-kind="hospital"
+                     th:attr="data-name=${h.institution} + ' ' + ${h.username} + ' ' + ${h.email}">
+                    <h3>
+                        <span th:text="${h.institution}">Institution</span>
+                        <small class="muted" th:text="${h.id}" style="margin-left:.5rem"></small>
+                    </h3>
+                    <p><strong>Username:</strong> <span th:text="${h.username}">—</span></p>
+                    <p><strong>Reg No:</strong> <span th:text="${h.rnumber}">—</span></p>
+                    <p><strong>Email:</strong> <span th:text="${h.email}">—</span></p>
+                    <p><strong>Contact:</strong> <span th:text="${h.contact}">—</span></p>
+                    <p><strong>Address:</strong> <span th:text="${h.address}">—</span></p>
+                    <p><strong>Certificate:</strong>
+                        <a th:if="${h.certificate != null}"
+                           th:href="@{'/admin/sub-admin-request/certificate'(path=${h.certificate})}"
+                           target="_blank" rel="noopener">View</a>
+                        <span th:if="${h.certificate == null}">Not uploaded</span>
+                    </p>
+
+                    <div class="actions">
+                        <form th:action="@{'/admin/sub-admin-request/approve/hospital/' + ${h.id}}" method="post">
+                            <button type="submit" class="btn btn-approve">Approve</button>
+                        </form>
+                        <form th:action="@{'/admin/sub-admin-request/delete/hospital/' + ${h.id}}" method="post">
+                            <button type="submit" class="btn btn-delete"
+                                    onclick="return confirm('Delete this hospital request? This cannot be undone.')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Pending Clinic Requests</h2>
+            <div class="institutions-cards" id="pendingClinics">
+                <div th:if="${#lists.isEmpty(clinics)}" class="empty-hint">No pending clinic requests.</div>
+
+                <div th:each="c : ${clinics}" class="institution-card pending" data-kind="clinic"
+                     th:attr="data-name=${c.institution} + ' ' + ${c.username} + ' ' + ${c.email}">
+                    <h3>
+                        <span th:text="${c.institution}">Institution</span>
+                        <small class="muted" th:text="${c.id}" style="margin-left:.5rem"></small>
+                    </h3>
+                    <p><strong>Username:</strong> <span th:text="${c.username}">—</span></p>
+                    <p><strong>Reg No:</strong> <span th:text="${c.rnumber}">—</span></p>
+                    <p><strong>Email:</strong> <span th:text="${c.email}">—</span></p>
+                    <p><strong>Contact:</strong> <span th:text="${c.contact}">—</span></p>
+                    <p><strong>Address:</strong> <span th:text="${c.address}">—</span></p>
+                    <p><strong>Certificate:</strong>
+                        <a th:if="${c.certificate != null}"
+                           th:href="@{'/admin/sub-admin-request/certificate'(path=${c.certificate})}"
+                           target="_blank" rel="noopener">View</a>
+                        <span th:if="${c.certificate == null}">Not uploaded</span>
+                    </p>
+
+                    <div class="actions">
+                        <form th:action="@{'/admin/sub-admin-request/approve/clinic/' + ${c.id}}" method="post">
+                            <button type="submit" class="btn btn-approve">Approve</button>
+                        </form>
+                        <form th:action="@{'/admin/sub-admin-request/delete/clinic/' + ${c.id}}" method="post">
+                            <button type="submit" class="btn btn-delete"
+                                    onclick="return confirm('Delete this clinic request? This cannot be undone.')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== APPROVED INSTITUTIONS ===== -->
+        <section class="section">
+            <h2>Approved Hospitals</h2>
+            <div class="institutions-cards" id="approvedHospitals">
+                <div th:if="${#lists.isEmpty(approvedHospitals)}" class="empty-hint">No approved hospitals.</div>
+
+                <div th:each="h : ${approvedHospitals}" class="institution-card approved" data-kind="hospital"
+                     th:attr="data-name=${h.institution} + ' ' + ${h.username} + ' ' + ${h.email}">
+                    <h3>
+                        <span th:text="${h.institution}">Institution</span>
+                        <small class="muted" th:text="${h.id}" style="margin-left:.5rem"></small>
+                    </h3>
+                    <p><strong>Username:</strong> <span th:text="${h.username}">—</span></p>
+                    <p><strong>Reg No:</strong> <span th:text="${h.rnumber}">—</span></p>
+                    <p><strong>Email:</strong> <span th:text="${h.email}">—</span></p>
+                    <p><strong>Contact:</strong> <span th:text="${h.contact}">—</span></p>
+                    <p><strong>Address:</strong> <span th:text="${h.address}">—</span></p>
+                    <p><strong>Certificate:</strong>
+                        <a th:if="${h.certificate != null}"
+                           th:href="@{'/admin/sub-admin-request/certificate'(path=${h.certificate})}"
+                           target="_blank" rel="noopener">View</a>
+                        <span th:if="${h.certificate == null}">Not uploaded</span>
+                    </p>
+                    <div class="actions">
+                        <form th:action="@{'/admin/sub-admin-request/unapprove/hospital/' + ${h.id}}" method="post">
+                            <button type="submit" class="btn btn-unapprove"
+                                    onclick="return confirm('Are you sure you want to unapprove this hospital? They will be notified via email.')">Un Approve</button>
+                        </form>
+                    </div>
+                    <span class="status-approved">✓ Approved</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Approved Clinics</h2>
+            <div class="institutions-cards" id="approvedClinics">
+                <div th:if="${#lists.isEmpty(approvedClinics)}" class="empty-hint">No approved clinics.</div>
+
+                <div th:each="c : ${approvedClinics}" class="institution-card approved" data-kind="clinic"
+                     th:attr="data-name=${c.institution} + ' ' + ${c.username} + ' ' + ${c.email}">
+                    <h3>
+                        <span th:text="${c.institution}">Institution</span>
+                        <small class="muted" th:text="${c.id}" style="margin-left:.5rem"></small>
+                    </h3>
+                    <p><strong>Username:</strong> <span th:text="${c.username}">—</span></p>
+                    <p><strong>Reg No:</strong> <span th:text="${c.rnumber}">—</span></p>
+                    <p><strong>Email:</strong> <span th:text="${c.email}">—</span></p>
+                    <p><strong>Contact:</strong> <span th:text="${c.contact}">—</span></p>
+                    <p><strong>Address:</strong> <span th:text="${c.address}">—</span></p>
+                    <p><strong>Certificate:</strong>
+                        <a th:if="${c.certificate != null}"
+                           th:href="@{'/admin/sub-admin-request/certificate'(path=${c.certificate})}"
+                           target="_blank" rel="noopener">View</a>
+                        <span th:if="${c.certificate == null}">Not uploaded</span>
+                    </p>
+                    <div class="actions">
+                        <form th:action="@{'/admin/sub-admin-request/unapprove/clinic/' + ${c.id}}" method="post">
+                            <button type="submit" class="btn btn-unapprove"
+                                    onclick="return confirm('Are you sure you want to unapprove this clinic? They will be notified via email.')">Un Approve</button>
+                        </form>
+                    </div>
+                    <span class="status-approved">✓ Approved</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script th:src="@{/js/admin/subAdmin/Allowed_Sub_Admin.js}"></script>
+
+<!-- Enhanced filter to work with all institution cards -->
+<script>
+    function filterInstitutions() {
+        const q = (document.getElementById('searchInput').value || '').toLowerCase();
+        document.querySelectorAll('.institution-card').forEach(card => {
+            const hay = (card.getAttribute('data-name') || card.innerText || '').toLowerCase();
+            card.style.display = hay.includes(q) ? '' : 'none';
+        });
+    }
+    
+    // Add some visual feedback for approved institutions
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add success message if redirected from approval
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('ok') === '1') {
+            // You can add a success notification here if needed
+            console.log('Institution approved successfully');
+        }
+    });
+</script>
+</body>
+</html>

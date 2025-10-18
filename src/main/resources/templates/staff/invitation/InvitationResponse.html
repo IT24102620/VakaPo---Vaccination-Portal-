@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${title}">Invitation Response</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .success .icon {
+            color: #28a745;
+        }
+        
+        .error .icon {
+            color: #dc3545;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .message {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .success .message {
+            color: #28a745;
+        }
+        
+        .error .message {
+            color: #dc3545;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Announcement Section -->
+    <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+        <p id="emergencyMessage">Loading emergency notification...</p>
+        <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+    </div>
+
+    <div class="container" th:classappend="${success} ? 'success' : 'error'">
+        <div class="icon" th:if="${success}">✅</div>
+        <div class="icon" th:if="${!success}">❌</div>
+        
+        <h1 th:text="${title}">Invitation Response</h1>
+        
+        <div class="message" th:if="${success}" th:text="${message}">
+            Your invitation has been processed successfully.
+        </div>
+        
+        <div class="message" th:if="${!success}" th:text="${error}">
+            There was an error processing your invitation.
+        </div>
+        
+        <div th:if="${success}">
+            <p style="color: #666; margin-bottom: 30px;">
+                Thank you for joining the VakaPo team! You will receive further instructions via email.
+            </p>
+        </div>
+        
+        <div th:if="${!success}">
+            <p style="color: #666; margin-bottom: 30px;">
+                If you believe this is an error, please contact the institution directly or our support team.
+            </p>
+        </div>
+        
+        <div>
+            <a href="/" class="btn">Go to VakaPo</a>
+            <a href="/login" class="btn btn-secondary">Login</a>
+        </div>
+        
+        <div class="footer">
+            <p>VakaPo | Making Vaccination Management Simple & Secure</p>
+            <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+        </div>
+    </div>
+
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

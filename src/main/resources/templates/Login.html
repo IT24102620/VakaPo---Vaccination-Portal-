@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
 
 <head>
@@ -8,10 +8,16 @@
     <title>Login</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/css/Login.css}">
+    <link rel="stylesheet" th:href='@{/css/Login.css}'>
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
 </head>
 
 <body>
+    <!-- Announcement Section -->
+    <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+        <p id="emergencyMessage">Loading emergency notification...</p>
+        <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+    </div>
 <!-- Login Section -->
 <div class="login">
     <div class="login__section1">
@@ -19,20 +25,44 @@
         <p>Welcome! Please Enter Your Credentials To Continue.</p> <br>
     </div>
     <div class="login__section2">
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/login}" method="post" novalidate>
             <div class="login__input">
-                <label for="email">Email </label>
-                <input type="email" id="email" name="email" required> <br> <br>
+                <label for="email">Email <span style="color: red;">*</span></label>
+                <input type="email" id="email" name="email" 
+                       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                       title="Please enter a valid email address"
+                       required> 
+                <div class="error-message" id="email-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br> <br>
             </div>
             <div class="login__input">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required> <br> <br>
+                <label for="password">Password <span style="color: red;">*</span></label>
+                <input type="password" id="password" name="password" 
+                       title="Password is required"
+                       required> 
+                <div class="error-message" id="password-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br> <br>
             </div>
             <button type="submit">Login</button>
         </form>
         <div class="login__section3">
-            <p>Don't have an account? <a th:href="@{/signup}"> Sign Up</a></p> <br>
-            <p><a href="../Forgot Password Page/ForgotPasswordPage.html">Forgot Password</a></p>
+            <p>Don't have an account? <a th:href="@{/register}">Sign Up</a></p> <br>
+            <p><a th:href="@{/forgot-password}">🔒 Forgot Password?</a></p>
+        </div>
+        
+        <!-- Admin Review Message -->
+        <div th:if="${param.adminApproval}" class="admin-review-message" style="
+            background-color: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            color: #856404; 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 5px; 
+            text-align: center;
+            font-weight: 500;
+        ">
+            <strong>⏳ Account Under Review</strong><br>
+            Your account is being reviewed by the administrator. Please wait for 2-3 working days for approval.
         </div>
         <div class="login__section4">
             <p>&copy; 2025 VakaPo. All Rights Reserved</p>
@@ -40,6 +70,116 @@
         </div>
     </div>
 </div>
+
+<!-- Display alerts based on query parameters -->
+<script th:if="${param.adminApproval}" th:inline="javascript">
+    /*
+     * When the adminApproval query parameter is present on the login URL it
+     * means the user attempted to log in as a hospital or clinic whose
+     * account has not yet been approved by an administrator. Display an
+     * informational alert to let them know that their registration is under
+     * review.
+     */
+    alert('Your account is under review by the administrator. Please wait for 2-3 working days for approval. You will be notified once your account is approved.');
+</script>
+<script th:if="${param.error}" th:inline="javascript">
+    /*
+     * If the login attempt failed for other reasons (such as invalid
+     * credentials) Spring Security appends an error parameter. Show a
+     * generic error message in that case.
+     */
+    alert('Invalid email or password. Please check your credentials and try again.');
+</script>
+
+<!-- Login Validation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Email validation regex
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    // Show error message
+    function showError(fieldId, message) {
+        const errorDiv = document.getElementById(fieldId + '-error');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    }
+    
+    // Clear error message
+    function clearError(fieldId) {
+        const errorDiv = document.getElementById(fieldId + '-error');
+        if (errorDiv) {
+            errorDiv.textContent = '';
+            errorDiv.style.display = 'none';
+        }
+    }
+    
+    // Validate email
+    function validateEmail() {
+        const email = document.getElementById('email').value;
+        if (!email || email.trim() === '') {
+            showError('email', 'Email is required');
+            return false;
+        }
+        if (!emailPattern.test(email)) {
+            showError('email', 'Please enter a valid email address');
+            return false;
+        }
+        clearError('email');
+        return true;
+    }
+    
+    // Validate password
+    function validatePassword() {
+        const password = document.getElementById('password').value;
+        if (!password || password.trim() === '') {
+            showError('password', 'Password is required');
+            return false;
+        }
+        clearError('password');
+        return true;
+    }
+    
+    // Add event listeners
+    document.getElementById('email').addEventListener('blur', validateEmail);
+    document.getElementById('password').addEventListener('blur', validatePassword);
+    
+    // Form submission validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const emailValid = validateEmail();
+        const passwordValid = validatePassword();
+        
+        if (!emailValid || !passwordValid) {
+            e.preventDefault();
+            alert('Please fix all validation errors before submitting.');
+        }
+    });
+});
+
+// Emergency Announcement Script
+document.addEventListener('DOMContentLoaded', function() {
+    loadEmergencyNotification();
+});
+
+function loadEmergencyNotification() {
+    fetch('/api/public/emergency/latest')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.message) {
+                document.getElementById('emergencyMessage').textContent = data.message;
+                document.getElementById('emergencyAnnouncement').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.log('No emergency notification or error loading:', error);
+        });
+}
+
+function hideEmergencyAnnouncement() {
+    document.getElementById('emergencyAnnouncement').style.display = 'none';
+}
+</script>
 </body>
 
 </html>

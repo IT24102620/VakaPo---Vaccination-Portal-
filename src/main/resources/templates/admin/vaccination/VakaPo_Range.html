@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VakaPo Admin - Vaccination Monitoring</title>
+    <link rel="stylesheet" th:href="@{/css/Admin/landingPage/AdminLandingPage.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/vaccination/VakaPo_Range.css}">
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .content-area {
+            margin-left: calc(var(--sidebar-width) + 24px);
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-link {
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .sidebar-link .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            opacity: 0.8;
+        }
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" th:classappend="${sidebarOpen} ? 'active' : ''"></div>
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+    <div class="logo" aria-hidden="false">
+        <img th:src="@{/Images/logo.png}" alt="VakaPo logo">
+    </div>
+    <nav>
+        <a class="sidebar-link active" th:href="@{/admin/landing}">
+            <img class="icon" th:src="@{/Images/home.png}" alt="Dashboard">
+            <span class="link-text">Home</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/user-management}">
+            <img class="icon" th:src="@{/Images/member.png}" alt="User Management">
+            <span class="link-text">User Management</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/contacts}">
+            <img class="icon" th:src="@{/Images/contact.png}" alt="Contact Management">
+            <span class="link-text">Contact Management</span></a>
+
+
+        <a class="sidebar-link" th:href="@{/admin/sub-admin-request}">
+            <img class="icon" th:src="@{/Images/Sub_Admin_manager.png}" alt="Sub-Admin Manager">
+            <span class="link-text">Sub-Admin Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccination-monitoring}">
+            <img class="icon" th:src="@{/Images/Vaccination_Mon.png}" alt="Vaccination Monitoring">
+            <span class="link-text">Vaccination Monitoring</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccines/manage}">
+            <img class="icon" th:src="@{/Images/plus.png}" alt="Vaccine Manager">
+            <span class="link-text">Vaccine Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/feedback-manager}">
+            <img class="icon" th:src="@{/Images/feedback.png}" alt="Feedback Manager">
+            <span class="link-text">Feedback Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/notifications}">
+            <img class="icon" th:src="@{/Images/notification.png}" alt="Messages & Alerts">
+            <span class="link-text">Messages & Alerts</span></a>
+
+        <form th:action="@{/logout}" method="post" style="width: 100%;">
+            <button type="submit" class="sidebar-link" style="width:100%; border:none; background:none; cursor:pointer;">
+                <img class="icon" th:src="@{/Images/logout.png}" alt="Logout">
+                <span class="link-text">Log Out</span>
+            </button>
+        </form>
+    </nav>
+</aside>
+
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+    <img th:src="@{/Images/Admin/menu.png}" alt="menu">
+</button>
+
+<!-- MAIN: content-area wrapper keeps content centered -->
+<div class="content-area" id="contentArea">
+    <main class="container" id="mainContent" role="main">
+    <section>
+        <h1>Vaccination Monitoring Dashboard</h1>
+        <p>Comprehensive monitoring of vaccination rates, hospital performance, and vaccine distribution across the system.</p>
+
+        <!-- Statistics Overview -->
+        <div class="stats-overview" th:if="${stats}">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <h3 th:text="${stats.totalVaccinations}">0</h3>
+                    <p>Total Vaccinations</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-content">
+                    <h3 th:text="${stats.completedVaccinations}">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-content">
+                    <h3 th:text="${stats.pendingVaccinations}">0</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-content">
+                    <h3 th:text="${#numbers.formatDecimal(stats.vaccinationRate, 1, 1)} + '%'">0%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-content">
+                    <h3 th:text="${stats.totalInstitutions}">0</h3>
+                    <p>Institutions</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💉</div>
+                <div class="stat-content">
+                    <h3 th:text="${stats.totalVaccines}">0</h3>
+                    <p>Vaccine Types</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vaccine Analytics Dashboard -->
+        <div class="analytics-dashboard">
+            <!-- Chart Row 1 -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Vaccine Distribution by Type</h3>
+                    <canvas id="vaccineDistributionChart"></canvas>
+            </div>
+                <div class="chart-container">
+                    <h3>Vaccination Status Overview</h3>
+                    <canvas id="vaccinationStatusChart"></canvas>
+            </div>
+        </div>
+
+            <!-- Chart Row 2 -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Monthly Vaccination Trends</h3>
+                    <canvas id="monthlyTrendsChart"></canvas>
+            </div>
+                <div class="chart-container">
+                    <h3>Institution Performance</h3>
+                    <canvas id="institutionPerformanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart Row 3 -->
+            <div class="chart-row">
+                <div class="chart-container full-width">
+                    <h3>Vaccine Usage Over Time</h3>
+                    <canvas id="vaccineUsageChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart Row 4 -->
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Age Group Vaccination Rates</h3>
+                    <canvas id="ageGroupChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+    </div>
+
+<!-- Footer -->
+<footer>
+    <p>VakaPo | Making Vaccination booking simple & secure</p>
+    <p>© 2025 VakaPo. All Rights Reserved</p>
+</footer>
+
+<script>
+    // Chart instances
+    let charts = {};
+
+    // Initialize all charts
+    function initializeCharts() {
+        // 1. Vaccine Distribution Chart (Doughnut)
+        const vaccineDistributionCtx = document.getElementById('vaccineDistributionChart').getContext('2d');
+        charts.vaccineDistribution = new Chart(vaccineDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['COVID-19 Pfizer', 'COVID-19 Moderna', 'Influenza', 'Hepatitis B', 'MMR', 'Tdap', 'Varicella', 'HPV'],
+                datasets: [{
+                    data: [45, 30, 25, 20, 15, 18, 12, 8],
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Vaccination Status Chart (Pie)
+        const vaccinationStatusCtx = document.getElementById('vaccinationStatusChart').getContext('2d');
+        charts.vaccinationStatus = new Chart(vaccinationStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Completed', 'Pending', 'Cancelled'],
+                datasets: [{
+                    data: [75, 20, 5],
+                    backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Monthly Trends Chart (Line)
+        const monthlyTrendsCtx = document.getElementById('monthlyTrendsChart').getContext('2d');
+        charts.monthlyTrends = new Chart(monthlyTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Vaccinations',
+                    data: [120, 150, 180, 200, 220, 250, 280, 300, 320, 350, 380, 400],
+                    borderColor: '#36A2EB',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 4. Institution Performance Chart (Bar)
+        const institutionPerformanceCtx = document.getElementById('institutionPerformanceChart').getContext('2d');
+        charts.institutionPerformance = new Chart(institutionPerformanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Colombo Hospital', 'Kandy General', 'Galle Medical', 'Jaffna Teaching', 'Kurunegala Base'],
+                datasets: [{
+                    label: 'Vaccinations Administered',
+                    data: [450, 380, 320, 280, 250],
+                    backgroundColor: [
+                        '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#F44336'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 5. Vaccine Usage Over Time Chart (Multi-line)
+        const vaccineUsageCtx = document.getElementById('vaccineUsageChart').getContext('2d');
+        charts.vaccineUsage = new Chart(vaccineUsageCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                datasets: [
+                    {
+                        label: 'COVID-19 Pfizer',
+                        data: [65, 70, 75, 80, 85, 90, 95, 100],
+                        borderColor: '#FF6384',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'COVID-19 Moderna',
+                        data: [45, 50, 55, 60, 65, 70, 75, 80],
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Influenza',
+                        data: [30, 35, 40, 45, 50, 55, 60, 65],
+                        borderColor: '#FFCE56',
+                        backgroundColor: 'rgba(255, 206, 86, 0.1)',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // 6. Age Group Chart (Bar)
+        const ageGroupCtx = document.getElementById('ageGroupChart').getContext('2d');
+        charts.ageGroup = new Chart(ageGroupCtx, {
+            type: 'bar',
+            data: {
+                labels: ['0-18', '19-30', '31-45', '46-60', '60+'],
+                datasets: [{
+                    label: 'Vaccination Rate (%)',
+                    data: [85, 92, 88, 75, 68],
+                    backgroundColor: [
+                        '#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#F44336'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+    }
+
+    // Update charts with real data
+    function updateChartsWithData() {
+        console.log('Fetching real-time data from database...');
+
+        // Update charts with real data
+        fetch('/admin/vaccination-monitoring/chart-data')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const chartData = data.chartData;
+                    const stats = chartData.statistics;
+                    
+                    // Update statistics cards with real database data
+                    if (stats) {
+                    document.querySelector('.stat-card:nth-child(1) h3').textContent = stats.totalVaccinations;
+                    document.querySelector('.stat-card:nth-child(2) h3').textContent = stats.completedVaccinations;
+                    document.querySelector('.stat-card:nth-child(3) h3').textContent = stats.pendingVaccinations;
+                    document.querySelector('.stat-card:nth-child(4) h3').textContent = stats.vaccinationRate.toFixed(1) + '%';
+                    document.querySelector('.stat-card:nth-child(5) h3').textContent = stats.totalInstitutions;
+                    document.querySelector('.stat-card:nth-child(6) h3').textContent = stats.totalVaccines;
+                        console.log('Statistics updated with real data:', stats);
+                    }
+                    
+                    // Update vaccine distribution chart
+                    if (charts.vaccineDistribution) {
+                        charts.vaccineDistribution.data.labels = chartData.vaccineDistribution.labels;
+                        charts.vaccineDistribution.data.datasets[0].data = chartData.vaccineDistribution.data;
+                        charts.vaccineDistribution.update();
+                    }
+                    
+                    // Update vaccination status chart
+                    if (charts.vaccinationStatus) {
+                        charts.vaccinationStatus.data.labels = chartData.vaccinationStatus.labels;
+                        charts.vaccinationStatus.data.datasets[0].data = chartData.vaccinationStatus.data;
+                        charts.vaccinationStatus.update();
+                    }
+                    
+                    // Update monthly trends chart
+                    if (charts.monthlyTrends) {
+                        charts.monthlyTrends.data.labels = chartData.monthlyTrends.labels;
+                        charts.monthlyTrends.data.datasets[0].data = chartData.monthlyTrends.data;
+                        charts.monthlyTrends.update();
+                    }
+                    
+                    // Update institution performance chart
+                    if (charts.institutionPerformance) {
+                        charts.institutionPerformance.data.labels = chartData.institutionPerformance.labels;
+                        charts.institutionPerformance.data.datasets[0].data = chartData.institutionPerformance.data;
+                        charts.institutionPerformance.update();
+                    }
+                    
+                    // Update vaccine usage chart
+                    if (charts.vaccineUsage) {
+                        charts.vaccineUsage.data.labels = chartData.vaccineUsage.labels;
+                        const datasets = chartData.vaccineUsage.datasets;
+                        charts.vaccineUsage.data.datasets[0].data = datasets["COVID-19 Pfizer"];
+                        charts.vaccineUsage.data.datasets[1].data = datasets["COVID-19 Moderna"];
+                        charts.vaccineUsage.data.datasets[2].data = datasets["Influenza"];
+                        charts.vaccineUsage.update();
+                    }
+                    
+                    // Update age group chart
+                    if (charts.ageGroup) {
+                        charts.ageGroup.data.labels = chartData.ageGroup.labels;
+                        charts.ageGroup.data.datasets[0].data = chartData.ageGroup.data;
+                        charts.ageGroup.update();
+                    }
+                    
+                    
+                    console.log('All 6 charts updated successfully with real database data at:', new Date().toLocaleTimeString());
+                } else {
+                    console.error('Failed to fetch chart data:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error refreshing chart data:', error);
+                console.log('Charts will continue to display with existing data');
+            });
+    }
+
+    // Auto-refresh data every 30 seconds
+    setInterval(updateChartsWithData, 30000);
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCharts();
+        updateChartsWithData();
+    });
+</script>
+</body>
+</html>

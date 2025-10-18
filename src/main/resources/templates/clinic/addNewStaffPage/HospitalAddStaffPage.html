@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Add New Staff - Clinic</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/clinic/addNewStaffPage/HospitalAddStaffPage.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img th:src="@{/Images/logo.png}" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/clinic/landing}">Home</a>
+            <a th:href="@{/clinic/appointments}">Appointments</a>
+            <a th:href="@{/clinic/staff-page}">Staff</a>
+            <a href="../HospitalFeedbackPage.html">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <img th:src="@{/Images/profile.png}" alt="profile">
+        </div>
+        <div class="navbar__section4">
+            <img th:src="@{/Images/menu-bar.png}" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${clinicName}">Clinic</span></h3> <br>
+            <a th:href="@{/clinic/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/clinic/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, <span th:text="${clinicName}">Clinic</span></h3>
+            <a th:href="@{/clinic/profile}">Your Profile</a>
+            <a th:href="@{/clinic/landing}">Home</a>
+            <a th:href="@{/clinic/appointments}">Appointments</a>
+            <a th:href="@{/clinic/staff-page}">Staff</a>
+            <a href="../Feedback Page/HospitalFeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Staff Page -->
+
+    <!-- Success/Error Messages -->
+    <div id="successMessage" class="alert alert-success" style="display: none; background-color: #d4edda; color: #155724; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #c3e6cb;">
+        <span id="successText"></span>
+    </div>
+    <div id="errorMessage" class="alert alert-error" style="display: none; background-color: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #f5c6cb;">
+        <span id="errorText"></span>
+    </div>
+
+    <div class="add__staff">
+        <h1>Add New Staff</h1>
+        <div class="add__staff__section1">
+            <form id="staffInvitationForm">
+                <div class="add__staff__section1__sub">
+                    <div>
+                        <label for="name">Name <span style="color: red;">*</span></label> <br>
+                        <input type="text" id="name" name="name" required 
+                               pattern="^[a-zA-Z\s]{2,100}$"
+                               title="Name must be 2-100 characters, letters and spaces only"> <br>
+                        <div class="error-message" id="name-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    </div>
+                    <div>
+                        <label for="qualification">Qualification</label> <br>
+                        <input type="text" id="qualification" name="qualification" 
+                               maxlength="100" title="Maximum 100 characters"> <br>
+                        <div class="error-message" id="qualification-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    </div>
+                </div>
+                <br>
+                <div class="add__staff__section1__sub">
+                    <div>
+                        <label for="role">Role <span style="color: red;">*</span></label>
+                        <select id="role" name="role" required>
+                            <option value="" disabled selected>Select a role</option>
+                            <option value="Doctor">Doctor</option>
+                            <option value="Nurse">Nurse</option>
+                        </select> <br>
+                        <div class="error-message" id="role-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    </div>
+                    <div>
+                        <label for="specialization">Specialization</label> <br>
+                        <input type="text" id="specialization" name="specialization" 
+                               maxlength="50" title="Maximum 50 characters"> <br>
+                        <div class="error-message" id="specialization-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                    </div>
+                </div>
+                <br>
+                <label for="email">Email <span style="color: red;">*</span></label> <br>
+                <input type="email" id="email" name="email" required 
+                       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                       title="Please enter a valid email address"> <br>
+                <div class="error-message" id="email-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br>
+
+                <label for="phone">Mobile Number</label> <br>
+                <input type="tel" id="phone" name="phone" 
+                       pattern="^0[0-9]{9}$" 
+                       placeholder="07XXXXXXXX" 
+                       title="Contact number must be 10 digits starting with 0"> <br>
+                <div class="error-message" id="phone-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
+                <br>
+
+                <button type="submit">Send Invitation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>VakaPo | Making Vaccination booking simple & seecure </p>
+        <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    </div>
+
+    <script th:src="@{/js/clinic/addNewStaffPage/HospitalAddStaffPage.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

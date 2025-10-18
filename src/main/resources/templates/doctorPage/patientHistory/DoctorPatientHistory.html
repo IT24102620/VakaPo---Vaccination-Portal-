@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/doctorPage/patientHistory/DoctorPatientHistory.css}">
+    <link rel="stylesheet" th:href="@{/css/shared/notifications.css}">
+</head>
+
+<body>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar__section1">
+            <img src="../../Images/logo.png" alt="logo">
+        </div>
+        <div class="navbar__section2">
+            <a th:href="@{/doctor/landing}">Home</a>
+            <a th:href="@{/doctor/appointments}">Appointments</a>
+            <a th:href="@{/doctor/patient-history}">Patient History</a>
+            <a th:href="@{/doctor/feedback}">Feedback</a>
+        </div>
+        <div class="navbar__section3">
+            <!-- Notification Icon -->
+            <div class="notification-icon" style="position: relative; margin-right: 15px;">
+                <img src="../../Images/notification.png" alt="notifications" style="width: 24px; height: 24px;">
+                <!-- Notification Dropdown -->
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <a href="#" class="mark-all-read" onclick="notificationManager.markAllAsRead()">Mark all read</a>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-loading">Loading notifications...</div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="notificationManager.viewAllNotifications()">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <img src="../../Images/profile.png" alt="profile" class="profile-icon">
+        </div>
+        <div class="navbar__section4">
+            <img src="../../Images/menu-bar.png" alt="menu-bar">
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <div class="profile__section1">
+            <p class="profile__close">X</p>
+            <h3>Welcome, <span th:text="${doctorName}">Doctor</span></h3> <br>
+            <a th:href="@{/doctor/profile}">Your Profile</a> <br>
+            <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            <br><br>
+            <form th:action="@{/doctor/delete-account}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
+                <button type="submit" class="btn-delete-account">Delete My Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <div class="responsive__navbar">
+        <div class="responsive__navbar__section1">
+            <p>X</p> <br>
+            <h3>Welcome, <span th:text="${doctorName}">Doctor</span></h3>
+            <a href="../ProfilePage/DoctorProfilePage.html">Your Profile</a>
+            <a href="../Landing Page/DoctorLandingPage.html">Home</a>
+            <a href="../Appointment Page/DoctorAppointmentPage.html">Appointments</a>
+            <a href="../patientHistory/DoctorPatientHistory.html">Patient History</a>
+            <a href="../Feedback Page/DoctorFeedbackPage.html">Feedback</a>
+            <div class="responsive__navbar__section1__button">
+                <form th:action="@{/logout}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient History Section -->
+    <div class="patient">
+        <div class="patient__section1">
+            <div class="search-container">
+                <span class="search-prefix">Vak P</span>
+                <input type="text" id="patientSearchInput" placeholder="Enter patient number..." maxlength="4">
+                <button id="searchPatientBtn" type="button">
+                    <img src="../../Images/search.png" alt="search">
+                </button>
+            </div>
+            <div id="searchError" class="error-message" style="display: none; color: red; margin-top: 10px;"></div>
+        </div>
+        <div class="patient__section2">
+            <h2>Recent Updates</h2>
+            <div class="patient__section2__sub" id="recentUpdatesContainer">
+                <div id="loadingUpdates" style="text-align: center; color: #666; padding: 20px;">
+                    Loading recent updates...
+                </div>
+                <div id="noUpdates" style="text-align: center; color: #666; padding: 20px; display: none;">
+                    No recent updates found
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Information Section -->
+    <div id="patientInfoSection" class="personal__information" style="display: none;">
+        <div class="personal__information__section1">
+            <img src="../../Images/profile new.png" alt="profile">
+        </div>
+        <div class="personal__information__section2"> <br><br>
+            <h1>Personal Information</h1>
+            <table id="patientInfoTable">
+                <tr>
+                    <td>ID</td>
+                    <td>:</td>
+                    <td id="patientId">-</td>
+                </tr>
+                <tr>
+                    <td>NIC</td>
+                    <td>:</td>
+                    <td id="patientNic">-</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>:</td>
+                    <td id="patientName">-</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>:</td>
+                    <td id="patientEmail">-</td>
+                </tr>
+                <tr>
+                    <td>Phone Number</td>
+                    <td>:</td>
+                    <td id="patientPhone">-</td>
+                </tr>
+            </table>
+        </div>
+    </div> <br>
+
+    <!-- Vaccination History Section -->
+    <div id="vaccinationHistorySection" class="history" style="display: none;">
+        <div class="vaccination__summary">
+            <h2>Vaccination History</h2> <br>
+            <table id="completedVaccinationsTable">
+                <tr id="vaccination__summary__table__header">
+                    <th>Vaccine</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Dosage Level</th>
+                    <th>Additional Notes</th>
+                    <th>Next Vaccine Date</th>
+                    <th>Status</th>
+                </tr>
+                <tr id="noCompletedVaccinations" style="display: none;">
+                    <td colspan="8" style="text-align: center; color: #666;">No completed vaccinations found</td>
+                </tr>
+            </table>
+            <br><br><br>
+        </div>
+
+        <!-- Pending Vaccination History Section -->
+        <div class="vaccination__summary">
+            <h2>Pending Vaccinations</h2> <br>
+            <table id="pendingVaccinationsTable">
+                <tr id="pending__vaccination__table__header">
+                    <th>Vaccine</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Dosage Level</th>
+                    <th>Additional Notes</th>
+                    <th>Next Vaccine Date</th>
+                    <th>Status</th>
+                </tr>
+                <tr id="noPendingVaccinations" style="display: none;">
+                    <td colspan="8" style="text-align: center; color: #666;">No pending vaccinations found</td>
+                </tr>
+            </table> <br><br><br>
+        </div>
+
+        <div class="dosage__level">
+            <img src="../../Images/cancel.png" alt="close">
+            <h2>Dosage Level</h2> <br>
+            <label for="">Dosage Level: </label>
+            <input type="text" placeholder="0ml"> <br> <br>
+            <button>Save</button>
+        </div>
+    </div>
+
+    <!-- Custom Date Picker Modal -->
+    <div id="datePickerModal" class="date-picker-modal" style="display: none;">
+        <div class="date-picker-content">
+            <div class="date-picker-header">
+                <h3>Select Next Vaccine Date</h3>
+                <span class="date-picker-close">&times;</span>
+            </div>
+            <div class="date-picker-body">
+                <p>Choose the date for the next vaccination or leave empty for "No next shot needed":</p>
+                <div class="date-input-container">
+                    <input type="date" id="nextVaccineDateInput" class="date-input">
+                </div>
+                <div class="date-picker-actions">
+                    <button type="button" id="clearDateBtn" class="clear-date-btn">No Next Shot Needed</button>
+                    <button type="button" id="saveDateBtn" class="save-date-btn">Save Date</button>
+                    <button type="button" id="cancelDateBtn" class="cancel-date-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/doctorPage/patientHistory/DoctorPatientHistory.js}"></script>
+    <script th:src="@{/js/shared/notifications.js}"></script>
+    
+    <!-- Emergency Announcement Script -->
+    <script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+        });
+
+        function loadEmergencyNotification() {
+            fetch('/api/public/emergency/latest')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.message) {
+                        document.getElementById('emergencyMessage').textContent = data.message;
+                        document.getElementById('emergencyAnnouncement').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log('No emergency notification or error loading:', error);
+                });
+        }
+
+        function hideEmergencyAnnouncement() {
+            document.getElementById('emergencyAnnouncement').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,39 +1,46 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>VakaPo</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+
+    <!-- Static CSS from /static/css -->
     <link rel="stylesheet" th:href="@{/css/LandingPage.css}">
 </head>
 
 <body>
-<!-- Announcement Section -->
-<div class="announcement">
-    <p>Get 30% off on your first vaccine</p>
-    <p class="announcement__cancel">X</p>
-</div>
+        <!-- Announcement Section -->
+        <div class="announcement" id="emergencyAnnouncement" style="display: none;">
+            <p id="emergencyMessage">Loading emergency notification...</p>
+            <p class="announcement__cancel" onclick="hideEmergencyAnnouncement()">X</p>
+        </div>
 
 <!-- Navbar Section -->
 <div class="navbar">
     <div class="navbar__section1">
-        <img src="../Images/logo.png" alt="logo">
+        <img th:src="@{/images/logo.png}" alt="logo">
     </div>
+
     <div class="navbar__section2">
         <a href="#home">Home</a>
         <a href="#aboutus">About</a>
         <a href="#contactus">Contact Us</a>
         <a href="#reviews">Reviews</a>
     </div>
+
     <div class="navbar__section3">
-        <button th:onclick="|window.location.href='@{/login}'|">Log in</button>
+        <!-- Go to /login -->
+        <button th:onclick="'window.location.href=\'' + @{/login} + '\';'">Log in</button>
     </div>
+
     <div class="navbar__section4">
-        <img src="../Images/menu-bar.png" alt="menu-bar">
+        <img th:src="@{/images/menu-bar.png}" alt="menu-bar">
     </div>
 </div>
 
@@ -46,22 +53,20 @@
         <a href="#contactus">Contact Us</a>
         <a href="#reviews">Reviews</a>
         <div class="responsive__navbar__section1__button">
-            <button onclick="window.location.href='../Login Page/Login.html'">Log in</button>
+            <button th:onclick="'window.location.href=\'' + @{/login} + '\';'">Log in</button>
         </div>
     </div>
-
 </div>
+
 <!-- Header Section -->
 <div class="header" id="home">
     <div class="header__section1">
         <h1>Book Your Vaccines In Few Minutes</h1> <br>
-        <p>Streamlining healthcare with secure, accessible, and effcient vaccination management for all Sri
-            Lankans
-        </p> <br>
-        <button>Book Vaccine</button>
+        <p>Streamlining healthcare with secure, accessible, and effcient vaccination management for all Sri Lankans</p> <br>
+        <button onclick="window.location.href='/login';">Book Vaccine</button>
     </div>
     <div class="header__section2">
-        <img src="../Images/header.png" alt="header-image">
+        <img th:src="@{/images/header.png}" alt="header-image">
     </div>
 </div>
 
@@ -72,35 +77,34 @@
         <p>Empowering Health One Click At A Time</p> <br>
     </div>
     <div class="about__us__section2">
-        <p>The Web-Based Vaccination Portal, crafted by SLIIT students, revolutionizes vaccination management in
-            Sri
-            Lanka. It provides secure, role-based access for patients, doctors, nurses, hospital administrators,
-            and
-            public health authorities. With features like online booking, record management, and real-time
-            alerts,
-            it ensures efficient coordination, data security, and timely healthcare delivery, supporting
-            national
-            immunization goals and enhancing accessibility for all citizens.</p>
+        <p>
+            The Web-Based Vaccination Portal, crafted by SLIIT students, revolutionizes vaccination
+            management in Sri Lanka. It provides secure, role-based access for patients, doctors, nurses,
+            hospital administrators, and public health authorities. With features like online booking, record
+            management, and real-time alerts, it ensures efficient coordination, data security, and timely
+            healthcare delivery, supporting national immunization goals and enhancing accessibility for all citizens.
+        </p>
     </div>
 </div>
+
 <div class="about__us__badges">
     <div class="about__us__badges__section1">
-        <img src="../Images/experience.png" alt="experience">
+        <img th:src="@{/images/experience.png}" alt="experience">
         <h2>5+ Years</h2>
         <p>Experience</p>
     </div>
     <div class="about__us__badges__section1">
-        <img src="../Images/member.png" alt="users">
+        <img th:src="@{/images/member.png}" alt="users">
         <h2>1000+</h2>
         <p>Users</p>
     </div>
     <div class="about__us__badges__section1">
-        <img src="../Images/hospital.png" alt="hospital">
+        <img th:src="@{/images/hospital.png}" alt="hospital">
         <h2>50+</h2>
         <p>Hospitals</p>
     </div>
     <div class="about__us__badges__section1">
-        <img src="../Images/doctor.png" alt="doctors">
+        <img th:src="@{/images/doctor.png}" alt="doctors">
         <h2>100+</h2>
         <p>Doctors</p>
     </div>
@@ -111,20 +115,33 @@
     <div class="contact__us__section1">
         <h1>Contact Us</h1>
         <p>We're Here To Help</p> <br>
-        <p class="contact__us__section1__sub">If you have any questions, concerns, or encounter any issues
-            regarding
-            booking an appointment or exploring partnership opportunities, we kindly request you to fill out the
-            form and submit it. Our team will review your submission and get back to you as soon as possible.
+        <p class="contact__us__section1__sub">
+            If you have any questions, concerns, or encounter any issues regarding booking an appointment or exploring partnership opportunities,
+            we kindly request you to fill out the form and submit it. Our team will review your submission and get back to you as soon as possible.
         </p>
     </div>
+
     <div class="contact__us__section2">
-        <img src="../Images/logo.png" alt="logo">
-        <form action="">
-            <input type="text" placeholder="Full Name" required> <br> <br>
-            <input type="email" placeholder="Email Address" required> <br> <br>
-            <input type="tel" placeholder="Phone Number" required> <br> <br>
-            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message" required></textarea> <br>
-            <br>
+        <img th:src="@{/images/logo.png}" alt="logo">
+
+        <!-- Success/Error Messages -->
+        <div th:if="${successMessage}" style="background: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #c3e6cb;" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" style="background: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #f5c6cb;" th:text="${errorMessage}"></div>
+
+        <!-- Contact Form -->
+        <form th:action="@{/contact}" method="post">
+            <!-- CSRF for Spring Security -->
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <!-- Return URL to stay on current page -->
+            <input type="hidden" name="returnUrl" id="returnUrl" value=""/>
+
+            <input type="text" name="fullName" placeholder="Full Name" required 
+                   th:value="${userName}" th:readonly="${isLoggedIn}"> <br><br>
+            <input type="email" name="emailAddress" placeholder="Email Address" required 
+                   th:value="${userEmail}" th:readonly="${isLoggedIn}"> <br><br>
+            <input type="tel" name="phoneNumber" placeholder="Phone Number" required 
+                   th:value="${userPhone}" th:readonly="${isLoggedIn}"> <br><br>
+            <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea> <br><br>
             <button type="submit">Submit</button>
         </form>
     </div>
@@ -133,43 +150,98 @@
 <!-- Reviews Section -->
 <div class="reviews" id="reviews">
     <div class="reviews__section1">
-        <h1>What Our Users Say</h1><br>
+        <h1>What Our Users Say</h1> <br>
     </div>
-
-    <div class="reviews__section2">
-
-        <!-- When there ARE reviews -->
-        <div class="reviews__track" th:if="${!#lists.isEmpty(reviews)}">
-            <!-- render each review once -->
-            <div class="reviews__section2__sub" th:each="r : ${reviews}">
-                <h4 th:text="${#strings.isEmpty(r.name) ? 'Anonymous' : r.name}">User</h4>
-                <p th:text="${r.message}">Great service!</p>
-
-                <!-- stars if rating exists -->
-                <div class="stars" th:if="${r.rating != null}">
-                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">★</span>
-                    <span th:each="i : ${#numbers.sequence(r.rating + 1, 5)}">☆</span>
+    <div class="reviews__container">
+        <div class="reviews__section2">
+            <div th:each="review : ${reviews}" class="reviews__section2__sub">
+                <h4 th:text="${review.name}">User Name</h4>
+                <div class="star-rating">
+                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                        <span th:if="${i <= review.rating}" class="star">★</span>
+                        <span th:if="${i > review.rating}" class="star" style="color: #ddd;">★</span>
+                    </th:block>
                 </div>
+                <p th:text="${review.message}">Review message</p>
             </div>
-
-            <!-- Removed optional duplicate to prevent each review from appearing twice -->
-        </div>
-
-        <!-- Empty-state (no published reviews yet) -->
-        <div class="reviews__empty" th:if="${#lists.isEmpty(reviews)}">
-            <p>No reviews yet. Be the first to share your feedback!</p>
+            
+            <!-- Fallback static reviews if no dynamic reviews available -->
+            <div th:if="${#lists.isEmpty(reviews)}" class="reviews__section2__sub">
+                <h4>Dr. Sarah</h4>
+                <div class="star-rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p>VakaPo has revolutionized how I manage my patients. The appointment system is seamless and the patient history tracking is excellent.</p>
+            </div>
+            <div th:if="${#lists.isEmpty(reviews)}" class="reviews__section2__sub">
+                <h4>Nurse Priya</h4>
+                <div class="star-rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p>Excellent platform for managing vaccination records. The real-time updates help me stay on top of patient care.</p>
+            </div>
+            <div th:if="${#lists.isEmpty(reviews)}" class="reviews__section2__sub">
+                <h4>Royal Hospital</h4>
+                <div class="star-rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p>VakaPo has transformed our vaccination management. The staff invitation system and appointment tracking are excellent.</p>
+            </div>
         </div>
     </div>
 </div>
-
 
 <!-- Footer Section -->
 <div class="footer">
     <p>VakaPo | Making Vaccination booking simple & seecure </p>
-    <p>&copy; 2025 VakaPo. All Rights Reserved</p>
+    <p>&copy; <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2025</span> VakaPo. All Rights Reserved</p>
 </div>
+
+<!-- Static JS from /static/js -->
 <script th:src="@{/js/LandingPage.js}"></script>
 
-</body>
+<!-- Emergency Announcement Script -->
+<script>
+        // Load emergency notification on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmergencyNotification();
+            
+            // Set the return URL for the contact form
+            const returnUrlInput = document.getElementById('returnUrl');
+            if (returnUrlInput) {
+                returnUrlInput.value = window.location.pathname;
+            }
+        });
 
+            function loadEmergencyNotification() {
+                fetch('/api/public/emergency/latest')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.message) {
+                            document.getElementById('emergencyMessage').textContent = data.message;
+                            document.getElementById('emergencyAnnouncement').style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.log('No emergency notification or error loading:', error);
+                    });
+            }
+
+    function hideEmergencyAnnouncement() {
+        document.getElementById('emergencyAnnouncement').style.display = 'none';
+    }
+</script>
+</body>
 </html>

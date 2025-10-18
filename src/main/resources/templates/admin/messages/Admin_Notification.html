@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VakaPo Admin - Messages & Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/Admin/landingPage/AdminLandingPage.css}" />
+    <link rel="stylesheet" th:href="@{/css/Admin/messages/Admin_Notification.css}">
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+    <style>
+        .content-area {
+            margin-left: calc(var(--sidebar-width) + 24px);
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-link {
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        .sidebar-link .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            opacity: 0.8;
+        }
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+        }
+        h1, h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        main.container {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 40px 40px 60px 40px;
+            overflow: hidden;
+        }
+        @media (max-width: 768px) { 
+            .content-area { margin-left: 0; } 
+            main.container { padding: 24px 20px 40px 20px; margin: 20px; }
+        }
+    </style>
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" th:classappend="${sidebarOpen} ? 'active' : ''"></div>
+<!-- Sidebar -->
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">&times;</button>
+
+    <div class="logo" aria-hidden="false">
+        <img th:src="@{/Images/logo.png}" alt="VakaPo logo">
+    </div>
+    <nav>
+        <a class="sidebar-link active" th:href="@{/admin/landing}">
+            <img class="icon" th:src="@{/Images/home.png}" alt="Dashboard">
+            <span class="link-text">Home</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/user-management}">
+            <img class="icon" th:src="@{/Images/member.png}" alt="User Management">
+            <span class="link-text">User Management</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/contacts}">
+            <img class="icon" th:src="@{/Images/contact.png}" alt="Contact Management">
+            <span class="link-text">Contact Management</span></a>
+
+
+        <a class="sidebar-link" th:href="@{/admin/sub-admin-request}">
+            <img class="icon" th:src="@{/Images/Sub_Admin_manager.png}" alt="Sub-Admin Manager">
+            <span class="link-text">Sub-Admin Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccination-monitoring}">
+            <img class="icon" th:src="@{/Images/Vaccination_Mon.png}" alt="Vaccination Monitoring">
+            <span class="link-text">Vaccination Monitoring</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/vaccines/manage}">
+            <img class="icon" th:src="@{/Images/plus.png}" alt="Vaccine Manager">
+            <span class="link-text">Vaccine Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/feedback-manager}">
+            <img class="icon" th:src="@{/Images/feedback.png}" alt="Feedback Manager">
+            <span class="link-text">Feedback Manager</span></a>
+
+        <a class="sidebar-link" th:href="@{/admin/notifications}">
+            <img class="icon" th:src="@{/Images/notification.png}" alt="Messages & Alerts">
+            <span class="link-text">Messages & Alerts</span></a>
+
+        <form th:action="@{/logout}" method="post" style="width: 100%;">
+            <button type="submit" class="sidebar-link" style="width:100%; border:none; background:none; cursor:pointer;">
+                <img class="icon" th:src="@{/Images/logout.png}" alt="Logout">
+                <span class="link-text">Log Out</span>
+            </button>
+        </form>
+    </nav>
+</aside>
+
+<!-- Mobile toggle (displayed automatically with CSS) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" title="Open menu" style="display:none">
+    <img th:src="@{/Images/Admin/menu.png}" alt="menu">
+</button>
+
+<!-- MAIN: content-area wrapper keeps content centered -->
+<div class="content-area" id="contentArea">
+    <main class="container" id="mainContent" role="main">
+  <section>
+    <h1>Messages & Alerts</h1>
+    <p>Create and manage emergency alerts and notifications for the portal.</p>
+    
+    <!-- Success/Error Messages -->
+    <div th:if="${success}" class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+      <strong>Success!</strong> <span th:text="${success}"></span>
+    </div>
+    
+    <div th:if="${error}" class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+      <strong>Error!</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Notification Form -->
+    <div class="notification-form">
+      <h2>Create New Notification</h2>
+      <form id="notificationForm" th:action="@{/admin/delegate/notify/custom}" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="type">Type:</label>
+        <select id="type" name="type" required onchange="handleTypeChange()">
+          <option value="">-- Select Type --</option>
+          <option value="emergency">Emergency</option>
+          <option value="notification">Notification</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <div id="targetAudienceSection">
+          <label>Target Audience:</label>
+          <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_all" name="target" value="ALL">
+            <label for="target_all">All Users</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_approved_subadmins" name="target" value="APPROVED_SUBADMINS">
+            <label for="target_approved_subadmins">Approved Sub-Admins</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_pending_subadmins" name="target" value="PENDING_SUBADMINS">
+            <label for="target_pending_subadmins">Pending Sub-Admins</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_doctors" name="target" value="DOCTORS">
+            <label for="target_doctors">Doctors</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_nurses" name="target" value="NURSES">
+            <label for="target_nurses">Nurses</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_hospitals" name="target" value="HOSPITALS">
+            <label for="target_hospitals">Hospitals</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_clinics" name="target" value="CLINICS">
+            <label for="target_clinics">Clinics</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="target_patients" name="target" value="PATIENTS">
+            <label for="target_patients">Patients</label>
+          </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-send-notification">
+          <span class="btn-icon">📢</span>
+          Send Notification
+        </button>
+      </form>
+    </div>
+
+    <!-- Notification Statistics -->
+    <div class="notification-stats" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px;">
+      <h2>Notification Statistics</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+          <h3 style="margin: 0; color: #007bff; font-size: 2rem;" th:text="${#lists.size(notifications)}">0</h3>
+          <p style="margin: 5px 0 0 0; color: #666;">Active Notifications</p>
+        </div>
+        <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+          <h3 style="margin: 0; color: #28a745; font-size: 2rem;">📧</h3>
+          <p style="margin: 5px 0 0 0; color: #666;">Email Notifications</p>
+        </div>
+        <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+          <h3 style="margin: 0; color: #ffc107; font-size: 2rem;">👥</h3>
+          <p style="margin: 5px 0 0 0; color: #666;">Target Audiences</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Existing Notifications -->
+    <div class="notifications-list">
+      <h2>Existing Notifications</h2>
+      <div class="notification-cards">
+        <div th:each="notification : ${notifications}" class="notification-card" th:id="'notification-' + ${notification.id}">
+          <h3 th:text="${notification.title}"></h3>
+          <p th:text="'Date: ' + ${notification.createdAt}"></p>
+          <p th:text="'Type: ' + ${notification.type}"></p>
+          <p th:text="'Target: ' + ${notification.targetAudience}"></p>
+          <p th:text="'Message: ' + ${notification.message}"></p>
+          <div class="actions">
+            <button class="btn-edit" th:onclick="'editNotification(' + ${notification.id} + ')'">Edit</button>
+            <button class="btn-delete" th:onclick="'deleteNotification(' + ${notification.id} + ')'">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Notification Modal -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Notification</h2>
+          <span class="close" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form id="editForm">
+          <input type="hidden" id="editNotificationId">
+          
+          <label for="editTitle">Title:</label>
+          <input type="text" id="editTitle" name="title" required>
+
+          <label for="editType">Type:</label>
+          <select id="editType" name="type" required onchange="handleEditTypeChange()">
+            <option value="">-- Select Type --</option>
+            <option value="emergency">Emergency</option>
+            <option value="notification">Notification</option>
+          </select>
+
+          <label for="editMessage">Message:</label>
+          <textarea id="editMessage" name="message" required></textarea>
+
+          <label for="editTargetAudience">Target Audience:</label>
+          <input type="text" id="editTargetAudience" name="targetAudience" required>
+
+          <div class="modal-actions">
+            <button type="button" onclick="closeEditModal()" class="btn-cancel">Cancel</button>
+            <button type="submit" class="btn-save">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+    </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>VakaPo | Making Vaccination booking simple & secure</p>
+  <p>© 2025 VakaPo. All Rights Reserved</p>
+</footer>
+
+<script th:src="@{/js/Admin_Notification.js}"></script>
+<script>
+  // Handle type change - hide/show target audience section
+  function handleTypeChange() {
+    const typeSelect = document.getElementById('type');
+    const targetAudienceSection = document.getElementById('targetAudienceSection');
+    
+    if (typeSelect.value === 'emergency') {
+      // Hide target audience section for emergency notifications
+      targetAudienceSection.style.display = 'none';
+      
+      // Automatically check "All Users" for emergency notifications
+      document.getElementById('target_all').checked = true;
+      
+      // Uncheck all other target options
+      const otherCheckboxes = document.querySelectorAll('input[name="target"]:not(#target_all)');
+      otherCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    } else {
+      // Show target audience section for regular notifications
+      targetAudienceSection.style.display = 'block';
+    }
+  }
+
+  // Handle "All Users" checkbox - when checked, uncheck all others
+  document.getElementById('target_all').addEventListener('change', function() {
+    if (this.checked) {
+      const otherCheckboxes = document.querySelectorAll('input[name="target"]:not(#target_all)');
+      otherCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+  });
+
+  // Handle other checkboxes - when any is checked, uncheck "All Users"
+  document.querySelectorAll('input[name="target"]:not(#target_all)').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('target_all').checked = false;
+      }
+    });
+  });
+
+  // Form validation - ensure at least one target is selected (only for regular notifications)
+  document.addEventListener('DOMContentLoaded', function() {
+    const notificationForm = document.getElementById('notificationForm');
+    if (notificationForm) {
+      notificationForm.addEventListener('submit', function(e) {
+        const typeSelect = document.getElementById('type');
+        
+        // Skip target audience validation for emergency notifications
+        if (typeSelect.value === 'emergency') {
+          return true; // Allow form submission for emergency notifications
+        }
+        
+        // Validate target audience for regular notifications
+        const checkedTargets = document.querySelectorAll('input[name="target"]:checked');
+        if (checkedTargets.length === 0) {
+          e.preventDefault();
+          alert('Please select at least one target audience.');
+          return false;
+        }
+      });
+    }
+  });
+
+  // Handle edit type change - hide/show target audience section in edit modal
+  function handleEditTypeChange() {
+    const editTypeSelect = document.getElementById('editType');
+    const editTargetAudienceLabel = document.querySelector('label[for="editTargetAudience"]');
+    const editTargetAudienceInput = document.getElementById('editTargetAudience');
+    
+    if (editTypeSelect.value === 'emergency') {
+      // Hide target audience section for emergency notifications
+      editTargetAudienceLabel.style.display = 'none';
+      editTargetAudienceInput.style.display = 'none';
+      
+      // Automatically set target audience to ALL for emergency notifications
+      editTargetAudienceInput.value = 'ALL';
+    } else {
+      // Show target audience section for regular notifications
+      editTargetAudienceLabel.style.display = 'block';
+      editTargetAudienceInput.style.display = 'block';
+    }
+  }
+
+  function deleteNotification(notificationId) {
+    if (confirm('Are you sure you want to delete this notification?')) {
+      fetch(`/admin/delegate/notify/${notificationId}`, {
+        method: 'DELETE'
+      }).then(response => {
+        if (response.ok) {
+          // Remove the notification card from the DOM
+          const notificationCard = document.getElementById(`notification-${notificationId}`);
+          if (notificationCard) {
+            notificationCard.remove();
+          }
+          // Show success message
+          showMessage('Notification deleted successfully!', 'success');
+        } else {
+          alert('Failed to delete notification. Please try again.');
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the notification.');
+      });
+    }
+  }
+
+  function editNotification(notificationId) {
+    // Fetch notification data
+    fetch(`/admin/delegate/notify/${notificationId}`)
+      .then(response => response.json())
+      .then(data => {
+        // Populate the edit form
+        document.getElementById('editNotificationId').value = data.id;
+        document.getElementById('editTitle').value = data.title;
+        document.getElementById('editType').value = data.type || '';
+        document.getElementById('editMessage').value = data.message;
+        document.getElementById('editTargetAudience').value = data.targetAudience;
+        
+        // Show the modal
+        document.getElementById('editModal').style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to load notification data.');
+      });
+  }
+
+  function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+  // Handle edit form submission
+  document.getElementById('editForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const notificationId = document.getElementById('editNotificationId').value;
+    const title = document.getElementById('editTitle').value;
+    const type = document.getElementById('editType').value;
+    const message = document.getElementById('editMessage').value;
+    const targetAudience = document.getElementById('editTargetAudience').value;
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('type', type);
+    formData.append('message', message);
+    formData.append('targetAudience', targetAudience);
+    
+    fetch(`/admin/delegate/notify/${notificationId}`, {
+      method: 'PUT',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        closeEditModal();
+        showMessage(data.message || 'Notification updated successfully! Updated emails have been sent to all target recipients.', 'success');
+        // Update the notification card in the DOM
+        updateNotificationCard(notificationId, title, type, message, targetAudience);
+      } else {
+        alert('Failed to update notification: ' + (data.error || 'Unknown error'));
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while updating the notification.');
+    });
+  });
+
+  function updateNotificationCard(id, title, type, message, targetAudience) {
+    const notificationCard = document.getElementById(`notification-${id}`);
+    if (notificationCard) {
+      notificationCard.querySelector('h3').textContent = title;
+      notificationCard.querySelector('p:nth-of-type(2)').textContent = 'Type: ' + type;
+      notificationCard.querySelector('p:nth-of-type(3)').textContent = 'Target: ' + targetAudience;
+      notificationCard.querySelector('p:nth-of-type(4)').textContent = 'Message: ' + message;
+    }
+  }
+
+  function showMessage(message, type) {
+    // Create a temporary message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      z-index: 1000;
+      ${type === 'success' ? 'background-color: #4CAF50;' : 'background-color: #f44336;'}
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remove the message after 3 seconds
+    setTimeout(() => {
+      if (messageDiv.parentNode) {
+        messageDiv.parentNode.removeChild(messageDiv);
+      }
+    }, 3000);
+  }
+
+  // Close modal when clicking outside of it
+  window.onclick = function(event) {
+    const modal = document.getElementById('editModal');
+    if (event.target === modal) {
+      closeEditModal();
+    }
+  }
+</script>
+</body>
+</html>
